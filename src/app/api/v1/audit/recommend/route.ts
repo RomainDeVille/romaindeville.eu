@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import type { PageSpeedAudit, AuditRecommendations } from "@/lib/audit-types";
 
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 

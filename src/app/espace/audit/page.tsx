@@ -13,6 +13,26 @@ import type {
   ExtraRecommendation,
 } from "@/lib/audit-types";
 
+async function parseJsonSafe<T>(res: Response, fallback: string): Promise<T> {
+  const raw = await res.text();
+  let data: (T & { error?: string }) | null = null;
+  try {
+    data = JSON.parse(raw);
+  } catch {
+    data = null;
+  }
+  if (!res.ok) {
+    const msg =
+      (data && data.error) ||
+      (res.status === 504
+        ? "Le serveur a mis trop de temps a repondre. Relancez l'audit."
+        : `${fallback} (HTTP ${res.status})`);
+    throw new Error(msg);
+  }
+  if (data === null) throw new Error(fallback);
+  return data;
+}
+
 /* ═══ PROGRESS BAR ═══ */
 
 type Phase = "idle" | "pagespeed" | "ai" | "done";
@@ -228,8 +248,7 @@ export default function AuditPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: url.trim() }),
       });
-      const d1 = await r1.json();
-      if (!r1.ok) throw new Error(d1.error || "Erreur PageSpeed");
+      const d1 = await parseJsonSafe<{ audit: PageSpeedAudit; id: string; createdAt: string }>(r1, "Erreur PageSpeed");
 
       setAudit(d1.audit);
       setReportId(d1.id);
@@ -239,15 +258,14 @@ export default function AuditPage() {
 
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
 
-      startProgress(50, 95, 25000, "Generation des recommandations IA...");
+      startProgress(50, 95, 90000, "Generation des recommandations IA...");
 
       const r2 = await fetch("/api/v1/audit/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ audit: d1.audit }),
       });
-      const d2 = await r2.json();
-      if (!r2.ok) throw new Error(d2.error || "Erreur IA");
+      const d2 = await parseJsonSafe<AuditRecommendations>(r2, "Erreur IA");
 
       if (timerRef.current) clearInterval(timerRef.current);
       setProgress(100);
