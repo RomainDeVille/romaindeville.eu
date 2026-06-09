@@ -27,6 +27,11 @@ export default function Espace() {
             <h3>Audit PageSpeed</h3>
             <p>Analysez les performances, le SEO, l&apos;accessibilite et les bonnes pratiques d&apos;un site. Rapport PDF avec recommandations IA.</p>
           </Link>
+          <Link href="/espace/tools" className="card" style={{ textDecoration: "none" }}>
+            <div className="n">02</div>
+            <h3>Analyse multi-outils</h3>
+            <p>DNS, securite, carbone, HTML, mots-cles, autorite, historique CWV : lancez les outils de votre choix en parallele, recevez un rapport unifie.</p>
+          </Link>
         </div>
       </section>
     </div>
