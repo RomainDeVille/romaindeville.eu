@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface CategoryScore {
   id: string;
@@ -29,13 +29,171 @@ interface AuditReport {
   createdAt: string;
 }
 
+/* ── Loading phases ── */
+const LOADING_PHASES = [
+  { label: "Connexion à Google PageSpeed...", target: 12, duration: 2500 },
+  { label: "Analyse de la performance mobile...", target: 28, duration: 3000 },
+  { label: "Scan des métriques Core Web Vitals...", target: 45, duration: 3500 },
+  { label: "Évaluation de l'accessibilité et du SEO...", target: 58, duration: 3000 },
+  { label: "Identification des opportunités...", target: 68, duration: 3000 },
+  { label: "Génération des recommandations IA...", target: 82, duration: 5000 },
+  { label: "Rédaction du rapport détaillé...", target: 91, duration: 5000 },
+  { label: "Finalisation...", target: 96, duration: 8000 },
+];
+
+function ProgressBar({ loading }: { loading: boolean }) {
+  const [progress, setProgress] = useState(0);
+  const [phaseIndex, setPhaseIndex] = useState(0);
+  const startTime = useRef(Date.now());
+
+  useEffect(() => {
+    if (!loading) {
+      setProgress(0);
+      setPhaseIndex(0);
+      return;
+    }
+
+    startTime.current = Date.now();
+    setProgress(0);
+    setPhaseIndex(0);
+
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime.current;
+
+      let cumulativeDuration = 0;
+      let currentPhase = 0;
+      for (let i = 0; i < LOADING_PHASES.length; i++) {
+        if (elapsed < cumulativeDuration + LOADING_PHASES[i].duration) {
+          currentPhase = i;
+          break;
+        }
+        cumulativeDuration += LOADING_PHASES[i].duration;
+        if (i === LOADING_PHASES.length - 1) currentPhase = i;
+      }
+
+      setPhaseIndex(currentPhase);
+
+      const phase = LOADING_PHASES[currentPhase];
+      const prevTarget = currentPhase > 0 ? LOADING_PHASES[currentPhase - 1].target : 0;
+      const phaseElapsed = elapsed - cumulativeDuration;
+      const phaseProgress = Math.min(phaseElapsed / phase.duration, 1);
+
+      // Ease-out cubic for natural deceleration
+      const eased = 1 - Math.pow(1 - phaseProgress, 3);
+      const value = prevTarget + (phase.target - prevTarget) * eased;
+
+      setProgress(Math.min(value, 97));
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, [loading]);
+
+  if (!loading) return null;
+
+  const phase = LOADING_PHASES[phaseIndex];
+
+  return (
+    <div style={{ marginTop: 32 }}>
+      {/* Status text + percentage */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 12,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 14,
+            color: "var(--text)",
+            fontWeight: 500,
+            transition: "opacity 0.3s",
+          }}
+        >
+          {phase.label}
+        </span>
+        <span
+          style={{
+            fontSize: 14,
+            fontFamily: "var(--heading)",
+            fontWeight: 700,
+            background: "linear-gradient(135deg, var(--accent), var(--accent2))",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            minWidth: 42,
+            textAlign: "right",
+          }}
+        >
+          {Math.round(progress)}%
+        </span>
+      </div>
+
+      {/* Bar track */}
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 480,
+          height: 6,
+          background: "var(--line)",
+          borderRadius: 3,
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
+        {/* Filled portion */}
+        <div
+          style={{
+            height: "100%",
+            width: `${progress}%`,
+            background: "linear-gradient(90deg, var(--accent), var(--accent2))",
+            borderRadius: 3,
+            transition: "width 0.3s ease-out",
+            position: "relative",
+          }}
+        >
+          {/* Shimmer overlay */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%)",
+              animation: "shimmer 1.8s ease-in-out infinite",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Subtext */}
+      <p
+        style={{
+          fontSize: 12,
+          color: "var(--muted)",
+          marginTop: 10,
+          opacity: 0.7,
+        }}
+      >
+        PageSpeed Insights + analyse IA, environ 20 à 40 secondes
+      </p>
+
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(200%); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+/* ── Score circle ── */
 function ScoreCircle({ score, label }: { score: number; label: string }) {
   const color =
-    score >= 90
-      ? "#22c55e"
-      : score >= 50
-      ? "#f59e0b"
-      : "#ef4444";
+    score >= 90 ? "#22c55e" : score >= 50 ? "#f59e0b" : "#ef4444";
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (score / 100) * circumference;
 
@@ -44,15 +202,11 @@ function ScoreCircle({ score, label }: { score: number; label: string }) {
       <svg width="100" height="100" viewBox="0 0 100 100">
         <circle
           cx="50" cy="50" r="40"
-          fill="none"
-          stroke="var(--line)"
-          strokeWidth="6"
+          fill="none" stroke="var(--line)" strokeWidth="6"
         />
         <circle
           cx="50" cy="50" r="40"
-          fill="none"
-          stroke={color}
-          strokeWidth="6"
+          fill="none" stroke={color} strokeWidth="6"
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
@@ -61,8 +215,7 @@ function ScoreCircle({ score, label }: { score: number; label: string }) {
         />
         <text
           x="50" y="50"
-          textAnchor="middle"
-          dominantBaseline="central"
+          textAnchor="middle" dominantBaseline="central"
           style={{
             fontSize: "22px",
             fontWeight: 700,
@@ -80,6 +233,7 @@ function ScoreCircle({ score, label }: { score: number; label: string }) {
   );
 }
 
+/* ── Metric row ── */
 function MetricRow({ metric }: { metric: AuditMetric }) {
   const score = metric.score !== null ? Math.round(metric.score * 100) : null;
   const color =
@@ -127,29 +281,57 @@ function MetricRow({ metric }: { metric: AuditMetric }) {
   );
 }
 
+/* ── Markdown renderer ── */
 function MarkdownRenderer({ content }: { content: string }) {
   const html = content
-    .replace(/^## (.+)$/gm, '<h2 style="font-family:var(--heading);font-size:22px;font-weight:700;margin:32px 0 12px;letter-spacing:-0.3px">$1</h2>')
-    .replace(/^### (.+)$/gm, '<h3 style="font-family:var(--heading);font-size:17px;font-weight:600;margin:24px 0 8px">$1</h3>')
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\n\n/g, "</p><p style='margin:0 0 12px;line-height:1.65;color:var(--muted)'>")
-    .replace(/^- (.+)$/gm, '<li style="margin:4px 0;padding-left:4px;color:var(--muted)">$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm, '<li style="margin:8px 0;padding-left:4px;color:var(--muted)"><strong>$2</strong></li>');
+    // Headers
+    .replace(
+      /^## (.+)$/gm,
+      '<h2 style="font-family:var(--heading);font-size:22px;font-weight:700;margin:36px 0 14px;letter-spacing:-0.3px;color:var(--text)">$1</h2>'
+    )
+    .replace(
+      /^### (.+)$/gm,
+      '<h3 style="font-family:var(--heading);font-size:17px;font-weight:600;margin:24px 0 8px;color:var(--text)">$1</h3>'
+    )
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text)">$1</strong>')
+    // Inline code
+    .replace(
+      /`([^`]+)`/g,
+      '<code style="background:var(--bg);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--accent)">$1</code>'
+    )
+    // Paragraphs
+    .replace(
+      /\n\n/g,
+      '</p><p style="margin:0 0 14px;line-height:1.7;color:var(--muted)">'
+    )
+    // Unordered lists
+    .replace(
+      /^- (.+)$/gm,
+      '<li style="margin:6px 0;padding-left:4px;line-height:1.6;color:var(--muted)">$1</li>'
+    )
+    // Ordered lists
+    .replace(
+      /^(\d+)\. (.+)$/gm,
+      '<li style="margin:10px 0;padding-left:4px;line-height:1.6;color:var(--muted)"><strong style="color:var(--text)">$2</strong></li>'
+    );
 
   return (
     <div
       dangerouslySetInnerHTML={{
-        __html: `<p style="margin:0 0 12px;line-height:1.65;color:var(--muted)">${html}</p>`,
+        __html: `<p style="margin:0 0 14px;line-height:1.7;color:var(--muted)">${html}</p>`,
       }}
     />
   );
 }
 
+/* ── Main page ── */
 export default function AuditPage() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [report, setReport] = useState<AuditReport | null>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -173,6 +355,11 @@ export default function AuditPage() {
       }
 
       setReport(data);
+
+      // Scroll to results after render
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 100);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");
     } finally {
@@ -228,44 +415,42 @@ export default function AuditPage() {
           )}
         </form>
 
-        {loading && (
-          <div style={{ marginTop: 32, color: "var(--muted)" }}>
-            <p>
-              Analyse en cours... PageSpeed + IA, cela prend 20 à 40 secondes.
-            </p>
-            <div
-              style={{
-                width: 240,
-                height: 4,
-                background: "var(--line)",
-                borderRadius: 2,
-                overflow: "hidden",
-                marginTop: 12,
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  background:
-                    "linear-gradient(90deg, var(--accent), var(--accent2))",
-                  borderRadius: 2,
-                  animation: "loading-bar 2s ease-in-out infinite",
-                }}
-              />
-            </div>
-          </div>
-        )}
+        <ProgressBar loading={loading} />
       </section>
 
       {/* ===== RAPPORT ===== */}
       {report && (
         <>
+          <div ref={resultRef} />
           <section className="psec">
-            <h2 style={{ fontFamily: "var(--heading)", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, margin: "0 0 8px" }}>
+            <h2
+              style={{
+                fontFamily: "var(--heading)",
+                fontSize: 12,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                fontWeight: 700,
+                margin: "0 0 8px",
+              }}
+            >
               Résultat
             </h2>
-            <p style={{ fontSize: 14, color: "var(--muted)", marginBottom: 24 }}>
-              {report.audit.url} · {new Date(report.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+            <p
+              style={{
+                fontSize: 14,
+                color: "var(--muted)",
+                marginBottom: 24,
+              }}
+            >
+              {report.audit.url} ·{" "}
+              {new Date(report.createdAt).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </p>
 
             {/* Score circles */}
@@ -342,7 +527,17 @@ export default function AuditPage() {
 
           {/* AI Recommendations */}
           <section className="psec">
-            <h2 style={{ fontFamily: "var(--heading)", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 700, margin: "0 0 24px" }}>
+            <h2
+              style={{
+                fontFamily: "var(--heading)",
+                fontSize: 12,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "var(--accent)",
+                fontWeight: 700,
+                margin: "0 0 24px",
+              }}
+            >
               Recommandations
             </h2>
             <div
@@ -366,7 +561,13 @@ export default function AuditPage() {
               marginTop: 32,
             }}
           >
-            <p style={{ fontSize: 13, color: "var(--muted)", marginBottom: 16 }}>
+            <p
+              style={{
+                fontSize: 13,
+                color: "var(--muted)",
+                marginBottom: 16,
+              }}
+            >
               Rapport généré par Romain De Ville · Consultant SEO, GEO et
               Performance Web
             </p>

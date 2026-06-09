@@ -120,28 +120,30 @@ ${audit.opportunities.map((o) => `- ${o.title} ${o.displayValue ? "(" + o.displa
 DIAGNOSTICS :
 ${audit.diagnostics.map((d) => `- ${d.title} ${d.displayValue ? "(" + d.displayValue + ")" : ""}`).join("\n")}
 
-Rédige le rapport avec cette structure exacte en Markdown :
+Rédige le rapport avec cette structure exacte en Markdown. Tu DOIS rédiger TOUTES les sections intégralement, sans rien tronquer ni abréger.
 
 ## Résumé exécutif
 Un paragraphe de synthèse avec le verdict global et les 2-3 actions les plus impactantes.
 
 ## Analyse des scores
-Pour chaque catégorie (Performance, Accessibilité, SEO, Bonnes pratiques), un court paragraphe avec interprétation du score et ce que ça signifie concrètement.
+Pour chaque catégorie (Performance, Accessibilité, SEO, Bonnes pratiques), un paragraphe avec l'emoji cercle de couleur correspondant au score (🟢 >= 90, 🟠 50-89, 🔴 < 50), l'interprétation du score et ce que ça signifie concrètement pour le propriétaire du site.
 
 ## Top 5 des actions prioritaires
-Liste numérotée des 5 actions classées par impact. Pour chaque action :
-- Le problème détecté
-- Pourquoi c'est important
-- Comment le corriger (instructions concrètes)
-- Impact estimé (fort/moyen/faible)
+OBLIGATOIRE : rédige exactement 5 actions numérotées, classées par impact décroissant. Pour CHAQUE action, rédige TOUS ces éléments :
+- **Problème détecté** : description claire du problème
+- **Pourquoi c'est important** : impact concret sur l'utilisateur et le business
+- **Comment corriger** : instructions techniques précises et complètes, avec exemples de code si pertinent
+- **Impact estimé** : Fort, Moyen ou Faible
+
+Ne t'arrête PAS avant d'avoir rédigé les 5 actions complètes.
 
 ## Métriques détaillées
-Explication vulgarisée de chaque Core Web Vital : ce que la valeur signifie, si c'est bon/moyen/mauvais selon les seuils Google.
+Explication vulgarisée de chaque Core Web Vital : ce que la valeur mesurée signifie, si c'est bon/moyen/mauvais selon les seuils officiels Google, et quel impact concret ça a pour l'utilisateur.
 
 ## Recommandations complémentaires
-3-5 recommandations additionnelles basées sur les diagnostics.
+3-5 recommandations additionnelles basées sur les diagnostics, avec pour chacune une explication et une piste de correction.
 
-Sois direct, concret, actionnable. Pas de jargon inutile. Le client doit pouvoir transmettre ce rapport à son développeur.`;
+Sois direct, concret, actionnable. Pas de jargon inutile. Le client doit pouvoir transmettre ce rapport à son développeur. Rédige INTÉGRALEMENT chaque section, ne laisse aucune phrase inachevée.`;
 
   const res = await fetch(ANTHROPIC_API, {
     method: "POST",
@@ -152,7 +154,7 @@ Sois direct, concret, actionnable. Pas de jargon inutile. Le client doit pouvoir
     },
     body: JSON.stringify({
       model: "claude-sonnet-4-6",
-      max_tokens: 3000,
+      max_tokens: 6000,
       messages: [{ role: "user", content: prompt }],
     }),
   });
