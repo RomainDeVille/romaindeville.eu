@@ -13,7 +13,7 @@ export default function Home() {
           </div>
           <h1 className="title">
             Quand vos clients interrogent une IA, qui apparaît :{" "}
-            <span className="mark">vous</span>, ou vos
+            <span className="mark gradient-text">vous</span>, ou vos
             concurrents&nbsp;?
           </h1>
           <p className="sub">
@@ -62,13 +62,13 @@ export default function Home() {
 
       {/* ===== SEO NE SUFFIT PLUS ===== */}
       <section className="block">
-        <h2>Le SEO ne suffit plus. Place au GEO.</h2>
+        <h2>Le SEO ne suffit plus. Place au <span className="gradient-text">GEO</span>.</h2>
         <p className="lead">
           Vos prospects ne tapent plus seulement des mots-clés. Ils posent des
           questions à une IA et reçoivent une réponse déjà filtrée, avec
           quelques marques citées et toutes les autres absentes. Si vous
           n&apos;êtes pas dans la réponse, vous n&apos;existez pas dans la
-          décision, et rien dans vos statistiques ne vous le signale.
+          décision.
         </p>
         <div className="cards">
           <div className="card">
@@ -98,38 +98,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== AUDIT GEO ===== */}
+      {/* ===== AUDIT GEO — TIMELINE ===== */}
       <section className="block" id="offre">
-        <h2>L&apos;audit GEO</h2>
+        <h2>L&apos;audit <span className="gradient-text">GEO</span></h2>
         <p className="lead">
           Un diagnostic concret de votre présence dans les réponses des IA,
           livré avec un plan d&apos;action priorisé. Pas de théorie : ce que les
           IA disent de vous aujourd&apos;hui, et comment en faire un levier.
         </p>
-        <div className="cards">
-          <div className="card">
-            <div className="n">Test</div>
-            <h3>Visibilité réelle</h3>
-            <p>
-              Je teste votre marque sur ChatGPT, Perplexity, Gemini et Google
-              AI, sur les vraies questions de vos clients.
-            </p>
+        <div className="timeline">
+          <div className="step">
+            <div className="step-dot">🔍</div>
+            <div className="step-content">
+              <div className="step-label">Étape 1</div>
+              <h3>Visibilité réelle</h3>
+              <p>
+                Je teste votre marque sur ChatGPT, Perplexity, Gemini et Google
+                AI, sur les vraies questions de vos clients.
+              </p>
+            </div>
           </div>
-          <div className="card">
-            <div className="n">Écart</div>
-            <h3>Benchmark concurrents</h3>
-            <p>
-              Qui est cité à votre place, sur quelles requêtes, et pourquoi.
-              L&apos;écart se mesure, il se corrige.
-            </p>
+          <div className="step">
+            <div className="step-dot">🎯</div>
+            <div className="step-content">
+              <div className="step-label">Étape 2</div>
+              <h3>Benchmark concurrents</h3>
+              <p>
+                Qui est cité à votre place, sur quelles requêtes, et pourquoi.
+                L&apos;écart se mesure, il se corrige.
+              </p>
+            </div>
           </div>
-          <div className="card">
-            <div className="n">Plan</div>
-            <h3>Actions priorisées</h3>
-            <p>
-              Une feuille de route classée par impact, exploitable directement
-              par votre équipe.
-            </p>
+          <div className="step">
+            <div className="step-dot">📋</div>
+            <div className="step-content">
+              <div className="step-label">Étape 3</div>
+              <h3>Actions priorisées</h3>
+              <p>
+                Une feuille de route classée par impact, exploitable directement
+                par votre équipe.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -155,7 +164,7 @@ export default function Home() {
             </div>
             <div className="fact">
               <div className="v">220K+</div>
-              <div className="k">Pages optimisées chez Proximus</div>
+              <div className="k">Pages optimisées en missions clients</div>
             </div>
             <div className="fact">
               <div className="v">FR · NL · EN</div>
