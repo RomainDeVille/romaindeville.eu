@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LogoutButton } from "./logout-button";
 
 export const metadata: Metadata = {
   title: "Mon espace",
@@ -10,7 +11,10 @@ export default function Espace() {
   return (
     <div className="wrap">
       <header className="phead">
-        <div className="eyebrow">Espace consultant</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+          <div className="eyebrow">Espace consultant</div>
+          <LogoutButton />
+        </div>
         <h1 className="title">Mon espace</h1>
         <p>Outils internes pour générer des rapports clients.</p>
       </header>
