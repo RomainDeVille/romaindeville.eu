@@ -221,7 +221,6 @@ export default function AuditPage() {
     setProgress(0);
 
     try {
-      // Phase 1: PageSpeed
       startProgress(0, 45, 15000, "Connexion a Google PageSpeed...");
 
       const r1 = await fetch("/api/v1/audit", {
@@ -240,7 +239,6 @@ export default function AuditPage() {
 
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
 
-      // Phase 2: AI Recommendations
       startProgress(50, 95, 25000, "Generation des recommandations IA...");
 
       const r2 = await fetch("/api/v1/audit/recommend", {
@@ -263,9 +261,6 @@ export default function AuditPage() {
       setProgress(0);
     }
   }
-
-  const showScores = !!audit;
-  const showReco = !!reco;
 
   return (
     <div className="wrap">
@@ -291,7 +286,7 @@ export default function AuditPage() {
       </section>
 
       {/* SCORES (Phase 1) */}
-      {showScores && (
+      {!!audit && (
         <>
           <div ref={resultRef} />
 
@@ -341,7 +336,7 @@ export default function AuditPage() {
       )}
 
       {/* RECOMMENDATIONS (Phase 2) */}
-      {showReco && reco && (
+      {!!reco && (
         <>
           <section className="psec">
             <SectionTitle label="Resume executif" />
@@ -371,20 +366,12 @@ export default function AuditPage() {
           </section>
 
           <section style={{ textAlign: "center", padding: "48px 0", borderTop: "1px solid var(--line)", marginTop: 32 }}>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginBottom: 24 }}>
-              <button onClick={handleExportPDF} className="btn btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 1v9m0 0L5 7m3 3l3-3M2 11v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Telecharger le PDF
-              </button>
-              <a className="btn btn-outline" href="https://calendly.com/romain-deville" target="_blank" rel="noopener noreferrer">
-                Discuter de ces resultats
-              </a>
-            </div>
-            <p style={{ fontSize: 13, color: "var(--muted)" }}>
-              Rapport genere par Romain De Ville, Consultant SEO, GEO et Performance Web
-            </p>
+            <button onClick={handleExportPDF} className="btn btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1v9m0 0L5 7m3 3l3-3M2 11v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Exporter en PDF
+            </button>
           </section>
         </>
       )}
