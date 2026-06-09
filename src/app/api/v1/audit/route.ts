@@ -1,29 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { PageSpeedAudit, AuditMetric, CategoryScore, AuditRecommendations } from "@/lib/audit-types";
 
 const PAGESPEED_API = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
 const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
-
-interface AuditMetric {
-  id: string;
-  title: string;
-  score: number | null;
-  displayValue?: string;
-}
-
-interface CategoryScore {
-  id: string;
-  title: string;
-  score: number;
-}
-
-interface PageSpeedAudit {
-  url: string;
-  fetchedAt: string;
-  categories: CategoryScore[];
-  metrics: AuditMetric[];
-  opportunities: AuditMetric[];
-  diagnostics: AuditMetric[];
-}
 
 function parsePageSpeedResponse(data: Record<string, unknown>): PageSpeedAudit {
   const lhr = data.lighthouseResult as Record<string, unknown>;
@@ -99,51 +78,81 @@ function parsePageSpeedResponse(data: Record<string, unknown>): PageSpeedAudit {
   };
 }
 
-async function generateRecommendations(audit: PageSpeedAudit): Promise<string> {
+async function generateRecommendations(audit: PageSpeedAudit): Promise<AuditRecommendations> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) throw new Error("ANTHROPIC_API_KEY manquante");
 
-  const prompt = `Tu es un consultant senior en performance web. Analyse ce rapport PageSpeed Insights et rédige un rapport actionnable en français pour un client non-technique.
+  const prompt = `Tu es Romain De Ville, consultant senior en performance web, SEO et GEO, basé à Bruxelles. Tu rédiges un rapport d'audit pour un client.
 
-URL auditée : ${audit.url}
+RÈGLES DE RÉDACTION :
+- JAMAIS de tiret cadratin (—) ni demi-cadratin (–). Utilise des virgules, des points ou des deux-points.
+- JAMAIS ces expressions : "il est important de noter", "il convient de", "force est de constater", "dans un souci de", "il est à noter que", "n'hésitez pas à", "il est essentiel de", "en outre", "de surcroît", "par ailleurs".
+- Tutoie pas le client, vouvoie-le. Sois direct : "Votre site charge en 2.6s" pas "Le site audité présente un temps de chargement de 2.6s".
+- Chiffres concrets. Instructions exactes, pas de suggestions molles.
+- Phrases variées : alterne courtes et longues.
+- Chaque observation spécifique aux données fournies, pas de générique.
+
+URL : ${audit.url}
 Date : ${audit.fetchedAt}
 
-SCORES GLOBAUX :
+SCORES :
 ${audit.categories.map((c) => `- ${c.title} : ${c.score}/100`).join("\n")}
 
-MÉTRIQUES CORE WEB VITALS :
+CORE WEB VITALS :
 ${audit.metrics.map((m) => `- ${m.title} : ${m.displayValue || "N/A"} (score: ${m.score !== null ? Math.round(m.score * 100) : "N/A"})`).join("\n")}
 
-OPPORTUNITÉS D'AMÉLIORATION :
+OPPORTUNITÉS :
 ${audit.opportunities.map((o) => `- ${o.title} ${o.displayValue ? "(" + o.displayValue + ")" : ""}`).join("\n")}
 
 DIAGNOSTICS :
 ${audit.diagnostics.map((d) => `- ${d.title} ${d.displayValue ? "(" + d.displayValue + ")" : ""}`).join("\n")}
 
-Rédige le rapport avec cette structure exacte en Markdown. Tu DOIS rédiger TOUTES les sections intégralement, sans rien tronquer ni abréger.
+Réponds UNIQUEMENT avec un objet JSON valide (pas de markdown, pas de backticks, pas de texte avant/après). Structure exacte :
 
-## Résumé exécutif
-Un paragraphe de synthèse avec le verdict global et les 2-3 actions les plus impactantes.
+{
+  "summary": "Un paragraphe de synthèse (3-5 phrases). Verdict global + les 2-3 actions les plus impactantes. Direct, concret.",
+  "scores": [
+    {
+      "category": "Performance",
+      "score": 78,
+      "verdict": "moyen",
+      "analysis": "Paragraphe d'analyse spécifique pour cette catégorie. Ce que ça signifie concrètement pour le propriétaire du site."
+    }
+  ],
+  "actions": [
+    {
+      "title": "Titre court et clair de l'action",
+      "problem": "Description précise du problème détecté, avec les chiffres du rapport.",
+      "importance": "Impact concret sur l'utilisateur et le business. Chiffres à l'appui.",
+      "fix": "Instructions techniques complètes. Étapes concrètes, exemples de code si pertinent. Dire exactement quoi faire.",
+      "impact": "Fort"
+    }
+  ],
+  "metrics": [
+    {
+      "name": "First Contentful Paint (FCP)",
+      "value": "2.6 s",
+      "verdict": "À améliorer",
+      "thresholds": "Bon : < 1.8s, À améliorer : 1.8-3.0s, Mauvais : > 3.0s",
+      "explanation": "Explication vulgarisée : ce que ça signifie pour l'utilisateur."
+    }
+  ],
+  "extras": [
+    {
+      "title": "Titre de la recommandation",
+      "description": "Explication + piste de correction concrète."
+    }
+  ]
+}
 
-## Analyse des scores
-Pour chaque catégorie (Performance, Accessibilité, SEO, Bonnes pratiques), un paragraphe avec l'emoji cercle de couleur correspondant au score (🟢 >= 90, 🟠 50-89, 🔴 < 50), l'interprétation du score et ce que ça signifie concrètement pour le propriétaire du site.
-
-## Top 5 des actions prioritaires
-OBLIGATOIRE : rédige exactement 5 actions numérotées, classées par impact décroissant. Pour CHAQUE action, rédige TOUS ces éléments :
-- **Problème détecté** : description claire du problème
-- **Pourquoi c'est important** : impact concret sur l'utilisateur et le business
-- **Comment corriger** : instructions techniques précises et complètes, avec exemples de code si pertinent
-- **Impact estimé** : Fort, Moyen ou Faible
-
-Ne t'arrête PAS avant d'avoir rédigé les 5 actions complètes.
-
-## Métriques détaillées
-Explication vulgarisée de chaque Core Web Vital : ce que la valeur mesurée signifie, si c'est bon/moyen/mauvais selon les seuils officiels Google, et quel impact concret ça a pour l'utilisateur.
-
-## Recommandations complémentaires
-3-5 recommandations additionnelles basées sur les diagnostics, avec pour chacune une explication et une piste de correction.
-
-Sois direct, concret, actionnable. Pas de jargon inutile. Le client doit pouvoir transmettre ce rapport à son développeur. Rédige INTÉGRALEMENT chaque section, ne laisse aucune phrase inachevée.`;
+OBLIGATOIRE :
+- "scores" : exactement ${audit.categories.length} entrées (une par catégorie)
+- "actions" : exactement 5 entrées, classées par impact décroissant
+- "metrics" : une entrée par Core Web Vital listé ci-dessus
+- "extras" : entre 3 et 5 recommandations complémentaires
+- verdict dans scores : "bon" (>= 90), "moyen" (50-89), "mauvais" (< 50)
+- verdict dans metrics : "Bon", "À améliorer" ou "Mauvais" selon les seuils Google
+- Tous les textes en français, sans tiret cadratin (—), sans formules d'IA`;
 
   const res = await fetch(ANTHROPIC_API, {
     method: "POST",
@@ -165,7 +174,41 @@ Sois direct, concret, actionnable. Pas de jargon inutile. Le client doit pouvoir
   }
 
   const data = await res.json();
-  return data.content[0].text;
+  const text = data.content[0].text.trim();
+
+  // Parse JSON, handling potential markdown wrappers
+  let jsonStr = text;
+  if (jsonStr.startsWith("```")) {
+    jsonStr = jsonStr.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
+  }
+
+  try {
+    const parsed = JSON.parse(jsonStr) as AuditRecommendations;
+
+    // Sanitize: remove any em dashes that slipped through
+    const sanitize = (s: string) => s.replace(/[—–]/g, ", ");
+    parsed.summary = sanitize(parsed.summary);
+    parsed.scores = parsed.scores.map((s) => ({ ...s, analysis: sanitize(s.analysis) }));
+    parsed.actions = parsed.actions.map((a) => ({
+      ...a,
+      title: sanitize(a.title),
+      problem: sanitize(a.problem),
+      importance: sanitize(a.importance),
+      fix: sanitize(a.fix),
+    }));
+    parsed.metrics = parsed.metrics.map((m) => ({
+      ...m,
+      explanation: sanitize(m.explanation),
+    }));
+    parsed.extras = parsed.extras.map((e) => ({
+      ...e,
+      description: sanitize(e.description),
+    }));
+
+    return parsed;
+  } catch {
+    throw new Error("Erreur de parsing des recommandations IA");
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -177,7 +220,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "URL requise" }, { status: 400 });
     }
 
-    // Validate URL
     let parsedUrl: URL;
     try {
       parsedUrl = new URL(url.startsWith("http") ? url : `https://${url}`);
@@ -193,7 +235,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Call PageSpeed Insights API
     const categories = ["performance", "accessibility", "best-practices", "seo"];
     const params = new URLSearchParams({
       url: parsedUrl.toString(),
@@ -216,23 +257,16 @@ export async function POST(request: NextRequest) {
 
     const psData = await psRes.json();
     const audit = parsePageSpeedResponse(psData);
-
-    // Generate AI recommendations
     const recommendations = await generateRecommendations(audit);
 
-    // Generate a simple ID (timestamp + random)
     const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 
-    const report = {
+    return NextResponse.json({
       id,
       audit,
       recommendations,
       createdAt: new Date().toISOString(),
-    };
-
-    // For MVP: store in a cookie-like mechanism or return directly
-    // TODO: Replace with Supabase storage
-    return NextResponse.json(report);
+    });
   } catch (err) {
     console.error("Audit error:", err);
     return NextResponse.json(
