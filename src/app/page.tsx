@@ -9,18 +9,18 @@ export default function Home() {
       <section className="hero">
         <div>
           <div className="eyebrow">
-            GEO · Visibilité dans les réponses des IA
+            Consultant senior · Bruxelles · FR, NL, EN
           </div>
           <h1 className="title">
-            Quand vos clients interrogent une IA, qui apparaît :{" "}
-            <span className="mark gradient-text">vous</span>, ou vos
-            concurrents&nbsp;?
+            Être trouvé, choisi et cité :{" "}
+            <span className="mark gradient-text">dans Google comme dans les réponses des IA</span>.
           </h1>
           <p className="sub">
-            J&apos;aide les marques à devenir des sources que ChatGPT,
-            Perplexity et Gemini citent. Parce que la recherche se déplace, et
-            que ce qui ne se voit pas dans Google Analytics se joue désormais
-            ailleurs.
+            Depuis 10 ans, j&apos;aide médias, institutions et entreprises à
+            construire une visibilité qui dure : SEO technique et éditorial,
+            visibilité dans les moteurs d&apos;IA (GEO), acquisition et
+            stratégie de contenu. En installant dans vos équipes une culture
+            qui reste après mon départ.
           </p>
           <div className="cta-row">
             <a
@@ -37,84 +37,92 @@ export default function Home() {
           </div>
         </div>
 
-        {/* AI answer mock card */}
-        <div className="mock" aria-hidden="true">
-          <div className="mhead">
-            <span className="spark" /> Réponse générée par une IA
+        <div className="facts" aria-label="Chiffres cles">
+          <div className="fact">
+            <div className="v">~10 ans</div>
+            <div className="k">SEO, GEO et stratégie de contenu</div>
           </div>
-          <div className="q">
-            <b>Un client demande :</b> «&nbsp;Quelle est la meilleure solution
-            pour [votre marché]&nbsp;?&nbsp;»
+          <div className="fact">
+            <div className="v">220K+</div>
+            <div className="k">Pages optimisées en missions clients</div>
           </div>
-          <div className="a">
-            Pour ce besoin, les options les plus souvent recommandées sont{" "}
-            <span className="cite">Concurrent&nbsp;A</span>, reconnu pour sa
-            fiabilité, ainsi que{" "}
-            <span className="cite">Concurrent&nbsp;B</span> et{" "}
-            <span className="cite">Concurrent&nbsp;C</span>, fréquemment cités
-            pour leur rapport qualité-prix.
+          <div className="fact">
+            <div className="v">FR · NL · EN</div>
+            <div className="k">Stratégies multilingues de bout en bout</div>
           </div>
-          <div className="tag">
-            <span className="x">✕</span> Votre marque : non citée
+          <div className="fact">
+            <div className="v">Solo</div>
+            <div className="k">Vous parlez à celui qui exécute</div>
           </div>
         </div>
       </section>
 
-      {/* ===== SEO NE SUFFIT PLUS ===== */}
-      <section className="block">
-        <h2>Le SEO ne suffit plus. Place au <span className="gradient-text">GEO</span>.</h2>
+      {/* ===== EXPERTISES ===== */}
+      <section className="block" id="expertises">
+        <h2>Quatre expertises, <span className="gradient-text">une seule logique</span> : la visibilité qui convertit.</h2>
         <p className="lead">
-          Vos prospects ne tapent plus seulement des mots-clés. Ils posent des
-          questions à une IA et reçoivent une réponse déjà filtrée, avec
-          quelques marques citées et toutes les autres absentes. Si vous
-          n&apos;êtes pas dans la réponse, vous n&apos;existez pas dans la
-          décision.
+          La découvrabilité ne se découpe pas en silos. Un contenu bien classé
+          mais lent perd son trafic, un site rapide mais absent des réponses
+          des IA perd la décision. Je travaille les quatre leviers ensemble.
         </p>
         <div className="cards">
           <div className="card">
             <div className="n">01</div>
-            <h3>Un canal invisible</h3>
+            <h3>SEO technique et éditorial</h3>
             <p>
-              Les réponses des IA orientent les choix en amont de tout clic. Ce
-              trafic perdu n&apos;apparaît nulle part dans Google Analytics.
+              Audits techniques, architecture pilier/cluster, métadonnées,
+              maillage interne, Core Web Vitals, news SEO. Du code à la
+              rédaction, sur des écosystèmes jusqu&apos;à 220&nbsp;000 pages.
             </p>
           </div>
-          <div className="card">
+          <Link href="/geo" className="card" style={{ textDecoration: "none" }}>
             <div className="n">02</div>
-            <h3>Le gagnant rafle tout</h3>
+            <h3>GEO : visibilité dans les IA</h3>
             <p>
-              Une IA cite deux ou trois marques, pas dix. Être absent de cette
-              short-list, c&apos;est sortir du jeu avant la comparaison.
+              Faire de votre marque une source que ChatGPT, Perplexity, Gemini
+              et AI Overviews citent. Framework de 10 tactiques, audit dédié et
+              feuille de route. Découvrir l&apos;offre GEO &rarr;
             </p>
-          </div>
+          </Link>
           <div className="card">
             <div className="n">03</div>
-            <h3>Une fenêtre ouverte</h3>
+            <h3>Acquisition et CRO</h3>
             <p>
-              Le GEO en est à ses débuts. Les marques qui s&apos;y positionnent
-              maintenant prennent une avance difficile à rattraper.
+              Google Ads, Meta Ads, A/B testing et optimisation de funnel.
+              L&apos;objectif n&apos;est jamais le trafic : c&apos;est le coût
+              par lead et la conversion.
+            </p>
+          </div>
+          <div className="card">
+            <div className="n">04</div>
+            <h3>Stratégie de contenu et formation</h3>
+            <p>
+              Lancements éditoriaux, piliers de contenu, workflows de
+              rédaction, playbooks SEO et formation des journalistes et
+              équipes marketing. Une culture qui reste.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ===== AUDIT GEO — TIMELINE ===== */}
-      <section className="block" id="offre">
-        <h2>L&apos;audit <span className="gradient-text">GEO</span></h2>
+      {/* ===== MÉTHODE ===== */}
+      <section className="block" id="methode">
+        <h2>Comment je travaille</h2>
         <p className="lead">
-          Un diagnostic concret de votre présence dans les réponses des IA,
-          livré avec un plan d&apos;action priorisé. Pas de théorie : ce que les
-          IA disent de vous aujourd&apos;hui, et comment en faire un levier.
+          Pas de rapport de 80 pages qui dort dans un tiroir. Un diagnostic
+          chiffré, des priorités claires, et une exécution menée avec vos
+          équipes.
         </p>
         <div className="timeline">
           <div className="step">
             <div className="step-dot">🔍</div>
             <div className="step-content">
               <div className="step-label">Étape 1</div>
-              <h3>Visibilité réelle</h3>
+              <h3>Diagnostic chiffré</h3>
               <p>
-                Je teste votre marque sur ChatGPT, Perplexity, Gemini et Google
-                AI, sur les vraies questions de vos clients.
+                Audit de l&apos;existant sur les leviers concernés : données
+                réelles, benchmark concurrents, constats vérifiables. Vous
+                savez exactement où vous en êtes.
               </p>
             </div>
           </div>
@@ -122,65 +130,36 @@ export default function Home() {
             <div className="step-dot">🎯</div>
             <div className="step-content">
               <div className="step-label">Étape 2</div>
-              <h3>Benchmark concurrents</h3>
+              <h3>Feuille de route priorisée</h3>
               <p>
-                Qui est cité à votre place, sur quelles requêtes, et pourquoi.
-                L&apos;écart se mesure, il se corrige.
+                Chaque action classée par impact et par effort, avec un
+                résultat attendu mesurable. Votre équipe peut commencer le
+                lendemain.
               </p>
             </div>
           </div>
           <div className="step">
-            <div className="step-dot">📋</div>
+            <div className="step-dot">🤝</div>
             <div className="step-content">
               <div className="step-label">Étape 3</div>
-              <h3>Actions priorisées</h3>
+              <h3>Exécution et transfert</h3>
               <p>
-                Une feuille de route classée par impact, exploitable directement
-                par votre équipe.
+                J&apos;exécute avec vos équipes, je forme, je documente. La
+                pédagogie fait partie de la mission : vous devenez autonomes.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ===== POURQUOI MOI ===== */}
-      <section className="block">
-        <h2>Pourquoi moi</h2>
-        <div className="why-grid">
-          <div className="portrait-wrap">
-            <Image
-              src="/portrait.jpg"
-              alt="Romain De Ville, consultant SEO et GEO à Bruxelles"
-              width={280}
-              height={280}
-              className="portrait"
-              priority={false}
-            />
-          </div>
-          <div className="facts">
-            <div className="fact">
-              <div className="v">~10 ans</div>
-              <div className="k">SEO, GEO et stratégie de contenu</div>
-            </div>
-            <div className="fact">
-              <div className="v">220K+</div>
-              <div className="k">Pages optimisées en missions clients</div>
-            </div>
-            <div className="fact">
-              <div className="v">FR · NL · EN</div>
-              <div className="k">Contenu multilingue natif</div>
-            </div>
-            <div className="fact">
-              <div className="v">Solo</div>
-              <div className="k">Vous parlez à celui qui exécute</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== ILS M'ONT FAIT CONFIANCE ===== */}
+      {/* ===== RÉFÉRENCES ===== */}
       <section className="block">
         <h2>Ils m&apos;ont fait confiance</h2>
+        <p className="lead">
+          Opérateur télécom national, institution européenne, média
+          international, e-commerce : des contextes différents, la même
+          exigence.
+        </p>
         <div className="clients-row">
           {clients.map((c) => (
             <span className="client-tag" key={c}>
@@ -190,13 +169,46 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== QUI JE SUIS ===== */}
+      <section className="block">
+        <h2>Qui je suis</h2>
+        <div className="why-grid">
+          <div className="portrait-wrap">
+            <Image
+              src="/portrait.jpg"
+              alt="Romain De Ville, consultant SEO, GEO et stratégie de contenu à Bruxelles"
+              width={280}
+              height={280}
+              className="portrait"
+              priority={false}
+            />
+          </div>
+          <div>
+            <p className="lead" style={{ marginBottom: 16 }}>
+              Romain De Ville, consultant senior SEO, GEO et stratégie de
+              contenu, basé à Bruxelles. J&apos;interviens en français,
+              néerlandais et anglais, dans les rédactions comme auprès des
+              équipes produit et marketing.
+            </p>
+            <p className="lead" style={{ marginBottom: 24 }}>
+              Mon parti pris : intégrer les enjeux de visibilité en amont des
+              projets plutôt que de les corriger après coup, et transmettre la
+              méthode plutôt que de créer de la dépendance.
+            </p>
+            <Link className="btn btn-ghost" href="/parcours">
+              Voir mon parcours complet
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CLOSER ===== */}
       <section className="closer">
-        <h2>Voyons où vous en êtes, en direct.</h2>
+        <h2>Parlons de votre visibilité.</h2>
         <p>
-          En 20 minutes, je teste votre visibilité IA pendant l&apos;appel et
-          vous montre ce que voient vos clients. Sans préparation de votre côté,
-          sans engagement.
+          En 20 minutes, on regarde ensemble où vous en êtes : positions
+          Google, présence dans les réponses des IA, points de friction. Sans
+          préparation de votre côté, sans engagement.
         </p>
         <a
           className="btn btn-primary"

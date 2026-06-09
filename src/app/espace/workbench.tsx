@@ -110,7 +110,7 @@ export function Workbench() {
       const payload: Record<string, unknown> = { url: url.trim() };
       if (tool.id === "keywords") payload.seed = seed.trim();
       if (tool.id === "authority") {
-        payload.competitors = competitors.split(",").map((c) => c.trim()).filter(Boolean);
+        payload.competitors = competitors.split(/\r?\n/).map((c) => c.trim()).filter(Boolean);
       }
       const res = await fetch(tool.endpoint, {
         method: "POST",
@@ -228,8 +228,10 @@ export function Workbench() {
               style={{ ...inputStyle, width: "100%", marginBottom: 10 }} />
           )}
           {selected.has("authority") && (
-            <input value={competitors} onChange={(ev) => setCompetitors(ev.target.value)} placeholder="Concurrents, separes par des virgules (optionnel)"
-              style={{ ...inputStyle, width: "100%", marginBottom: 10 }} />
+            <textarea value={competitors} onChange={(ev) => setCompetitors(ev.target.value)}
+              placeholder={"Concurrents : un site par ligne (optionnel, 5 max)\nhttps://concurrent-a.be\nhttps://concurrent-b.be"}
+              rows={3}
+              style={{ ...inputStyle, width: "100%", marginBottom: 10, resize: "vertical", fontFamily: "var(--sans)" }} />
           )}
 
           <details style={{ marginBottom: 12 }}>

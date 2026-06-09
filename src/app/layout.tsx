@@ -89,6 +89,9 @@ export default function RootLayout({
             Romain De Ville<span className="dot">.</span>
           </Link>
           <div className="right">
+            <Link className="btn btn-ghost" href="/geo">
+              GEO
+            </Link>
             <Link className="btn btn-ghost" href="/parcours">
               Mon parcours
             </Link>
