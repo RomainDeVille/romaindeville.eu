@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LogoutButton } from "./logout-button";
+import { Workbench } from "./workbench";
 
 export const metadata: Metadata = {
   title: "Mon espace",
@@ -16,24 +17,12 @@ export default function Espace() {
           <LogoutButton />
         </div>
         <h1 className="title">Mon espace</h1>
-        <p>Outils internes pour generer des rapports clients.</p>
+        <p>
+          Choisissez un profil ou des outils, lancez tout en parallele, recevez un rapport unifie au format constant.{" "}
+          <Link href="/espace/audit" style={{ color: "var(--accent)" }}>Rapport PageSpeed detaille avec export PDF</Link>.
+        </p>
       </header>
-
-      <section className="psec">
-        <h2>Outils disponibles</h2>
-        <div className="cards">
-          <Link href="/espace/audit" className="card" style={{ textDecoration: "none" }}>
-            <div className="n">01</div>
-            <h3>Audit PageSpeed</h3>
-            <p>Analysez les performances, le SEO, l&apos;accessibilite et les bonnes pratiques d&apos;un site. Rapport PDF avec recommandations IA.</p>
-          </Link>
-          <Link href="/espace/tools" className="card" style={{ textDecoration: "none" }}>
-            <div className="n">02</div>
-            <h3>Analyse multi-outils</h3>
-            <p>DNS, securite, carbone, HTML, mots-cles, autorite, historique CWV : lancez les outils de votre choix en parallele, recevez un rapport unifie.</p>
-          </Link>
-        </div>
-      </section>
+      <Workbench />
     </div>
   );
 }

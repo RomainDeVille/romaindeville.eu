@@ -1,6 +1,8 @@
 /* Registre central des tools d'analyse. Ajouter un tool = une entree ici + une route. */
 
 export type ToolId =
+  | "pagespeed"
+  | "geo"
   | "dns"
   | "security"
   | "carbon"
@@ -19,6 +21,20 @@ export interface ToolDef {
 }
 
 export const TOOLS: ToolDef[] = [
+  {
+    id: "pagespeed",
+    name: "Performance PageSpeed",
+    description: "Lighthouse mobile + desktop, Core Web Vitals labo et terrain, ressources bloquantes.",
+    endpoint: "/api/v1/tools/pagespeed",
+    defaultChecked: true,
+  },
+  {
+    id: "geo",
+    name: "Visibilite IA (GEO)",
+    description: "Schema.org, llms.txt, acces des crawlers IA, meta et Open Graph.",
+    endpoint: "/api/v1/tools/geo",
+    defaultChecked: true,
+  },
   {
     id: "dns",
     name: "DNS et delivrabilite email",
@@ -89,10 +105,10 @@ export interface ToolPreset {
 }
 
 export const PRESETS: ToolPreset[] = [
-  { id: "complet", name: "Audit complet", tools: ["dns", "security", "carbon", "w3c", "keywords", "authority", "crux-history"] },
-  { id: "seo", name: "SEO et contenu", tools: ["keywords", "authority", "w3c"] },
-  { id: "technique", name: "Technique et securite", tools: ["security", "dns", "carbon", "w3c"] },
-  { id: "suivi", name: "Suivi mensuel", tools: ["crux-history", "security", "dns"] },
+  { id: "complet", name: "Audit complet", tools: ["pagespeed", "geo", "dns", "security", "carbon", "w3c", "keywords", "authority", "crux-history"] },
+  { id: "seo", name: "SEO et contenu", tools: ["geo", "keywords", "authority", "w3c"] },
+  { id: "technique", name: "Technique et securite", tools: ["pagespeed", "security", "dns", "carbon", "w3c"] },
+  { id: "suivi", name: "Suivi mensuel", tools: ["pagespeed", "crux-history", "security", "dns"] },
 ];
 
 /* ── Format du rapport unifie : identique quel que soit le choix de tools ── */
