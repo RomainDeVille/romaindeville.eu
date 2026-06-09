@@ -32,7 +32,7 @@ function LoginForm() {
         return;
       }
 
-      router.push(from);
+      window.location.href = from;
     } catch {
       setError("Erreur réseau");
     } finally {
