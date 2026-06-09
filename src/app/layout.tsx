@@ -105,16 +105,26 @@ export default function RootLayout({
         {children}
         <footer className="foot">
           <div className="wrap">
-            Romain De Ville · Conseil en visibilité IA (GEO), SEO et stratégie
-            de contenu · {profile.city} ·{" "}
-            <a href={`mailto:${profile.email}`}>{profile.email}</a> ·{" "}
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
+            <div>
+              Romain De Ville · Conseil en visibilité IA (GEO), SEO et stratégie
+              de contenu · {profile.city}
+            </div>
+            <div className="foot-links">
+              <a href={`mailto:${profile.email}`}>{profile.email}</a>
+              <span className="foot-sep">·</span>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <span className="foot-sep">·</span>
+              <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>
+                {profile.phone}
+              </a>
+            </div>
+            <div className="foot-copy">© {new Date().getFullYear()} Romain De Ville. Tous droits réservés.</div>
           </div>
         </footer>
       </body>

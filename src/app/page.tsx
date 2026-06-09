@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { profile, clients } from "@/lib/data";
 
 export default function Home() {
@@ -136,22 +137,34 @@ export default function Home() {
       {/* ===== POURQUOI MOI ===== */}
       <section className="block">
         <h2>Pourquoi moi</h2>
-        <div className="facts">
-          <div className="fact">
-            <div className="v">~10 ans</div>
-            <div className="k">SEO, GEO et stratégie de contenu</div>
+        <div className="why-grid">
+          <div className="portrait-wrap">
+            <Image
+              src="/portrait.jpg"
+              alt="Romain De Ville, consultant SEO et GEO à Bruxelles"
+              width={280}
+              height={280}
+              className="portrait"
+              priority={false}
+            />
           </div>
-          <div className="fact">
-            <div className="v">220K+</div>
-            <div className="k">Pages optimisées chez Proximus</div>
-          </div>
-          <div className="fact">
-            <div className="v">FR · NL · EN</div>
-            <div className="k">Contenu multilingue natif</div>
-          </div>
-          <div className="fact">
-            <div className="v">Solo</div>
-            <div className="k">Vous parlez à celui qui exécute</div>
+          <div className="facts">
+            <div className="fact">
+              <div className="v">~10 ans</div>
+              <div className="k">SEO, GEO et stratégie de contenu</div>
+            </div>
+            <div className="fact">
+              <div className="v">220K+</div>
+              <div className="k">Pages optimisées chez Proximus</div>
+            </div>
+            <div className="fact">
+              <div className="v">FR · NL · EN</div>
+              <div className="k">Contenu multilingue natif</div>
+            </div>
+            <div className="fact">
+              <div className="v">Solo</div>
+              <div className="k">Vous parlez à celui qui exécute</div>
+            </div>
           </div>
         </div>
       </section>

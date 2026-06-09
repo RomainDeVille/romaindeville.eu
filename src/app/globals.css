@@ -320,12 +320,33 @@ section.block {
   margin: 0;
 }
 
+/* ===== WHY GRID ===== */
+.why-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.portrait-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portrait {
+  border-radius: 20px;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
 /* ===== FACTS ===== */
 .facts {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
-  margin-top: 8px;
 }
 
 .fact .v {
@@ -382,7 +403,7 @@ section.block {
 /* ===== FOOTER ===== */
 footer.foot {
   border-top: 1px solid var(--line);
-  padding: 26px 32px;
+  padding: 32px 32px;
   color: var(--muted);
   font-size: 13px;
   text-align: center;
@@ -395,6 +416,21 @@ footer.foot a {
 
 footer.foot a:hover {
   color: var(--accent);
+}
+
+.foot-links {
+  margin-top: 8px;
+}
+
+.foot-sep {
+  margin: 0 6px;
+  opacity: 0.5;
+}
+
+.foot-copy {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.6;
 }
 
 /* ===== PARCOURS ===== */
@@ -638,6 +674,17 @@ footer.foot a:hover {
 
   .cards {
     grid-template-columns: 1fr;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .portrait {
+    width: 180px;
+    height: 180px;
   }
 
   .facts {
