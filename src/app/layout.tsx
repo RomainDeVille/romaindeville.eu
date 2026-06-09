@@ -100,6 +100,9 @@ export default function RootLayout({
             >
               Réserver un appel
             </a>
+            <Link className="btn btn-outline" href="/espace">
+              Mon espace
+            </Link>
           </div>
         </nav>
         {children}
@@ -118,10 +121,6 @@ export default function RootLayout({
                 rel="noopener noreferrer"
               >
                 LinkedIn
-              </a>
-              <span className="foot-sep">·</span>
-              <a href={`tel:${profile.phone.replace(/\s/g, "")}`}>
-                {profile.phone}
               </a>
             </div>
             <div className="foot-copy">© {new Date().getFullYear()} Romain De Ville. Tous droits réservés.</div>

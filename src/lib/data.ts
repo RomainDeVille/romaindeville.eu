@@ -189,7 +189,6 @@ export const languages = [
   { name: "Français", level: "C2 · natif" },
   { name: "Anglais", level: "C1 · professionnel" },
   { name: "Néerlandais", level: "B1 · intermédiaire" },
-  { name: "Allemand", level: "B2 en cours · Goethe" },
 ];
 
 export interface Education {
