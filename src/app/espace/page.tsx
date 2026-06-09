@@ -16,7 +16,7 @@ export default function Espace() {
           <LogoutButton />
         </div>
         <h1 className="title">Mon espace</h1>
-        <p>Outils internes pour générer des rapports clients.</p>
+        <p>Outils internes pour generer des rapports clients.</p>
       </header>
 
       <section className="psec">
@@ -25,10 +25,7 @@ export default function Espace() {
           <Link href="/espace/audit" className="card" style={{ textDecoration: "none" }}>
             <div className="n">01</div>
             <h3>Audit PageSpeed</h3>
-            <p>
-              Transforme un rapport Google PageSpeed Insights en rapport
-              actionnable partageable avec vos clients.
-            </p>
+            <p>Analysez les performances, le SEO, l&apos;accessibilite et les bonnes pratiques d&apos;un site. Rapport PDF avec recommandations IA.</p>
           </Link>
         </div>
       </section>
