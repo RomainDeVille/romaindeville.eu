@@ -29,7 +29,7 @@ const STATE_LABEL: Record<ToolState, string> = {
   idle: "En attente",
   running: "En cours...",
   ok: "Termine",
-  empty: "Aucune donnee",
+  empty: "Pas de donnees",
   error: "Erreur",
 };
 
@@ -217,6 +217,14 @@ export function Workbench() {
                       )}
                     </div>
                     <p style={{ fontSize: 12, color: "var(--muted)", margin: "3px 0 0", lineHeight: 1.5 }}>{t.description}</p>
+                    {st === "empty" && (() => {
+                      const r = results.find((x) => x.tool === t.id);
+                      const reason =
+                        r && r.data && typeof r.data === "object" && "reason" in (r.data as Record<string, unknown>)
+                          ? String((r.data as Record<string, unknown>).reason)
+                          : "Aucune donnee disponible pour ce site.";
+                      return <p style={{ fontSize: 12, color: "#f59e0b", margin: "6px 0 0", lineHeight: 1.5 }}>{reason}</p>;
+                    })()}
                   </div>
                 </label>
               );

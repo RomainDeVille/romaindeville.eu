@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       data = await queryHistory(apiKey, { origin: parsed.origin });
     }
     if (!data || !data.record) {
-      return { data: { available: false, reason: "Pas assez de trafic pour des donnees CrUX historiques." }, empty: true };
+      return { data: { available: false, reason: "Pas assez de trafic Chrome sur 28 jours : Google ne publie pas encore de donnees terrain pour ce site. Normal pour un site recent ou a faible audience." }, empty: true };
     }
 
     const dates = (data.record.collectionPeriods || []).map(
