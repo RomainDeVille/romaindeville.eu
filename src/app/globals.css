@@ -717,7 +717,7 @@ footer.foot a:hover {
   max-width: 280px;
 }
 
-.foot-col a {
+footer.foot .foot-col a {
   display: block;
   padding: 3px 0;
 }

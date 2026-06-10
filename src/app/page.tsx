@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { profile, clients } from "@/lib/data";
+import { EXPERTISES } from "@/lib/expertises";
 
 export default function Home() {
   return (
@@ -59,50 +60,20 @@ export default function Home() {
 
       {/* ===== EXPERTISES ===== */}
       <section className="block" id="expertises">
-        <h2>Quatre expertises, <span className="gradient-text">une seule logique</span> : la visibilité qui convertit.</h2>
+        <h2>Neuf expertises, <span className="gradient-text">une seule logique</span> : la visibilité qui convertit.</h2>
         <p className="lead">
           La découvrabilité ne se découpe pas en silos. Un contenu bien classé
           mais lent perd son trafic, un site rapide mais absent des réponses
-          des IA perd la décision. Je travaille les quatre leviers ensemble.
+          des IA perd la décision. Chaque levier sert les autres.
         </p>
         <div className="cards">
-          <Link href="/consultant-seo-bruxelles" className="card" style={{ textDecoration: "none" }}>
-            <div className="n">01</div>
-            <h3>SEO technique et éditorial</h3>
-            <p>
-              Audits techniques, architecture pilier/cluster, métadonnées,
-              maillage interne, Core Web Vitals, news SEO. Du code à la
-              rédaction, sur des écosystèmes jusqu&apos;à 220&nbsp;000 pages.
-              Découvrir &rarr;
-            </p>
-          </Link>
-          <Link href="/consultant-geo-belgique" className="card" style={{ textDecoration: "none" }}>
-            <div className="n">02</div>
-            <h3>GEO : visibilité dans les IA</h3>
-            <p>
-              Faire de votre marque une source que ChatGPT, Perplexity, Gemini
-              et AI Overviews citent. Framework de 10 tactiques, audit dédié et
-              feuille de route. Découvrir l&apos;offre GEO &rarr;
-            </p>
-          </Link>
-          <div className="card">
-            <div className="n">03</div>
-            <h3>Acquisition et CRO</h3>
-            <p>
-              Google Ads, Meta Ads, A/B testing et optimisation de funnel.
-              L&apos;objectif n&apos;est jamais le trafic : c&apos;est le coût
-              par lead et la conversion.
-            </p>
-          </div>
-          <Link href="/strategie-contenu-b2b" className="card" style={{ textDecoration: "none" }}>
-            <div className="n">04</div>
-            <h3>Stratégie de contenu et formation</h3>
-            <p>
-              Lancements éditoriaux, piliers de contenu, workflows de
-              rédaction, playbooks SEO et formation des journalistes et
-              équipes marketing. Une culture qui reste. Découvrir &rarr;
-            </p>
-          </Link>
+          {EXPERTISES.map((e, i) => (
+            <Link key={e.slug} href={`/${e.slug}`} className="card" style={{ textDecoration: "none" }}>
+              <div className="n">{String(i + 1).padStart(2, "0")}</div>
+              <h3>{e.name}</h3>
+              <p>{e.cardText} Découvrir &rarr;</p>
+            </Link>
+          ))}
         </div>
       </section>
 

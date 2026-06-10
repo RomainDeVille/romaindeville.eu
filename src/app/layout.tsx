@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { profile } from "@/lib/data";
+import { EXPERTISES } from "@/lib/expertises";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -133,9 +134,9 @@ export default function RootLayout({
             <details className="nav-dd">
               <summary><span className="btn btn-ghost">Expertises</span></summary>
               <div className="nav-dd-menu">
-                <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
-                <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
-                <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
+                {EXPERTISES.map((e) => (
+                  <Link key={e.slug} href={`/${e.slug}`}>{e.name}</Link>
+                ))}
               </div>
             </details>
             <Link className="btn btn-ghost" href="/etudes-de-cas">
@@ -170,9 +171,9 @@ export default function RootLayout({
               </div>
               <div className="foot-col">
                 <div className="foot-title">Expertises</div>
-                <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
-                <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
-                <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
+                {EXPERTISES.map((e) => (
+                  <Link key={e.slug} href={`/${e.slug}`}>{e.name}</Link>
+                ))}
               </div>
               <div className="foot-col">
                 <div className="foot-title">Références</div>
@@ -189,7 +190,9 @@ export default function RootLayout({
                 <Link href="/parcours">Mon parcours</Link>
               </div>
             </div>
-            <div className="foot-copy">© {new Date().getFullYear()} Romain De Ville. Tous droits réservés.</div>
+            <div className="foot-copy">
+              © {new Date().getFullYear()} Romain De Ville. Tous droits réservés. · <Link href="/plan-du-site">Plan du site</Link>
+            </div>
           </div>
         </footer>
       </body>

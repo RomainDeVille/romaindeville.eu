@@ -4,22 +4,25 @@
 
 ## Services
 
-- Consultance GEO : visibilité dans les réponses des moteurs d'IA (ChatGPT, Perplexity, Gemini, Google AI Overviews). Audit de visibilité IA, benchmark concurrents, feuille de route priorisée. Framework de 10 tactiques GEO déployé en entreprise.
-- Consultance SEO technique et éditoriale : audits, architecture pilier/cluster, métadonnées, maillage interne, Core Web Vitals, news SEO. Expérience sur des écosystèmes jusqu'à 220 000 pages.
-- Acquisition digitale et CRO : Google Ads, Meta Ads, A/B testing, optimisation de funnel et de coût par lead.
-- Stratégie de contenu et formation : lancements éditoriaux, playbooks SEO, formation des journalistes et équipes marketing.
+- [Consultant SEO Bruxelles](https://romaindeville.eu/consultant-seo-bruxelles) : SEO technique, éditorial, multilingue et data pour marques, médias et institutions. Écosystèmes jusqu'à 220 000 pages.
+- [Consultant GEO Belgique](https://romaindeville.eu/consultant-geo-belgique) : visibilité dans les réponses des moteurs d'IA (ChatGPT, Perplexity, Gemini, Google AI Overviews). Framework de 10 tactiques déployé en entreprise.
+- [Stratégie de contenu B2B](https://romaindeville.eu/strategie-contenu-b2b) : piliers éditoriaux, workflows de rédaction, écriture pour les moteurs d'IA, multilingue FR/NL/EN.
+- [Création de site web](https://romaindeville.eu/creation-site-web-belgique) : sites rapides, sobres et SEO-ready dès le premier jour, en Belgique.
+- [Google Ads et CRO](https://romaindeville.eu/consultant-google-ads-belgique) : campagnes Search et Meta Ads pilotées au coût par lead, A/B testing et optimisation du funnel.
+- [Audit SEO et visibilité IA](https://romaindeville.eu/audit-seo) : diagnostic en neuf volets avec feuille de route priorisée par impact et effort.
+- [Performance web](https://romaindeville.eu/performance-web) : Core Web Vitals mesurés en labo et terrain, corrections ciblées sans refonte.
+- [Formation SEO et GEO](https://romaindeville.eu/formation-seo-belgique) : ateliers sur mesure pour rédactions et équipes marketing, playbooks inclus.
+- [Suivi SEO mensuel](https://romaindeville.eu/suivi-seo-mensuel) : rapport multi-volets mensuel et point d'expert de 45 minutes, sans engagement de durée.
 
 ## Pages
 
-- [Accueil](https://romaindeville.eu/) : présentation des quatre expertises et de la méthode de travail.
-- [Consultant GEO Belgique](https://romaindeville.eu/consultant-geo-belgique) : offre GEO détaillée, audit de visibilité IA, questions fréquentes.
-- [Consultant SEO Bruxelles](https://romaindeville.eu/consultant-seo-bruxelles) : SEO technique, éditorial, multilingue et data pour marques et institutions.
-- [Stratégie de contenu B2B](https://romaindeville.eu/strategie-contenu-b2b) : piliers éditoriaux, workflows, formation des équipes, écriture pour les moteurs d'IA.
+- [Accueil](https://romaindeville.eu/) : présentation des neuf expertises et de la méthode de travail.
 - [Études de cas](https://romaindeville.eu/etudes-de-cas) : trois missions documentées en problème, solution, résultats.
 - [Étude de cas Proximus](https://romaindeville.eu/etudes-de-cas/proximus) : SEO et GEO d'un écosystème de 220 000+ pages trilingue.
 - [Étude de cas Parlement européen](https://romaindeville.eu/etudes-de-cas/parlement-europeen) : optimisation data-driven de la recherche interne.
 - [Étude de cas Forbes BeLux](https://romaindeville.eu/etudes-de-cas/forbes-belux) : lancement d'un média avec le SEO intégré dès le premier jour.
 - [Parcours](https://romaindeville.eu/parcours) : expérience professionnelle complète, compétences, formation.
+- [Plan du site](https://romaindeville.eu/plan-du-site)
 
 ## Contact
 
