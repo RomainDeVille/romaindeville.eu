@@ -141,7 +141,9 @@ export function Workbench() {
     return Object.keys(out).length > 0 ? out : null;
   })();
 
-  async function runOne(tool: ToolDef): Promise<{ result: ToolResult; section: SectionReport | null }> {
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function runOne(tool: ToolDef, index: number): Promise<{ result: ToolResult; section: SectionReport | null }> {
     setStates((s) => ({ ...s, [tool.id]: "running" }));
     let result: ToolResult;
     try {
@@ -171,19 +173,24 @@ export function Workbench() {
       return { result, section: null };
     }
 
-    /* Pipeline : le chapitre IA part des que les donnees de CE tool sont la */
+    /* Pipeline : le chapitre IA part des que les donnees de CE tool sont la.
+       Departs etales + 2 tentatives : une connexion coupee ne perd plus le chapitre. */
     setStates((s) => ({ ...s, [tool.id]: "reporting" }));
+    await sleep(index * 1200);
     let section: SectionReport | null = null;
-    try {
-      const res = await fetch("/api/v1/report/section", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url.trim(), result, business }),
-      });
-      section = await parseJsonSafe<SectionReport>(res, "Erreur chapitre");
-      setSections((s) => ({ ...s, [tool.id]: section as SectionReport }));
-    } catch {
-      section = null;
+    for (let attempt = 0; attempt < 2 && !section; attempt++) {
+      try {
+        if (attempt > 0) await sleep(2000);
+        const res = await fetch("/api/v1/report/section", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: url.trim(), result, business }),
+        });
+        section = await parseJsonSafe<SectionReport>(res, "Erreur chapitre");
+        setSections((s) => ({ ...s, [tool.id]: section as SectionReport }));
+      } catch {
+        section = null;
+      }
     }
     setStates((s) => ({ ...s, [tool.id]: result.status === "empty" ? "empty" : "ok" }));
     return { result, section };
@@ -209,7 +216,7 @@ export function Workbench() {
     setStates(Object.fromEntries(selectedTools.map((t) => [t.id, "idle" as ToolState])));
 
     try {
-      const settled = await Promise.all(selectedTools.map((t) => runOne(t)));
+      const settled = await Promise.all(selectedTools.map((t, i) => runOne(t, i)));
       setResults(settled.map((s) => s.result));
 
       const okSections = settled.map((s) => s.section).filter((s): s is SectionReport => !!s);
@@ -243,7 +250,7 @@ export function Workbench() {
   const orderedSections = TOOLS.map((t) => sections[t.id]).filter((s): s is SectionReport => !!s);
 
   const pdfInput: UnifiedPdfInput | null = finalReport
-    ? { url: url.trim(), createdAt: reportAt || new Date().toISOString(), final: finalReport, sections: orderedSections, results }
+    ? { url: url.trim(), createdAt: reportAt || new Date().toISOString(), final: finalReport, sections: orderedSections, results, chapterFails }
     : null;
 
   async function handleSend() {

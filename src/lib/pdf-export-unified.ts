@@ -29,10 +29,11 @@ export interface UnifiedPdfInput {
   final: FinalReport;
   sections: SectionReport[];
   results: ToolResult[];
+  chapterFails?: string[];
 }
 
 function buildDoc(input: UnifiedPdfInput): jsPDF {
-  const { url, createdAt, final, sections, results } = input;
+  const { url, createdAt, final, sections, results, chapterFails = [] } = input;
   const doc = new jsPDF("portrait", "mm", "a4");
   const W = 210, H = 297, M = 20, CW = W - M * 2;
   let y = 0;
@@ -312,11 +313,14 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
 
   // ── TOOLS EN ERREUR ──
   const failed = results.filter((r) => r.status === "error");
-  if (failed.length > 0) {
-    sectionLabel("Outils non disponibles lors de cette analyse");
+  if (failed.length > 0 || chapterFails.length > 0) {
+    sectionLabel("Volets incomplets dans cette analyse");
     for (const r of failed) {
       const name = TOOLS.find((t) => t.id === r.tool)?.name || r.tool;
       para(`${name} : ${r.error || "erreur inconnue"}`);
+    }
+    for (const n of chapterFails) {
+      para(`${n} : donnees collectees mais chapitre non genere. Ce rapport doit etre regenere avant livraison.`);
     }
   }
 
