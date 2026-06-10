@@ -66,15 +66,16 @@ export default function Home() {
           des IA perd la décision. Je travaille les quatre leviers ensemble.
         </p>
         <div className="cards">
-          <div className="card">
+          <Link href="/consultant-seo-bruxelles" className="card" style={{ textDecoration: "none" }}>
             <div className="n">01</div>
             <h3>SEO technique et éditorial</h3>
             <p>
               Audits techniques, architecture pilier/cluster, métadonnées,
               maillage interne, Core Web Vitals, news SEO. Du code à la
               rédaction, sur des écosystèmes jusqu&apos;à 220&nbsp;000 pages.
+              Découvrir &rarr;
             </p>
-          </div>
+          </Link>
           <Link href="/consultant-geo-belgique" className="card" style={{ textDecoration: "none" }}>
             <div className="n">02</div>
             <h3>GEO : visibilité dans les IA</h3>
@@ -93,15 +94,15 @@ export default function Home() {
               par lead et la conversion.
             </p>
           </div>
-          <div className="card">
+          <Link href="/strategie-contenu-b2b" className="card" style={{ textDecoration: "none" }}>
             <div className="n">04</div>
             <h3>Stratégie de contenu et formation</h3>
             <p>
               Lancements éditoriaux, piliers de contenu, workflows de
               rédaction, playbooks SEO et formation des journalistes et
-              équipes marketing. Une culture qui reste.
+              équipes marketing. Une culture qui reste. Découvrir &rarr;
             </p>
-          </div>
+          </Link>
         </div>
       </section>
 
@@ -167,6 +168,9 @@ export default function Home() {
             </span>
           ))}
         </div>
+        <p style={{ marginTop: 20 }}>
+          <Link href="/etudes-de-cas" className="btn btn-ghost">Lire les études de cas &rarr;</Link>
+        </p>
       </section>
 
       {/* ===== QUI JE SUIS ===== */}

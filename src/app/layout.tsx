@@ -133,6 +133,9 @@ export default function RootLayout({
             <Link className="btn btn-ghost" href="/consultant-geo-belgique">
               GEO
             </Link>
+            <Link className="btn btn-ghost" href="/etudes-de-cas">
+              Études de cas
+            </Link>
             <Link className="btn btn-ghost" href="/parcours">
               Mon parcours
             </Link>
@@ -158,6 +161,12 @@ export default function RootLayout({
             </div>
             <div className="foot-links">
               <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
+              <span className="foot-sep">·</span>
+              <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
+              <span className="foot-sep">·</span>
+              <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
+              <span className="foot-sep">·</span>
+              <Link href="/etudes-de-cas">Études de cas</Link>
               <span className="foot-sep">·</span>
               <Link href="/parcours">Parcours</Link>
               <span className="foot-sep">·</span>
