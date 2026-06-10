@@ -5,6 +5,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { profile } from "@/lib/data";
 import { EXPERTISES } from "@/lib/expertises";
+import { caseStudies } from "@/lib/case-studies";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -178,9 +179,9 @@ export default function RootLayout({
               </div>
               <div className="foot-col">
                 <div className="foot-title">Références</div>
-                <Link href="/etudes-de-cas/proximus">Proximus</Link>
-                <Link href="/etudes-de-cas/parlement-europeen">Parlement européen</Link>
-                <Link href="/etudes-de-cas/forbes-belux">Forbes BeLux</Link>
+                {caseStudies.map((c) => (
+                  <Link key={c.slug} href={`/etudes-de-cas/${c.slug}`}>{c.client}</Link>
+                ))}
                 <Link href="/etudes-de-cas">Toutes les études de cas</Link>
               </div>
               <div className="foot-col">

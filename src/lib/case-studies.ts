@@ -29,7 +29,7 @@ export const caseStudies: CaseStudy[] = [
     solution: [
       "Structuration sémantique en architecture pilier/cluster et consolidation des FAQ, blog et forum pour réduire la cannibalisation entre contenus et entre langues.",
       "Définition de l'architecture des métadonnées et mise en place d'un suivi qualité : audits SEO techniques et contrôle des mises en production.",
-      "Développement d'un framework GEO de 10 tactiques pour la visibilité dans les moteurs d'IA, accompagné d'un outil interne sur mesure.",
+      "Développement d'un framework GEO de 10 tactiques pour la visibilité dans les moteurs d'IA, et déploiement d'un outil interne productisé (« Proxi SEO », custom GPT) consolidant tone of voice, structure FAQ, traductions, accessibilité et directives RGPD pour industrialiser les pratiques au sein des équipes.",
       "Suivi de performance multi-plateforme (Adobe Analytics, Contentsquare, Search Console, Semrush) traduit en rapports exécutifs et recommandations actionnables.",
     ],
     results: [
@@ -98,6 +98,68 @@ export const caseStudies: CaseStudy[] = [
     relatedServices: [
       { label: "Stratégie de contenu B2B", href: "/strategie-contenu-b2b" },
       { label: "Consultant SEO Bruxelles", href: "/consultant-seo-bruxelles" },
+    ],
+  },
+  {
+    slug: "groupe-audit-belgium",
+    client: "Groupe Audit Belgium",
+    title: "Refondre un site financier multilingue pour capter des leads qualifiés",
+    sector: "Cabinet d'audit et de conseil financier",
+    period: "Depuis novembre 2025, mission en cours",
+    intro:
+      "Un cabinet d'audit s'adresse à une audience B2B exigeante, dans un secteur où la communication commerciale est réglementée. La mission : refondre le site corporate en trois langues et construire l'acquisition, avec un seul objectif mesurable, le lead qualifié.",
+    problem: [
+      "Un site corporate qui présentait l'activité mais ne captait pas de demandes entrantes : pas de parcours pensés pour la conversion.",
+      "Trois langues à servir (FR, NL, EN) sans architecture multilingue structurée, dans un marché belge où c'est une attente de base.",
+      "Aucune acquisition payante structurée, et un cadre réglementaire qui interdit les promesses commerciales approximatives.",
+    ],
+    solution: [
+      "Pilotage de bout en bout de la refonte en architecture multilingue FR, NL, EN : structure des pages et parcours utilisateurs définis pour maximiser la captation de leads qualifiés.",
+      "Stratégie SEO complète : architecture du site, contenu sémantique, maillage interne, Core Web Vitals, landing pages prioritaires, contrôles d'indexation, sitemap et monitoring Search Console.",
+      "Création et optimisation continue des campagnes Google Ads Search (mots-clés, annonces, ciblage, budgets) pilotées au coût par lead.",
+      "Messaging aligné sur une audience B2B réglementée : précis, vérifiable, sans promesse trompeuse.",
+    ],
+    results: [
+      "Un site trilingue structuré autour de la conversion, pas de la plaquette.",
+      "Un canal d'acquisition payant piloté au coût par lead, avec un tracking propre.",
+      "Un socle SEO et GEO posé dès la refonte : indexation maîtrisée, entités optimisées, monitoring en place.",
+    ],
+    resultNote: "Mission en cours : les chiffres d'acquisition appartiennent au client.",
+    relatedServices: [
+      { label: "Google Ads et CRO", href: "/consultant-google-ads-belgique" },
+      { label: "Création de site web", href: "/creation-site-web-belgique" },
+      { label: "Consultant SEO Bruxelles", href: "/consultant-seo-bruxelles" },
+    ],
+  },
+  {
+    slug: "equine-care-group",
+    client: "Equine Care Group",
+    title: "Faire croître un e-commerce multi-marques par le CRO et l'acquisition",
+    sector: "E-commerce multi-marques, santé équine",
+    period: "Mai 2024 à avril 2025",
+    intro:
+      "Un écosystème e-commerce regroupant plusieurs marques, chacune avec son site, ses tunnels et ses campagnes. La mission : connecter l'acquisition payante, le CRO et le SEO en une seule logique de croissance, pilotée par les données plutôt que par l'intuition.",
+    problem: [
+      "Des parcours d'achat hétérogènes entre les marques, avec des frictions UX qui coûtaient des conversions à chaque étape du tunnel.",
+      "Des budgets publicitaires répartis sur plusieurs comptes sans structure commune ni gouvernance de tracking.",
+      "Une acquisition déconnectée de la performance on-site : du trafic acheté sans visibilité sur ce qu'il devenait après le clic.",
+    ],
+    solution: [
+      "Stratégie CRO en test-and-learn sur l'ensemble du portefeuille : priorisation des hypothèses, A/B testing, itérations sur les tunnels de conversion.",
+      "Reprise en main des comptes Google Ads et Meta Ads : structure, enchères, audiences, créatifs et tracking, pilotés au ROAS sur l'ensemble des marques.",
+      "Stratégie SEO et GEO globale connectant les insights d'acquisition à la performance on-site : engagement, conversion, rétention.",
+      "Gouvernance UX et UI cross-marques et analyses marché, concurrence et demande pour réduire les frictions identifiées.",
+    ],
+    results: [
+      "Une méthodologie test-and-learn installée : chaque évolution des tunnels est une hypothèse mesurée, plus un pari.",
+      "Des comptes publicitaires restructurés et pilotés au ROAS, avec un tracking unifié sur le portefeuille.",
+      "Des parcours harmonisés entre marques et des décisions UX fondées sur les données de comportement réelles.",
+    ],
+    resultNote: "Les chiffres de ROAS et de revenus appartiennent au client.",
+    relatedServices: [
+      { label: "Google Ads et CRO", href: "/consultant-google-ads-belgique" },
+      { label: "Performance web", href: "/performance-web" },
+      { label: "Suivi SEO mensuel", href: "/suivi-seo-mensuel" },
     ],
   },
 ];

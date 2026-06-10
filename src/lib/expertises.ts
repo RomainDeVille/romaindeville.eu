@@ -344,7 +344,8 @@ export const EXPERTISES: Expertise[] = [
     proofText:
       "Pilotage de campagnes Google Ads et Meta Ads pour un écosystème e-commerce multi-marques (Equine Care Group), génération de leads B2B pour Groupe Audit Belgium, campagnes d'acquisition pour l'enseignement supérieur (ESTACA). Trois logiques de conversion différentes, la même discipline de mesure.",
     proofLinks: [
-      { label: "Toutes les études de cas", href: "/etudes-de-cas" },
+      { label: "Étude de cas Equine Care Group", href: "/etudes-de-cas/equine-care-group" },
+      { label: "Étude de cas Groupe Audit Belgium", href: "/etudes-de-cas/groupe-audit-belgium" },
     ],
     faqTitle: "Questions fréquentes sur Google Ads",
     faq: [

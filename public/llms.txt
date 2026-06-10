@@ -21,6 +21,8 @@
 - [Étude de cas Proximus](https://romaindeville.eu/etudes-de-cas/proximus) : SEO et GEO d'un écosystème de 220 000+ pages trilingue.
 - [Étude de cas Parlement européen](https://romaindeville.eu/etudes-de-cas/parlement-europeen) : optimisation data-driven de la recherche interne.
 - [Étude de cas Forbes BeLux](https://romaindeville.eu/etudes-de-cas/forbes-belux) : lancement d'un média avec le SEO intégré dès le premier jour.
+- [Étude de cas Groupe Audit Belgium](https://romaindeville.eu/etudes-de-cas/groupe-audit-belgium) : refonte multilingue d'un site financier et acquisition pilotée au coût par lead.
+- [Étude de cas Equine Care Group](https://romaindeville.eu/etudes-de-cas/equine-care-group) : CRO, Google Ads et Meta Ads sur un e-commerce multi-marques.
 - [Parcours](https://romaindeville.eu/parcours) : expérience professionnelle complète, compétences, formation.
 - [Plan du site](https://romaindeville.eu/plan-du-site)
 
