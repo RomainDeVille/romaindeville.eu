@@ -68,22 +68,22 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
     y += 4.5;
   };
 
-  const para = (text: string, size = 9) => {
+  const para = (text: string, size = 9.5) => {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(size);
     doc.setTextColor(...C.muted);
     const lines = doc.splitTextToSize(text, CW);
     for (const line of lines) {
-      check(5);
+      check(5.5);
       doc.text(line, M, y);
-      y += 4.2;
+      y += 4.6;
     }
-    y += 2;
+    y += 2.5;
   };
 
   const bullet = (text: string) => {
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(9.5);
     doc.setTextColor(...C.muted);
     const lines = doc.splitTextToSize(text, CW - 5);
     let first = true;
@@ -91,7 +91,7 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
       check(5);
       if (first) { doc.text("•", M, y); first = false; }
       doc.text(line, M + 4, y);
-      y += 4.2;
+      y += 4.6;
     }
     y += 1;
   };
@@ -160,9 +160,10 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
     doc.setTextColor(...verdictColor(s.verdict));
     doc.text(s.verdict.toUpperCase(), x + cardW / 2, y + 10, { align: "center" });
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(6.5);
+    doc.setFontSize(6.8);
     doc.setTextColor(...C.muted);
-    const lbl = s.title.length > 26 ? s.title.substring(0, 25) + "." : s.title;
+    const toolName = TOOLS.find((t) => t.id === s.toolId)?.name || s.title;
+    const lbl = toolName.length > 28 ? toolName.substring(0, 27) + "…" : toolName;
     doc.text(lbl, x + cardW / 2, y + 17, { align: "center" });
   });
   y += 30;
@@ -175,7 +176,9 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   // ── RÉSUMÉ EXÉCUTIF ──
   tocMark("Résumé exécutif");
   sectionLabel("Résumé exécutif");
-  para(final.summary, 9.5);
+  for (const paragraph of final.summary.split(/\n{2,}/)) {
+    para(paragraph, 10);
+  }
 
   if (final.businessImpact) {
     tocMark("Impact business estimé");
@@ -235,13 +238,17 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
 
     tocMark(s.title);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(13);
+    doc.setFontSize(14.5);
     doc.setTextColor(...C.text);
     doc.text(s.title, M, y);
     doc.setFontSize(9);
     doc.setTextColor(...verdictColor(s.verdict));
     doc.text(s.verdict.toUpperCase(), W - M, y, { align: "right" });
-    y += 8;
+    y += 3;
+    doc.setDrawColor(...C.accent);
+    doc.setLineWidth(0.8);
+    doc.line(M, y, M + 22, y);
+    y += 7;
 
     const result = results.find((r) => r.tool === s.toolId);
     if (result) {

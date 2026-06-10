@@ -67,6 +67,19 @@ export function toolDataLines(r: ToolResult): DataLine[] {
     case "onpage": {
       const issues = d.issues as Record<string, unknown[]> & { imagesWithoutAlt?: number } | undefined;
       lines.push({ label: "Pages crawlees", value: String(d.pagesCrawled), tone: "muted" });
+      const alerts = d.alerts as { noindexCount: number; brokenCount: number } | undefined;
+      if (alerts) {
+        lines.push({
+          label: "Pages en NOINDEX",
+          value: `${alerts.noindexCount}/${d.pagesCrawled}`,
+          tone: alerts.noindexCount === 0 ? "good" : "bad",
+        });
+        lines.push({
+          label: "Pages en erreur (4xx/5xx)",
+          value: String(alerts.brokenCount),
+          tone: alerts.brokenCount === 0 ? "good" : "bad",
+        });
+      }
       lines.push({ label: "Mots par page (moyenne)", value: String(d.avgWordCount), tone: Number(d.avgWordCount) >= 300 ? "good" : "warn" });
       if (issues) {
         const n = (k: string) => (Array.isArray(issues[k]) ? (issues[k] as unknown[]).length : 0);

@@ -33,7 +33,7 @@ ${JSON.stringify(condensed, null, 1).slice(0, 12000)}
 Reponds UNIQUEMENT avec un objet JSON valide, sans markdown ni backticks :
 
 {
-  "summary": "Resume executif de 6 a 9 phrases : etat general, les 3 forces, les 3 faiblesses majeures, le niveau d'urgence. C'est la premiere chose que le client lit.",
+  "summary": "Resume executif en 2 ou 3 COURTS paragraphes separes par deux sauts de ligne (\\n\\n) : 1) etat general en 2-3 phrases, 2) forces et faiblesses majeures, 3) niveau d'urgence et premier geste. C'est la premiere chose que le client lit.",
   "priorities": [
     {
       "title": "Action prioritaire",

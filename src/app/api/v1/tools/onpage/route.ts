@@ -160,6 +160,7 @@ export async function POST(request: NextRequest) {
       noH1: pages.filter((p) => p.h1Count === 0).map((p) => p.url),
       multiH1: pages.filter((p) => p.h1Count > 1).map((p) => ({ url: p.url, count: p.h1Count })),
       noindexPages: pages.filter((p) => p.noindex).map((p) => p.url),
+      brokenPages: pages.filter((p) => p.status >= 400).map((p) => ({ url: p.url, status: p.status })),
       thinPages: pages.filter((p) => p.wordCount < 250).map((p) => ({ url: p.url, words: p.wordCount })),
       lowInternalLinks: pages.filter((p) => (inDegree.get(p.url) || 0) <= 1 && p.url !== start).map((p) => p.url),
       imagesWithoutAlt: pages.reduce((a, p) => a + p.imagesWithoutAlt, 0),
@@ -169,19 +170,28 @@ export async function POST(request: NextRequest) {
       data: {
         startUrl: start,
         pagesCrawled: pages.length,
+        /* ALERTES D'ABORD : si le payload est tronque cote prompt, l'essentiel survit */
+        alerts: {
+          noindexCount: issues.noindexPages.length,
+          noindexPages: issues.noindexPages,
+          brokenCount: issues.brokenPages.length,
+          brokenPages: issues.brokenPages,
+        },
+        issues,
         maxDepthReached: Math.max(...pages.map((p) => p.depth)),
         avgWordCount: Math.round(pages.reduce((a, p) => a + p.wordCount, 0) / pages.length),
         pages: pages.map((p) => ({
           url: p.url,
-          title: p.title?.slice(0, 90) || null,
+          title: p.title?.slice(0, 70) || null,
           titleLength: p.titleLength,
           metaLength: p.metaDescriptionLength,
           h1Count: p.h1Count,
           words: p.wordCount,
           inLinks: inDegree.get(p.url) || 0,
           depth: p.depth,
+          noindex: p.noindex,
+          status: p.status,
         })),
-        issues,
         note: `Crawl limité à ${MAX_PAGES} pages, profondeur 3, même domaine. Représentatif, pas exhaustif.`,
       },
     };

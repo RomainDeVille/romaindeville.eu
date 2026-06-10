@@ -102,6 +102,7 @@ export function Workbench() {
   const [sections, setSections] = useState<Record<string, SectionReport>>({});
   const [finalReport, setFinalReport] = useState<FinalReport | null>(null);
   const [finalRunning, setFinalRunning] = useState(false);
+  const [chapterFails, setChapterFails] = useState<string[]>([]);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const [reportAt, setReportAt] = useState("");
@@ -202,6 +203,7 @@ export function Workbench() {
     setFinalReport(null);
     setResults([]);
     setSections({});
+    setChapterFails([]);
     setSendStatus("idle");
     setSendMessage("");
     setStates(Object.fromEntries(selectedTools.map((t) => [t.id, "idle" as ToolState])));
@@ -214,6 +216,10 @@ export function Workbench() {
       const failed = settled
         .filter((s) => s.result.status === "error")
         .map((s) => TOOLS.find((t) => t.id === s.result.tool)?.name || s.result.tool);
+      const noChapter = settled
+        .filter((s) => s.result.status !== "error" && !s.section)
+        .map((s) => TOOLS.find((t) => t.id === s.result.tool)?.name || s.result.tool);
+      setChapterFails(noChapter);
 
       if (okSections.length === 0) throw new Error("Aucun chapitre n'a pu etre redige.");
 
@@ -221,7 +227,7 @@ export function Workbench() {
       const res = await fetch("/api/v1/report/final", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url.trim(), sections: okSections, failed, business }),
+        body: JSON.stringify({ url: url.trim(), sections: okSections, failed: [...failed, ...noChapter.map((n) => `${n} (donnees collectees mais chapitre non genere)`)], business }),
       });
       const rep = await parseJsonSafe<FinalReport>(res, "Erreur synthese");
       setFinalReport(rep);
@@ -395,7 +401,11 @@ export function Workbench() {
 
           <section className="psec" id="resume">
             <SectionTitle label="Resume executif" />
-            <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.summary}</p></Card>
+            <Card>
+              {finalReport.summary.split(/\n{2,}/).map((para, i) => (
+                <p key={i} style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: i === 0 ? 0 : "14px 0 0" }}>{para}</p>
+              ))}
+            </Card>
           </section>
 
           {finalReport.businessImpact && (
@@ -490,13 +500,18 @@ export function Workbench() {
             <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.conclusion}</p></Card>
           </section>
 
-          {results.some((r) => r.status === "error") && (
+          {(results.some((r) => r.status === "error") || chapterFails.length > 0) && (
             <section className="psec">
-              <SectionTitle label="Tools en erreur" />
+              <SectionTitle label="Volets incomplets" />
               <Card>
                 {results.filter((r) => r.status === "error").map((r) => (
                   <p key={r.tool} style={{ fontSize: 13, color: "var(--muted)", margin: "4px 0" }}>
                     <strong>{TOOLS.find((t) => t.id === r.tool)?.name}</strong> : {r.error}
+                  </p>
+                ))}
+                {chapterFails.map((n) => (
+                  <p key={n} style={{ fontSize: 13, color: "#f59e0b", margin: "4px 0" }}>
+                    <strong>{n}</strong> : donnees collectees mais chapitre IA non genere. Relancez l&apos;analyse pour ce volet.
                   </p>
                 ))}
               </Card>
