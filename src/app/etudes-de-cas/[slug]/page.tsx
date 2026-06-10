@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
@@ -39,6 +40,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
 
   return (
     <div className="wrap">
+      <Breadcrumbs items={[
+        { label: "Études de cas", href: "/etudes-de-cas" },
+        { label: cs.client, href: `/etudes-de-cas/${cs.slug}` },
+      ]} />
+
       <header className="phead">
         <div className="eyebrow">Étude de cas · {cs.sector}</div>
         <h1 className="title">{cs.title}</h1>

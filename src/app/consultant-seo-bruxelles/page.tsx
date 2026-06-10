@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import { profile } from "@/lib/data";
 
@@ -60,6 +61,8 @@ export default function ConsultantSeoBruxelles() {
     <div className="wrap">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+
+      <Breadcrumbs items={[{ label: "Consultant SEO Bruxelles", href: "/consultant-seo-bruxelles" }]} />
 
       <header className="phead">
         <div className="eyebrow">Consultant SEO · Bruxelles · FR, NL, EN</div>

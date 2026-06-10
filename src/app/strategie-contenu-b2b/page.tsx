@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import { profile } from "@/lib/data";
 
@@ -30,6 +31,8 @@ export default function StrategieContenuB2B() {
   return (
     <div className="wrap">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+
+      <Breadcrumbs items={[{ label: "Stratégie de contenu B2B", href: "/strategie-contenu-b2b" }]} />
 
       <header className="phead">
         <div className="eyebrow">Stratégie de contenu · B2B · FR, NL, EN</div>

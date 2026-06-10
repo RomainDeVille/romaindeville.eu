@@ -130,9 +130,14 @@ export default function RootLayout({
             Romain De Ville<span className="dot">.</span>
           </Link>
           <div className="right">
-            <Link className="btn btn-ghost" href="/consultant-geo-belgique">
-              GEO
-            </Link>
+            <details className="nav-dd">
+              <summary><span className="btn btn-ghost">Expertises</span></summary>
+              <div className="nav-dd-menu">
+                <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
+                <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
+                <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
+              </div>
+            </details>
             <Link className="btn btn-ghost" href="/etudes-de-cas">
               Études de cas
             </Link>

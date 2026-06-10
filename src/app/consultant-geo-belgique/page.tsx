@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import Image from "next/image";
 import { profile, clients } from "@/lib/data";
@@ -71,6 +72,8 @@ export default function ConsultantGeoBelgique() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <Breadcrumbs items={[{ label: "Consultant GEO Belgique", href: "/consultant-geo-belgique" }]} />
+
       {/* ===== HERO ===== */}
       <section className="hero">
         <div>

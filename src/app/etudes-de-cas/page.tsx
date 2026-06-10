@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import { caseStudies } from "@/lib/case-studies";
 import { profile } from "@/lib/data";
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
 export default function EtudesDeCas() {
   return (
     <div className="wrap">
+      <Breadcrumbs items={[{ label: "Études de cas", href: "/etudes-de-cas" }]} />
+
       <header className="phead">
         <div className="eyebrow">Études de cas</div>
         <h1 className="title">
