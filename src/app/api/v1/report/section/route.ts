@@ -19,7 +19,7 @@ const GUIDANCE: Record<ToolId, string> = {
   carbon: "Replace le poids et le CO2 dans le contexte (mediane web ~0.8 g/visite). Si la note est bonne, dis que c'est un argument valorisable, pas un chantier.",
   w3c: "Si zero erreur, dis-le sobrement et explique le benefice (parsing moteurs et IA). Sinon, liste les erreurs les plus structurantes.",
   keywords:
-    "Classe les suggestions par intention (transactionnelle, informationnelle, locale). Identifie 5 a 10 requetes prioritaires et les sujets d'articles a creer. Rappelle qu'il n'y a pas de volumes. Ignore les suggestions hors sujet en le signalant.",
+    "Les suggestions sont regroupees par mot-cle de depart (bySeed). Pour CHAQUE seed : classe par intention (transactionnelle, informationnelle, locale), identifie les requetes prioritaires, et propose le mapping requete vers page (existante a optimiser ou a creer). Rappelle qu'il n'y a pas de volumes. Signale les seeds dont l'univers est hors sujet ou trop concurrentiel.",
   authority:
     "Compare le PageRank du site a chaque concurrent nomme. Si le site n'est pas reference, explique ce que ca signifie (profil de liens quasi vide) et la trajectoire realiste.",
   "crux-history":

@@ -149,10 +149,20 @@ export function toolDataLines(r: ToolResult): DataLine[] {
       break;
     }
     case "keywords": {
-      lines.push({ label: "Mot-cle de depart", value: String(d.seed), tone: "muted" });
-      lines.push({ label: "Suggestions trouvees", value: String(d.count), tone: Number(d.count) > 50 ? "good" : "warn" });
-      const q = d.questions as string[] | undefined;
-      lines.push({ label: "Questions detectees", value: String(q?.length || 0), tone: "muted" });
+      const bySeed = d.bySeed as { seed: string; count: number; questions: string[] }[] | undefined;
+      if (bySeed) {
+        for (const b of bySeed) {
+          lines.push({
+            label: `« ${b.seed} »`,
+            value: `${b.count} suggestions, ${b.questions.length} questions`,
+            tone: b.count > 50 ? "good" : b.count > 0 ? "warn" : "bad",
+          });
+        }
+        lines.push({ label: "Suggestions uniques (total)", value: String(d.totalUnique), tone: "muted" });
+      } else {
+        lines.push({ label: "Mot-cle de depart", value: String(d.seed), tone: "muted" });
+        lines.push({ label: "Suggestions trouvees", value: String(d.count), tone: Number(d.count) > 50 ? "good" : "warn" });
+      }
       break;
     }
     case "authority": {

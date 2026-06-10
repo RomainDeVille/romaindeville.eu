@@ -145,7 +145,9 @@ export function Workbench() {
     let result: ToolResult;
     try {
       const payload: Record<string, unknown> = { url: url.trim() };
-      if (tool.id === "keywords") payload.seed = seed.trim();
+      if (tool.id === "keywords") {
+        payload.seeds = seed.split(/\r?\n/).map((s) => s.trim()).filter(Boolean).slice(0, 5);
+      }
       if (tool.id === "authority") {
         payload.competitors = competitors.split(/\r?\n/).map((c) => c.trim()).filter(Boolean);
       }
@@ -189,8 +191,9 @@ export function Workbench() {
   async function handleRun(e: React.FormEvent) {
     e.preventDefault();
     if (!url.trim() || selectedTools.length === 0 || running) return;
-    if (selected.has("keywords") && seed.trim().length < 3) {
-      setError("Le tool mots-cles demande un mot-cle de depart (3 caracteres minimum).");
+    const seedList = seed.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+    if (selected.has("keywords") && (seedList.length === 0 || seedList.some((s) => s.length < 3))) {
+      setError("Le tool mots-cles demande 1 a 5 mots-cles (3 caracteres minimum chacun, un par ligne).");
       return;
     }
 
@@ -332,8 +335,10 @@ export function Workbench() {
           </div>
 
           {selected.has("keywords") && (
-            <input value={seed} onChange={(ev) => setSeed(ev.target.value)} placeholder="Mot-cle de depart (ex : renovation bruxelles)"
-              style={{ ...inputStyle, width: "100%", marginBottom: 10 }} />
+            <textarea value={seed} onChange={(ev) => setSeed(ev.target.value)}
+              placeholder={"Mots-cles cibles : un par ligne (5 max)\nrenovation bruxelles\ndevis renovation\nentreprise renovation belgique"}
+              rows={3}
+              style={{ ...inputStyle, width: "100%", marginBottom: 10, resize: "vertical", fontFamily: "var(--sans)" }} />
           )}
           {selected.has("authority") && (
             <textarea value={competitors} onChange={(ev) => setCompetitors(ev.target.value)}

@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Inter, Space_Grotesk } from "next/font/google";
-import { Analytics } from "@vercel/analytics/react";
+import { Analytics } from "@vercel/analytics/next";
 import { profile } from "@/lib/data";
 import { EXPERTISES } from "@/lib/expertises";
 import { caseStudies } from "@/lib/case-studies";
