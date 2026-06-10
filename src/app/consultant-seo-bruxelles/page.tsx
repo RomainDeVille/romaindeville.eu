@@ -134,6 +134,15 @@ export default function ConsultantSeoBruxelles() {
         ))}
       </section>
 
+      <section className="block">
+        <h2>Autres expertises</h2>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link href="/consultant-geo-belgique" className="btn btn-ghost">Consultant GEO Belgique</Link>
+          <Link href="/strategie-contenu-b2b" className="btn btn-ghost">Stratégie de contenu B2B</Link>
+          <Link href="/etudes-de-cas" className="btn btn-ghost">Études de cas</Link>
+        </div>
+      </section>
+
       <section className="closer">
         <h2>Parlons de votre référencement.</h2>
         <p>

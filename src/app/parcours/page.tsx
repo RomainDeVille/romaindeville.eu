@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Breadcrumbs } from "@/lib/breadcrumbs";
 import {
   profile,
   experiences,
@@ -18,6 +19,8 @@ export const metadata: Metadata = {
 export default function Parcours() {
   return (
     <div className="wrap">
+      <Breadcrumbs items={[{ label: "Parcours", href: "/parcours" }]} />
+
       {/* ===== HEADER ===== */}
       <header className="phead">
         <div className="eyebrow">Parcours · {profile.city}</div>

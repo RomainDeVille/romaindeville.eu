@@ -200,7 +200,6 @@ h1.title {
 
 .mark {
   position: relative;
-  white-space: nowrap;
 }
 
 .mark::after {

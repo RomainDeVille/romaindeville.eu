@@ -15,7 +15,10 @@
 - [Consultant GEO Belgique](https://romaindeville.eu/consultant-geo-belgique) : offre GEO détaillée, audit de visibilité IA, questions fréquentes.
 - [Consultant SEO Bruxelles](https://romaindeville.eu/consultant-seo-bruxelles) : SEO technique, éditorial, multilingue et data pour marques et institutions.
 - [Stratégie de contenu B2B](https://romaindeville.eu/strategie-contenu-b2b) : piliers éditoriaux, workflows, formation des équipes, écriture pour les moteurs d'IA.
-- [Études de cas](https://romaindeville.eu/etudes-de-cas) : Proximus (220 000+ pages), Parlement européen, Forbes BeLux.
+- [Études de cas](https://romaindeville.eu/etudes-de-cas) : trois missions documentées en problème, solution, résultats.
+- [Étude de cas Proximus](https://romaindeville.eu/etudes-de-cas/proximus) : SEO et GEO d'un écosystème de 220 000+ pages trilingue.
+- [Étude de cas Parlement européen](https://romaindeville.eu/etudes-de-cas/parlement-europeen) : optimisation data-driven de la recherche interne.
+- [Étude de cas Forbes BeLux](https://romaindeville.eu/etudes-de-cas/forbes-belux) : lancement d'un média avec le SEO intégré dès le premier jour.
 - [Parcours](https://romaindeville.eu/parcours) : expérience professionnelle complète, compétences, formation.
 
 ## Contact

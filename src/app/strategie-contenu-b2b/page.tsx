@@ -10,6 +10,36 @@ export const metadata: Metadata = {
   alternates: { canonical: "/strategie-contenu-b2b" },
 };
 
+
+const faq = [
+  {
+    q: "Par ou commence une strategie de contenu B2B ?",
+    a: "Par vos clients, pas par un calendrier editorial. On identifie les questions qu'ils posent a chaque etape de leur decision, on les regroupe en piliers, puis on construit l'architecture de contenus qui y repond. Le calendrier vient en dernier : c'est un outil d'execution, pas une strategie.",
+  },
+  {
+    q: "Ecrire pour les IA, c'est different d'ecrire pour Google ?",
+    a: "Les fondamentaux se recouvrent : repondre clairement a une intention, structurer, sourcer. Mais les moteurs generatifs ont leurs preferences mesurables : reponses directes en debut de section, formats question-reponse, donnees verifiables, signaux d'autorite explicites. J'integre ces criteres aux guidelines de redaction.",
+  },
+  {
+    q: "Formez-vous nos equipes ou produisez-vous le contenu ?",
+    a: "Les deux selon le besoin, avec une preference assumee pour la formation : playbooks sur mesure, ateliers avec les redacteurs, relectures accompagnees. L'objectif est que la qualite ne dépende plus de ma presence. C'est la methode deployee chez Forbes BeLux et en environnement telecom.",
+  },
+  {
+    q: "Gerez-vous le contenu multilingue FR, NL, EN ?",
+    a: "Oui, c'est meme un coeur de metier : architecture par langue, recherche de mots-cles par marche, coordination des redactions et gestion de la cannibalisation entre versions linguistiques.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 const serviceJsonLd = {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -31,6 +61,7 @@ export default function StrategieContenuB2B() {
   return (
     <div className="wrap">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <Breadcrumbs items={[{ label: "Stratégie de contenu B2B", href: "/strategie-contenu-b2b" }]} />
 
@@ -96,6 +127,25 @@ export default function StrategieContenuB2B() {
           par langue, recherche de mots-clés par marché, gestion de la cannibalisation entre versions.{" "}
           <Link href="/etudes-de-cas" style={{ color: "var(--accent)" }}>Les études de cas détaillent la méthode</Link>.
         </p>
+      </section>
+
+      <section className="block" id="faq">
+        <h2>Questions fréquentes</h2>
+        {faq.map((f) => (
+          <details key={f.q} style={{ borderBottom: "1px solid var(--line)", padding: "16px 0" }}>
+            <summary style={{ fontFamily: "var(--heading)", fontWeight: 600, fontSize: 16, cursor: "pointer" }}>{f.q}</summary>
+            <p style={{ marginTop: 10, lineHeight: 1.75, color: "var(--muted)" }}>{f.a}</p>
+          </details>
+        ))}
+      </section>
+
+      <section className="block">
+        <h2>Autres expertises</h2>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <Link href="/consultant-geo-belgique" className="btn btn-ghost">Consultant GEO Belgique</Link>
+          <Link href="/consultant-seo-bruxelles" className="btn btn-ghost">Consultant SEO Bruxelles</Link>
+          <Link href="/etudes-de-cas" className="btn btn-ghost">Études de cas</Link>
+        </div>
       </section>
 
       <section className="closer">

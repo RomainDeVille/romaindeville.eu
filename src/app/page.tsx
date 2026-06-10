@@ -13,7 +13,7 @@ export default function Home() {
           </div>
           <h1 className="title">
             Être trouvé, choisi et cité :{" "}
-            <span className="mark gradient-text">dans Google comme dans les réponses des IA</span>.
+            <span className="gradient-text">dans Google comme dans les réponses des IA</span>.
           </h1>
           <p className="sub">
             Depuis 10 ans, j&apos;aide médias, institutions et entreprises à
