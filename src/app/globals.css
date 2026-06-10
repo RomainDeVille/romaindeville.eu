@@ -25,6 +25,7 @@ html { scroll-behavior: smooth; }
 html, body { margin: 0; padding: 0; }
 
 body {
+  overflow-x: clip;
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
@@ -58,7 +59,19 @@ a { color: inherit; text-decoration: none; }
 
 .nav .name .dot { color: var(--accent); }
 
-.nav .right { display: flex; gap: 10px; align-items: center; }
+.nav .right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav .right .btn {
+  padding: 8px 14px;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
 
 /* ===== BUTTONS ===== */
 .btn {
@@ -136,8 +149,9 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
   align-items: center;
-  overflow: hidden;
 }
+
+.hero > * { min-width: 0; }
 
 /* Gradient aura behind hero */
 .hero::before {
@@ -662,29 +676,66 @@ section.block.dark {
 /* ===== FOOTER ===== */
 footer.foot {
   border-top: 1px solid var(--line);
-  padding: 32px 32px;
+  padding: 48px 0 28px;
   color: var(--muted);
-  font-size: 13px;
-  text-align: center;
+  font-size: 13.5px;
 }
 
 footer.foot a {
-  color: var(--accent);
+  color: var(--muted);
   transition: 0.2s;
+  display: inline-block;
 }
 
 footer.foot a:hover {
-  color: var(--accent2);
+  color: var(--accent);
 }
 
-.foot-links { margin-top: 8px; }
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 36px;
+  align-items: start;
+}
 
-.foot-sep { margin: 0 6px; opacity: 0.4; }
+.foot-title {
+  font-family: var(--heading);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.foot-brand {
+  font-family: var(--heading);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.foot-brand .dot { color: var(--accent); }
+
+.foot-desc {
+  line-height: 1.6;
+  margin: 0;
+  max-width: 280px;
+}
+
+.foot-col a {
+  display: block;
+  padding: 3px 0;
+}
 
 .foot-copy {
-  margin-top: 12px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
   font-size: 12px;
-  opacity: 0.5;
+  opacity: 0.55;
+  text-align: center;
 }
 
 /* ===== PARCOURS ===== */
@@ -994,5 +1045,12 @@ footer.foot a:hover {
   .closer { padding: 56px 18px; margin: 0 -18px; }
   .closer h2 { font-size: 28px; }
 
-  footer.foot { padding: 26px 18px; }
+  footer.foot { padding: 36px 0 22px; }
+  .foot-grid { grid-template-columns: 1fr 1fr; gap: 26px; }
+  .nav .right { gap: 6px; }
+  .nav .right .btn { padding: 7px 11px; font-size: 12.5px; }
+}
+
+@media (max-width: 520px) {
+  .foot-grid { grid-template-columns: 1fr; }
 }

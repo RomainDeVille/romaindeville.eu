@@ -155,30 +155,34 @@ export default function RootLayout({
         <main>{children}</main>
         <footer className="foot">
           <div className="wrap">
-            <div>
-              Romain De Ville · Conseil en visibilité IA (GEO), SEO et stratégie
-              de contenu · {profile.city}
-            </div>
-            <div className="foot-links">
-              <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
-              <span className="foot-sep">·</span>
-              <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
-              <span className="foot-sep">·</span>
-              <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
-              <span className="foot-sep">·</span>
-              <Link href="/etudes-de-cas">Études de cas</Link>
-              <span className="foot-sep">·</span>
-              <Link href="/parcours">Parcours</Link>
-              <span className="foot-sep">·</span>
-              <a href={`mailto:${profile.email}`}>{profile.email}</a>
-              <span className="foot-sep">·</span>
-              <a
-                href={profile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn
-              </a>
+            <div className="foot-grid">
+              <div>
+                <div className="foot-brand">Romain De Ville<span className="dot">.</span></div>
+                <p className="foot-desc">
+                  Conseil en visibilité IA (GEO), SEO et stratégie de contenu pour marques,
+                  médias et institutions. {profile.city}.
+                </p>
+              </div>
+              <div className="foot-col">
+                <div className="foot-title">Expertises</div>
+                <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
+                <Link href="/consultant-seo-bruxelles">Consultant SEO Bruxelles</Link>
+                <Link href="/strategie-contenu-b2b">Stratégie de contenu B2B</Link>
+              </div>
+              <div className="foot-col">
+                <div className="foot-title">Références</div>
+                <Link href="/etudes-de-cas/proximus">Proximus</Link>
+                <Link href="/etudes-de-cas/parlement-europeen">Parlement européen</Link>
+                <Link href="/etudes-de-cas/forbes-belux">Forbes BeLux</Link>
+                <Link href="/etudes-de-cas">Toutes les études de cas</Link>
+              </div>
+              <div className="foot-col">
+                <div className="foot-title">Contact</div>
+                <a href={`mailto:${profile.email}`}>{profile.email}</a>
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                <a href={profile.calendly} target="_blank" rel="noopener noreferrer">Réserver un appel</a>
+                <Link href="/parcours">Mon parcours</Link>
+              </div>
             </div>
             <div className="foot-copy">© {new Date().getFullYear()} Romain De Ville. Tous droits réservés.</div>
           </div>
