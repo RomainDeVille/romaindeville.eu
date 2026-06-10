@@ -96,10 +96,24 @@ export async function POST(request: NextRequest) {
     if (text.startsWith("```")) text = text.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
 
     const parsed = JSON.parse(text) as Omit<SectionReport, "toolId">;
-    const clean = (s: string) => s.replace(/[\u2014\u2013]/g, ", ");
+    const clean = (s: string) =>
+      s
+        .replace(/[\u2014\u2013]/g, ", ")
+        /* aucune lettre n'est triplee en francais : "informationnnelles" -> "informationnelles" */
+        .replace(/([a-zA-Z\u00e0-\u00ff])\1\1+/g, "$1$1");
+
+    /* Titre court garanti, quoi que produise le modele */
+    const shortTitle = (t: string) => {
+      let out = t.split(" : ")[0].split(": ")[0].trim();
+      if (out.length > 55) {
+        const cut = out.slice(0, 55);
+        out = cut.slice(0, Math.max(cut.lastIndexOf(" "), 30));
+      }
+      return out;
+    };
     const section: SectionReport = {
       toolId: body.result.tool,
-      title: clean(parsed.title),
+      title: shortTitle(clean(parsed.title)),
       verdict: parsed.verdict,
       keyFindings: parsed.keyFindings.map(clean),
       narrative: parsed.narrative.map(clean),

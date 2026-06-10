@@ -86,7 +86,8 @@ export async function POST(request: NextRequest) {
     if (text.startsWith("```")) text = text.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
 
     const parsed = JSON.parse(text) as FinalReport;
-    const clean = (s: string) => s.replace(/[\u2014\u2013]/g, ", ");
+    const clean = (s: string) =>
+      s.replace(/[\u2014\u2013]/g, ", ").replace(/([a-zA-Z\u00e0-\u00ff])\1\1+/g, "$1$1");
     parsed.summary = clean(parsed.summary);
     parsed.conclusion = clean(parsed.conclusion);
     parsed.priorities = parsed.priorities.map((p) => ({

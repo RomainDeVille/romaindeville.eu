@@ -191,26 +191,32 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   sectionLabel("Priorités croisées");
   for (let i = 0; i < final.priorities.length; i++) {
     const p = final.priorities[i];
-    check(20);
+
+    const impactText = `Impact ${p.impact} · ${p.effort}`;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7);
+    const impactW = doc.getTextWidth(impactText) + 8;
+    doc.setFontSize(9);
+    const title = `${i + 1}. ${p.title}`;
+    const barTitleLines: string[] = doc.splitTextToSize(title, CW - impactW - 12);
+    const barH = 4 + barTitleLines.length * 4.6;
+    check(barH + 14);
 
     doc.setFillColor(...C.accent);
-    doc.roundedRect(M, y, CW, 8, 2, 2, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
+    doc.roundedRect(M, y, CW, barH, 2, 2, "F");
     doc.setTextColor(255, 255, 255);
-    const title = `${i + 1}. ${p.title}`;
-    doc.text(title.length > 78 ? title.slice(0, 77) + "…" : title, M + 4, y + 5.5);
+    barTitleLines.forEach((line: string, li: number) => {
+      doc.text(line, M + 4, y + 5.5 + li * 4.6);
+    });
 
     const impactColor = p.impact === "Fort" ? C.red : p.impact === "Moyen" ? C.orange : C.green;
     doc.setTextColor(...impactColor);
     doc.setFillColor(255, 255, 255);
-    const impactText = `Impact ${p.impact} · ${p.effort}`;
-    const impactW = doc.getTextWidth(impactText) + 6;
     doc.roundedRect(W - M - impactW - 3, y + 1.5, impactW + 2, 5, 1, 1, "F");
     doc.setFontSize(7);
     doc.text(impactText, W - M - 4, y + 5, { align: "right" });
 
-    y += 12;
+    y += barH + 4;
     subLabel("Pourquoi");
     para(p.why);
     subLabel("Comment");
@@ -240,11 +246,15 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14.5);
     doc.setTextColor(...C.text);
-    doc.text(s.title, M, y);
+    const titleLines = doc.splitTextToSize(s.title, CW - 28); // place reservee au verdict
+    check(titleLines.length * 6.5 + 14);
+    titleLines.forEach((line: string, li: number) => {
+      doc.text(line, M, y + li * 6.5);
+    });
     doc.setFontSize(9);
     doc.setTextColor(...verdictColor(s.verdict));
     doc.text(s.verdict.toUpperCase(), W - M, y, { align: "right" });
-    y += 3;
+    y += (titleLines.length - 1) * 6.5 + 3;
     doc.setDrawColor(...C.accent);
     doc.setLineWidth(0.8);
     doc.line(M, y, M + 22, y);
