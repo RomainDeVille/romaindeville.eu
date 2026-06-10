@@ -10,6 +10,8 @@ const ANTHROPIC_API = "https://api.anthropic.com/v1/messages";
 const GUIDANCE: Record<ToolId, string> = {
   pagespeed:
     "Compare mobile et desktop metrique par metrique (FCP, LCP, TBT, CLS, Speed Index, TTI). Cite les valeurs exactes. Si des donnees terrain CrUX existent, confronte labo et terrain. Cite les URLs exactes des ressources bloquantes. Ne promets rien sur les metriques deja vertes.",
+  onpage:
+    "Analyse page par page : titles dupliques ou hors gabarit (25-65 caracteres), metas manquantes, pages sans H1 ou multi-H1, pages minces (<250 mots), pages mal maillees (inLinks faibles). Croise avec les requetes business du site : quelles pages existantes optimiser, quelles pages creer. Cite les URLs exactes.",
   geo: "Evalue chaque signal (Schema.org, llms.txt, robots IA, meta, OG, H1) et explique son role concret dans la visibilite ChatGPT/Perplexity/AI Overviews. Identifie le manque le plus penalisant.",
   dns: "Explique l'etat SPF/DKIM/DMARC en termes de delivrabilite concrete (Gmail, Outlook). Un DKIM non detecte sur les selecteurs courants n'est pas forcement absent : dis-le.",
   security:
@@ -57,12 +59,13 @@ Reponds UNIQUEMENT avec un objet JSON valide, sans markdown ni backticks :
       "action": "Action concrete courte",
       "detail": "Etapes precises d'execution, 2-4 phrases, pas de code.",
       "impact": "Fort" | "Moyen" | "Faible",
-      "effort": "estimation en heures ou jours, ex: 2-4 h"
+      "effort": "estimation en heures ou jours, ex: 2-4 h",
+      "expectedResult": "Resultat attendu MESURABLE et prudent : la metrique visee, sa valeur cible (fourchette ou ordre de grandeur), et comment/quand le verifier. Ex: LCP mobile attendu sous 3 s, verifiable dans PageSpeed Insights apres correction, confirme dans CrUX sous 28 jours."
     }
   ]
 }
 
-REGLES JSON : recommendations entre 2 et 4 entrees. Tous les textes en francais avec accents corrects.`;
+REGLES JSON : recommendations entre 2 et 4 entrees, chacune avec un expectedResult mesurable et prudent (jamais de promesse ferme : utiliser attendu, de l'ordre de). Tous les textes en francais avec accents corrects.`;
 }
 
 export async function POST(request: NextRequest) {
@@ -100,7 +103,12 @@ export async function POST(request: NextRequest) {
       verdict: parsed.verdict,
       keyFindings: parsed.keyFindings.map(clean),
       narrative: parsed.narrative.map(clean),
-      recommendations: parsed.recommendations.map((r) => ({ ...r, action: clean(r.action), detail: clean(r.detail) })),
+      recommendations: parsed.recommendations.map((r) => ({
+        ...r,
+        action: clean(r.action),
+        detail: clean(r.detail),
+        expectedResult: r.expectedResult ? clean(r.expectedResult) : undefined,
+      })),
     };
     return NextResponse.json(section);
   } catch (err) {

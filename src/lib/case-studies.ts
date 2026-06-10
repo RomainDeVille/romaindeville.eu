@@ -162,6 +162,67 @@ export const caseStudies: CaseStudy[] = [
       { label: "Suivi SEO mensuel", href: "/suivi-seo-mensuel" },
     ],
   },
+  {
+    slug: "carbonable",
+    client: "Carbonable",
+    title: "Construire une communauté Web3 de zéro, sur deux ans",
+    sector: "Web3 et durabilité",
+    period: "Septembre 2021 à août 2023",
+    intro:
+      "Un projet à la croisée du Web3 et de la compensation carbone, dans un marché saturé de promesses et méfiant par construction. La mission : bâtir une communauté réelle et engagée sur Discord, X et Telegram, et la faire vivre dans la durée, cycles de marché compris.",
+    problem: [
+      "Un marché Web3 encombré où la confiance est la ressource la plus rare : impossible d'acheter une communauté, il faut la construire.",
+      "Trois canaux communautaires aux dynamiques différentes (Discord, X, Telegram) à animer avec une cohérence éditoriale.",
+      "Un engagement à mesurer et piloter dans le temps, au-delà des pics d'attention propres au secteur.",
+    ],
+    solution: [
+      "Conception et exécution de stratégies de croissance communautaire pilotant l'acquisition, l'engagement et la rétention sur Discord, X et Telegram.",
+      "Production des contenus éditoriaux, copywriting et visuels adaptés à chaque canal, avec une ligne cohérente sur la durée.",
+      "Suivi des performances via des dashboards Looker Studio et itération continue de la stratégie sur la base des données.",
+      "Gestion de partenariats influenceurs et marques pour développer la notoriété et accélérer la croissance.",
+    ],
+    results: [
+      "Une communauté construite et animée pendant deux ans, à travers les cycles hauts et bas du marché.",
+      "Un pilotage par les données installé : chaque initiative communautaire évaluée sur dashboards, pas au ressenti.",
+      "Des partenariats noués qui ont élargi la portée du projet au-delà de sa communauté organique.",
+    ],
+    resultNote: "Secteur Web3 : les métriques communautaires fluctuent avec les cycles du marché, je ne les cite pas hors contexte.",
+    relatedServices: [
+      { label: "Stratégie de contenu B2B", href: "/strategie-contenu-b2b" },
+      { label: "Google Ads et CRO", href: "/consultant-google-ads-belgique" },
+      { label: "Suivi SEO mensuel", href: "/suivi-seo-mensuel" },
+    ],
+  },
+  {
+    slug: "ludo-ludo",
+    client: "LUDO LUDO",
+    title: "Donner une présence en ligne complète à une ASBL, avec un budget d'ASBL",
+    sector: "Association culturelle, Bruxelles · co-fondateur",
+    period: "Mars 2021 à février 2024",
+    intro:
+      "LUDO LUDO est une association culturelle bruxelloise que j'ai co-fondée. Pas de budget marketing, pas d'équipe dédiée : le terrain d'apprentissage idéal pour faire les bons arbitrages, parce que chaque euro et chaque heure comptaient double.",
+    problem: [
+      "Une notoriété à construire de zéro sur la scène culturelle bruxelloise, sans budget publicitaire significatif.",
+      "Un e-commerce à mettre en place et à opérer sans équipe technique ni marketing.",
+      "Des choix permanents entre les canaux : tout faire était impossible, il fallait prioriser ce qui rapportait.",
+    ],
+    solution: [
+      "Mise en place de l'e-commerce de bout en bout et de la présence en ligne de l'association.",
+      "Stratégie de contenu calibrée sur les ressources réelles d'une équipe bénévole : moins de formats, tenus dans la durée.",
+      "SEO de base posé proprement : structure, métadonnées, visibilité locale.",
+      "Campagnes d'acquisition payante ciblées et plafonnées, évaluées sur leur retour réel.",
+    ],
+    results: [
+      "Une présence en ligne complète opérée en autonomie par l'équipe associative.",
+      "Un canal de vente en ligne fonctionnel pour les activités de l'association.",
+      "Une discipline de frugalité et de priorisation que j'applique depuis aux budgets de mes clients : dépenser comme si c'était le sien.",
+    ],
+    relatedServices: [
+      { label: "Création de site web", href: "/creation-site-web-belgique" },
+      { label: "Stratégie de contenu B2B", href: "/strategie-contenu-b2b" },
+      { label: "Google Ads et CRO", href: "/consultant-google-ads-belgique" },
+    ],
+  },
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

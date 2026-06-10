@@ -64,6 +64,23 @@ export function toolDataLines(r: ToolResult): DataLine[] {
       }
       break;
     }
+    case "onpage": {
+      const issues = d.issues as Record<string, unknown[]> & { imagesWithoutAlt?: number } | undefined;
+      lines.push({ label: "Pages crawlees", value: String(d.pagesCrawled), tone: "muted" });
+      lines.push({ label: "Mots par page (moyenne)", value: String(d.avgWordCount), tone: Number(d.avgWordCount) >= 300 ? "good" : "warn" });
+      if (issues) {
+        const n = (k: string) => (Array.isArray(issues[k]) ? (issues[k] as unknown[]).length : 0);
+        lines.push({ label: "Titles dupliques", value: String(n("duplicateTitles")), tone: n("duplicateTitles") === 0 ? "good" : "bad" });
+        lines.push({ label: "Metas manquantes", value: String(n("missingMeta")), tone: n("missingMeta") === 0 ? "good" : "bad" });
+        lines.push({ label: "Titles hors gabarit (25-65 car.)", value: String(n("titleTooLongOrShort")), tone: n("titleTooLongOrShort") === 0 ? "good" : "warn" });
+        lines.push({ label: "Pages sans H1", value: String(n("noH1")), tone: n("noH1") === 0 ? "good" : "bad" });
+        lines.push({ label: "Pages multi-H1", value: String(n("multiH1")), tone: n("multiH1") === 0 ? "good" : "warn" });
+        lines.push({ label: "Pages minces (<250 mots)", value: String(n("thinPages")), tone: n("thinPages") === 0 ? "good" : "warn" });
+        lines.push({ label: "Pages mal maillees", value: String(n("lowInternalLinks")), tone: n("lowInternalLinks") === 0 ? "good" : "warn" });
+        lines.push({ label: "Images sans alt", value: String(issues.imagesWithoutAlt ?? 0), tone: Number(issues.imagesWithoutAlt ?? 0) === 0 ? "good" : "warn" });
+      }
+      break;
+    }
     case "geo": {
       const g = d as unknown as GeoAudit;
       lines.push({

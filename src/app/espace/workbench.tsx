@@ -374,18 +374,33 @@ export function Workbench() {
       {!!finalReport && (
         <>
           <section className="psec">
+            <SectionTitle label="Sommaire" />
+            <Card>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 18px" }}>
+                <a href="#resume" style={{ fontSize: 13, color: "var(--accent)" }}>Resume executif</a>
+                {finalReport.businessImpact && <a href="#impact-business" style={{ fontSize: 13, color: "var(--accent)" }}>Impact business</a>}
+                <a href="#priorites" style={{ fontSize: 13, color: "var(--accent)" }}>Priorites croisees</a>
+                {orderedSections.map((s) => (
+                  <a key={s.toolId} href={`#volet-${s.toolId}`} style={{ fontSize: 13, color: "var(--accent)" }}>{s.title}</a>
+                ))}
+                <a href="#conclusion" style={{ fontSize: 13, color: "var(--accent)" }}>Conclusion</a>
+              </div>
+            </Card>
+          </section>
+
+          <section className="psec" id="resume">
             <SectionTitle label="Resume executif" />
             <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.summary}</p></Card>
           </section>
 
           {finalReport.businessImpact && (
-            <section className="psec">
+            <section className="psec" id="impact-business">
               <SectionTitle label="Impact business estime" />
               <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.businessImpact}</p></Card>
             </section>
           )}
 
-          <section className="psec">
+          <section className="psec" id="priorites">
             <SectionTitle label="Priorites croisees" />
             {finalReport.priorities.map((p, i) => {
               const ic = p.impact === "Fort" ? "#ef4444" : p.impact === "Moyen" ? "#f59e0b" : "#22c55e";
@@ -399,6 +414,11 @@ export function Workbench() {
                   </div>
                   <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--muted)", margin: "0 0 6px" }}>{p.why}</p>
                   <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--muted)", margin: 0 }}>{p.how}</p>
+                  {p.expectedResult && (
+                    <p style={{ fontSize: 13, lineHeight: 1.6, margin: "8px 0 0", color: "#15803d", background: "#22c55e10", padding: "8px 12px", borderRadius: 8 }}>
+                      <strong>Resultat attendu :</strong> {p.expectedResult}
+                    </p>
+                  )}
                 </div>
               );
             })}
@@ -410,7 +430,7 @@ export function Workbench() {
               const result = results.find((r) => r.tool === s.toolId);
               const lines = result ? toolDataLines(result) : [];
               return (
-                <div key={s.toolId} style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: "22px 26px", marginBottom: 20 }}>
+                <div key={s.toolId} id={`volet-${s.toolId}`} style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: "22px 26px", marginBottom: 20, scrollMarginTop: 80 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                     <h3 style={{ fontFamily: "var(--heading)", fontSize: 17, fontWeight: 600, margin: 0 }}>{s.title}</h3>
                     <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", marginLeft: "auto", color: vColor(s.verdict), background: `${vColor(s.verdict)}12`, padding: "3px 10px", borderRadius: 6 }}>
@@ -447,6 +467,11 @@ export function Workbench() {
                           <span style={{ fontSize: 11, fontWeight: 600, color: ic }}>Impact {rec.impact} · {rec.effort}</span>
                         </div>
                         <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--muted)", margin: 0 }}>{rec.detail}</p>
+                        {rec.expectedResult && (
+                          <p style={{ fontSize: 12.5, lineHeight: 1.6, margin: "6px 0 0", color: "#15803d" }}>
+                            <strong>Resultat attendu :</strong> {rec.expectedResult}
+                          </p>
+                        )}
                       </div>
                     );
                   })}
@@ -455,7 +480,7 @@ export function Workbench() {
             })}
           </section>
 
-          <section className="psec">
+          <section className="psec" id="conclusion">
             <SectionTitle label="Conclusion" />
             <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.conclusion}</p></Card>
           </section>

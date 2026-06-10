@@ -23,6 +23,8 @@
 - [Étude de cas Forbes BeLux](https://romaindeville.eu/etudes-de-cas/forbes-belux) : lancement d'un média avec le SEO intégré dès le premier jour.
 - [Étude de cas Groupe Audit Belgium](https://romaindeville.eu/etudes-de-cas/groupe-audit-belgium) : refonte multilingue d'un site financier et acquisition pilotée au coût par lead.
 - [Étude de cas Equine Care Group](https://romaindeville.eu/etudes-de-cas/equine-care-group) : CRO, Google Ads et Meta Ads sur un e-commerce multi-marques.
+- [Étude de cas Carbonable](https://romaindeville.eu/etudes-de-cas/carbonable) : croissance communautaire Web3 sur deux ans, pilotée par les données.
+- [Étude de cas LUDO LUDO](https://romaindeville.eu/etudes-de-cas/ludo-ludo) : présence en ligne et e-commerce d'une ASBL bruxelloise co-fondée.
 - [Parcours](https://romaindeville.eu/parcours) : expérience professionnelle complète, compétences, formation.
 - [Plan du site](https://romaindeville.eu/plan-du-site)
 

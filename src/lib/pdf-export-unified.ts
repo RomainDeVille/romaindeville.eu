@@ -36,6 +36,8 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   const doc = new jsPDF("portrait", "mm", "a4");
   const W = 210, H = 297, M = 20, CW = W - M * 2;
   let y = 0;
+  const toc: { label: string; page: number }[] = [];
+  const tocMark = (label: string) => toc.push({ label, page: doc.getCurrentPageInfo().pageNumber });
 
   const check = (n: number) => {
     if (y + n > H - 20) { footer(); doc.addPage(); y = 20; }
@@ -166,15 +168,18 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   y += 30;
 
   // ── RÉSUMÉ EXÉCUTIF ──
+  tocMark("Résumé exécutif");
   sectionLabel("Résumé exécutif");
   para(final.summary, 9.5);
 
   if (final.businessImpact) {
+    tocMark("Impact business estimé");
     sectionLabel("Impact business estimé");
     para(final.businessImpact, 9.5);
   }
 
   // ── PRIORITÉS CROISÉES ──
+  tocMark("Priorités croisées");
   sectionLabel("Priorités croisées");
   for (let i = 0; i < final.priorities.length; i++) {
     const p = final.priorities[i];
@@ -202,6 +207,15 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
     para(p.why);
     subLabel("Comment");
     para(p.how);
+    if (p.expectedResult) {
+      check(8);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...C.green);
+      doc.text("RÉSULTAT ATTENDU", M, y);
+      y += 4.5;
+      para(p.expectedResult);
+    }
     y += 3;
   }
 
@@ -214,6 +228,7 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
     doc.line(M, y, W - M, y);
     y += 8;
 
+    tocMark(s.title);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(...C.text);
@@ -255,11 +270,21 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
       doc.text(`Impact ${rec.impact} · ${rec.effort}`, M, y);
       y += 4.5;
       para(rec.detail);
+      if (rec.expectedResult) {
+        check(6);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7.5);
+        doc.setTextColor(...C.green);
+        doc.text("RÉSULTAT ATTENDU", M, y);
+        y += 4;
+        para(rec.expectedResult);
+      }
       y += 1;
     }
   }
 
   // ── CONCLUSION ──
+  tocMark("Conclusion");
   sectionLabel("Conclusion");
   para(final.conclusion, 9.5);
 
@@ -274,6 +299,7 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   }
 
   // ── MÉTHODOLOGIE ──
+  tocMark("Méthodologie et limites");
   sectionLabel("Méthodologie et limites");
   para(
     "Ce rapport agrege les resultats de plusieurs outils d'analyse executes en parallele sur le site : " +
@@ -303,6 +329,33 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   y += 5;
   doc.setTextColor(...C.accent);
   doc.text("romaindeville.eu", W / 2, y, { align: "center" });
+
+  // ── TABLE DES MATIÈRES (insérée en page 2, après la couverture) ──
+  doc.insertPage(2);
+  doc.setPage(2);
+  let ty = 24;
+  doc.setFillColor(...C.accent);
+  doc.rect(0, 0, W, 4, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(...C.text);
+  doc.text("Table des matières", M, ty);
+  ty += 12;
+  for (const entry of toc) {
+    const target = entry.page + 1; // décalage dû à l'insertion
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    doc.setTextColor(...C.text);
+    const label = entry.label.length > 70 ? entry.label.slice(0, 69) + "…" : entry.label;
+    doc.text(label, M, ty);
+    doc.setTextColor(...C.accent);
+    doc.text(String(target), W - M, ty, { align: "right" });
+    doc.setDrawColor(...C.line);
+    doc.setLineWidth(0.15);
+    doc.line(M, ty + 1.5, W - M, ty + 1.5);
+    doc.link(M, ty - 4, CW, 6, { pageNumber: target });
+    ty += 8;
+  }
 
   const total = doc.getNumberOfPages();
   for (let i = 1; i <= total; i++) {

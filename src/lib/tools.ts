@@ -3,6 +3,7 @@
 export type ToolId =
   | "pagespeed"
   | "geo"
+  | "onpage"
   | "dns"
   | "security"
   | "carbon"
@@ -33,6 +34,13 @@ export const TOOLS: ToolDef[] = [
     name: "Visibilite IA (GEO)",
     description: "Schema.org, llms.txt, acces des crawlers IA, meta et Open Graph.",
     endpoint: "/api/v1/tools/geo",
+    defaultChecked: true,
+  },
+  {
+    id: "onpage",
+    name: "SEO on-page (crawl)",
+    description: "Crawl des pages internes : titles, metas, Hn, maillage interne, pages minces et doublons.",
+    endpoint: "/api/v1/tools/onpage",
     defaultChecked: true,
   },
   {
@@ -105,8 +113,8 @@ export interface ToolPreset {
 }
 
 export const PRESETS: ToolPreset[] = [
-  { id: "complet", name: "Audit complet", tools: ["pagespeed", "geo", "dns", "security", "carbon", "w3c", "keywords", "authority", "crux-history"] },
-  { id: "seo", name: "SEO et contenu", tools: ["geo", "keywords", "authority", "w3c"] },
+  { id: "complet", name: "Audit complet", tools: ["pagespeed", "geo", "onpage", "dns", "security", "carbon", "w3c", "keywords", "authority", "crux-history"] },
+  { id: "seo", name: "SEO et contenu", tools: ["geo", "onpage", "keywords", "authority", "w3c"] },
   { id: "technique", name: "Technique et securite", tools: ["pagespeed", "security", "dns", "carbon", "w3c"] },
   { id: "suivi", name: "Suivi mensuel", tools: ["pagespeed", "crux-history", "security", "dns"] },
 ];
@@ -127,6 +135,7 @@ export interface UnifiedPriority {
   how: string;
   impact: "Fort" | "Moyen" | "Faible";
   effort: string;
+  expectedResult?: string;
 }
 
 export interface UnifiedReport {
@@ -143,6 +152,7 @@ export interface SectionRecommendation {
   detail: string;
   impact: "Fort" | "Moyen" | "Faible";
   effort: string;
+  expectedResult?: string;
 }
 
 export interface SectionReport {

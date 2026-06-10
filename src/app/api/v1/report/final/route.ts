@@ -11,7 +11,7 @@ function buildPrompt(url: string, sections: SectionReport[], failed: string[], b
     volet: s.title,
     verdict: s.verdict,
     constats: s.keyFindings,
-    recommandations: s.recommendations.map((r) => `${r.action} (impact ${r.impact}, ${r.effort})`),
+    recommandations: s.recommendations.map((r) => `${r.action} (impact ${r.impact}, ${r.effort})${r.expectedResult ? " , resultat attendu : " + r.expectedResult : ""}`),
   }));
 
   const hasBusiness = !!(business && (business.monthlyVisits || business.conversionRate || business.avgOrderValue));
@@ -40,14 +40,15 @@ Reponds UNIQUEMENT avec un objet JSON valide, sans markdown ni backticks :
       "why": "Justification chiffree, croisee entre volets quand c'est pertinent.",
       "how": "Premieres etapes concretes.",
       "impact": "Fort" | "Moyen" | "Faible",
-      "effort": "ex: 2-4 h"
+      "effort": "ex: 2-4 h",
+      "expectedResult": "Resultat attendu mesurable et prudent : metrique visee, valeur cible, comment et quand verifier."
     }
   ]${hasBusiness ? `,
   "businessImpact": "Paragraphe chiffre en euros, calcul montre, prudent."` : ""},
   "conclusion": "3-4 phrases : la trajectoire recommandee sur 90 jours et le premier pas a faire cette semaine."
 }
 
-REGLES JSON : priorities entre 5 et 7 entrees, classees par impact decroissant, tirees des recommandations des chapitres (deduplique les doublons entre volets). Francais avec accents.${hasBusiness ? "" : ' PAS de champ "businessImpact".'}`;
+REGLES JSON : priorities entre 5 et 7 entrees, chacune avec un expectedResult mesurable et prudent, classees par impact decroissant, tirees des recommandations des chapitres (deduplique les doublons entre volets). Francais avec accents.${hasBusiness ? "" : ' PAS de champ "businessImpact".'}`;
 }
 
 export async function POST(request: NextRequest) {
@@ -88,7 +89,13 @@ export async function POST(request: NextRequest) {
     const clean = (s: string) => s.replace(/[\u2014\u2013]/g, ", ");
     parsed.summary = clean(parsed.summary);
     parsed.conclusion = clean(parsed.conclusion);
-    parsed.priorities = parsed.priorities.map((p) => ({ ...p, title: clean(p.title), why: clean(p.why), how: clean(p.how) }));
+    parsed.priorities = parsed.priorities.map((p) => ({
+      ...p,
+      title: clean(p.title),
+      why: clean(p.why),
+      how: clean(p.how),
+      expectedResult: p.expectedResult ? clean(p.expectedResult) : undefined,
+    }));
     if (parsed.businessImpact) parsed.businessImpact = clean(parsed.businessImpact);
 
     return NextResponse.json(parsed);
