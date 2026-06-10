@@ -103,6 +103,7 @@ export function Workbench() {
   const [finalReport, setFinalReport] = useState<FinalReport | null>(null);
   const [finalRunning, setFinalRunning] = useState(false);
   const [chapterFails, setChapterFails] = useState<string[]>([]);
+  const [suggesting, setSuggesting] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const [reportAt, setReportAt] = useState("");
@@ -142,6 +143,25 @@ export function Workbench() {
   })();
 
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  async function handleSuggestSeeds() {
+    if (!url.trim() || suggesting) return;
+    setSuggesting(true);
+    setError("");
+    try {
+      const res = await fetch("/api/v1/suggest-seeds", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url.trim() }),
+      });
+      const data = await parseJsonSafe<{ seeds: string[] }>(res, "Erreur suggestions");
+      setSeed(data.seeds.join("\n"));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erreur suggestions");
+    } finally {
+      setSuggesting(false);
+    }
+  }
 
   async function runOne(tool: ToolDef, index: number): Promise<{ result: ToolResult; section: SectionReport | null }> {
     setStates((s) => ({ ...s, [tool.id]: "running" }));
@@ -347,6 +367,16 @@ export function Workbench() {
             })}
           </div>
 
+          {selected.has("keywords") && (
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, gap: 10 }}>
+              <span style={{ fontSize: 13, color: "var(--muted)" }}>Mots-cles cibles (1 par ligne, 5 max)</span>
+              <button type="button" onClick={handleSuggestSeeds} disabled={suggesting || !url.trim()}
+                className="btn btn-outline"
+                style={{ padding: "6px 14px", fontSize: 12.5, opacity: suggesting || !url.trim() ? 0.5 : 1 }}>
+                {suggesting ? "Analyse du site..." : "Proposer 5 mots-cles automatiquement"}
+              </button>
+            </div>
+          )}
           {selected.has("keywords") && (
             <textarea value={seed} onChange={(ev) => setSeed(ev.target.value)}
               placeholder={"Mots-cles cibles : un par ligne (5 max)\nrenovation bruxelles\ndevis renovation\nentreprise renovation belgique"}
