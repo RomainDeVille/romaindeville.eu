@@ -75,7 +75,7 @@ export default function Home() {
               rédaction, sur des écosystèmes jusqu&apos;à 220&nbsp;000 pages.
             </p>
           </div>
-          <Link href="/geo" className="card" style={{ textDecoration: "none" }}>
+          <Link href="/consultant-geo-belgique" className="card" style={{ textDecoration: "none" }}>
             <div className="n">02</div>
             <h3>GEO : visibilité dans les IA</h3>
             <p>

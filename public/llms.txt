@@ -1,0 +1,23 @@
+# Romain De Ville
+
+> Consultant senior indépendant en SEO, GEO (Generative Engine Optimization), acquisition digitale et stratégie de contenu. Basé à Bruxelles, Belgique. Interventions en français, néerlandais et anglais. Plus de 10 ans d'expérience pour des médias, institutions et entreprises : Proximus, Parlement européen, Forbes BeLux, Equine Care Group, Groupe Audit Belgium.
+
+## Services
+
+- Consultance GEO : visibilité dans les réponses des moteurs d'IA (ChatGPT, Perplexity, Gemini, Google AI Overviews). Audit de visibilité IA, benchmark concurrents, feuille de route priorisée. Framework de 10 tactiques GEO déployé en entreprise.
+- Consultance SEO technique et éditoriale : audits, architecture pilier/cluster, métadonnées, maillage interne, Core Web Vitals, news SEO. Expérience sur des écosystèmes jusqu'à 220 000 pages.
+- Acquisition digitale et CRO : Google Ads, Meta Ads, A/B testing, optimisation de funnel et de coût par lead.
+- Stratégie de contenu et formation : lancements éditoriaux, playbooks SEO, formation des journalistes et équipes marketing.
+
+## Pages
+
+- [Accueil](https://romaindeville.eu/) : présentation des quatre expertises et de la méthode de travail.
+- [Consultant GEO Belgique](https://romaindeville.eu/consultant-geo-belgique) : offre GEO détaillée, audit de visibilité IA, questions fréquentes.
+- [Parcours](https://romaindeville.eu/parcours) : expérience professionnelle complète, compétences, formation.
+
+## Contact
+
+- Email : romain@romaindeville.eu
+- Localisation : Bruxelles, Belgique
+- Zone d'intervention : Belgique et remote (Europe)
+- Langues : français (natif), anglais (C1), néerlandais (B1)

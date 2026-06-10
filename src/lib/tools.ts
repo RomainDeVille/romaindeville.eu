@@ -135,3 +135,28 @@ export interface UnifiedReport {
   priorities: UnifiedPriority[];
   businessImpact?: string;
 }
+
+/* ── Rapports map-reduce : un chapitre IA par tool, puis une synthese ── */
+
+export interface SectionRecommendation {
+  action: string;
+  detail: string;
+  impact: "Fort" | "Moyen" | "Faible";
+  effort: string;
+}
+
+export interface SectionReport {
+  toolId: ToolId;
+  title: string;
+  verdict: "bon" | "moyen" | "mauvais";
+  keyFindings: string[];
+  narrative: string[];
+  recommendations: SectionRecommendation[];
+}
+
+export interface FinalReport {
+  summary: string;
+  priorities: UnifiedPriority[];
+  businessImpact?: string;
+  conclusion: string;
+}

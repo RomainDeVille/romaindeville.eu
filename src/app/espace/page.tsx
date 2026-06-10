@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Espace() {
   return (
-    <div className="wrap">
+    <div className="wrap" style={{ maxWidth: "min(1500px, 96vw)" }}>
       <header className="phead">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
           <div className="eyebrow">Espace consultant</div>

@@ -1,8 +1,8 @@
 import jsPDF from "jspdf";
-import type { BusinessInputs } from "./audit-types";
-import { TOOLS, type ToolResult, type UnifiedReport } from "./tools";
+import { TOOLS, type FinalReport, type SectionReport, type ToolResult } from "./tools";
+import { toolDataLines } from "./report-data";
 
-/* Memes guidelines visuelles que pdf-export.ts : palette, header, sections, footer */
+/* Memes guidelines visuelles que le PDF audit d'origine : palette, header, sections, footer */
 const C = {
   accent: [79, 70, 229] as [number, number, number],
   accent2: [139, 92, 246] as [number, number, number],
@@ -19,16 +19,20 @@ function verdictColor(v: string): [number, number, number] {
   return v === "bon" ? C.green : v === "mauvais" ? C.red : C.orange;
 }
 
+function toneColor(t: string): [number, number, number] {
+  return t === "good" ? C.green : t === "bad" ? C.red : t === "warn" ? C.orange : C.muted;
+}
+
 export interface UnifiedPdfInput {
   url: string;
   createdAt: string;
-  report: UnifiedReport;
+  final: FinalReport;
+  sections: SectionReport[];
   results: ToolResult[];
-  business?: BusinessInputs | null;
 }
 
-export function exportUnifiedPDF(input: UnifiedPdfInput): void {
-  const { url, createdAt, report, results } = input;
+function buildDoc(input: UnifiedPdfInput): jsPDF {
+  const { url, createdAt, final, sections, results } = input;
   const doc = new jsPDF("portrait", "mm", "a4");
   const W = 210, H = 297, M = 20, CW = W - M * 2;
   let y = 0;
@@ -53,11 +57,20 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
     y += 7;
   };
 
-  const para = (text: string, maxW?: number) => {
+  const subLabel = (label: string) => {
+    check(6);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(...C.accent);
+    doc.text(label.toUpperCase(), M, y);
+    y += 4.5;
+  };
+
+  const para = (text: string, size = 9) => {
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
+    doc.setFontSize(size);
     doc.setTextColor(...C.muted);
-    const lines = doc.splitTextToSize(text, maxW || CW);
+    const lines = doc.splitTextToSize(text, CW);
     for (const line of lines) {
       check(5);
       doc.text(line, M, y);
@@ -66,13 +79,36 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
     y += 2;
   };
 
-  const subLabel = (label: string) => {
-    check(6);
+  const bullet = (text: string) => {
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(...C.muted);
+    const lines = doc.splitTextToSize(text, CW - 5);
+    let first = true;
+    for (const line of lines) {
+      check(5);
+      if (first) { doc.text("•", M, y); first = false; }
+      doc.text(line, M + 4, y);
+      y += 4.2;
+    }
+    y += 1;
+  };
+
+  const kvRow = (label: string, value: string, color: [number, number, number]) => {
+    check(8);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(...C.text);
+    doc.text(label, M, y);
+    doc.setTextColor(...color);
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(7.5);
-    doc.setTextColor(...C.accent);
-    doc.text(label.toUpperCase(), M, y);
-    y += 4.5;
+    const v = value.length > 60 ? value.slice(0, 59) + "…" : value;
+    doc.text(v, W - M, y, { align: "right" });
+    y += 2.5;
+    doc.setDrawColor(...C.line);
+    doc.setLineWidth(0.15);
+    doc.line(M, y, W - M, y);
+    y += 4;
   };
 
   // ── HEADER ──
@@ -95,9 +131,9 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
   doc.setFontSize(9);
   doc.setTextColor(...C.muted);
   const date = new Date(createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-  const toolNames = results.map((r) => TOOLS.find((t) => t.id === r.tool)?.name || r.tool).join(", ");
   doc.text(`Analyse realisee le ${date}`, M, y);
   y += 5;
+  const toolNames = results.map((r) => TOOLS.find((t) => t.id === r.tool)?.name || r.tool).join(", ");
   const tLines = doc.splitTextToSize(`Outils : ${toolNames}`, CW);
   for (const l of tLines) { doc.text(l, M, y); y += 4.2; }
   y += 5;
@@ -107,13 +143,10 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
   doc.line(M, y, W - M, y);
   y += 10;
 
-  // ── CARTES VERDICTS PAR VOLET ──
-  const ordered = TOOLS.map((t) => report.sections.find((s) => s.toolId === t.id)).filter(
-    (s): s is NonNullable<typeof s> => !!s
-  );
-  const perRow = Math.min(ordered.length, 5) || 1;
+  // ── CARTES VERDICTS ──
+  const perRow = Math.min(sections.length, 5) || 1;
   const cardW = (CW - (perRow - 1) * 4) / perRow;
-  ordered.forEach((s, i) => {
+  sections.forEach((s, i) => {
     const col = i % perRow;
     if (col === 0 && i > 0) y += 26;
     check(26);
@@ -134,38 +167,17 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
 
   // ── RÉSUMÉ EXÉCUTIF ──
   sectionLabel("Résumé exécutif");
-  para(report.summary);
+  para(final.summary, 9.5);
 
-  // ── IMPACT BUSINESS ──
-  if (report.businessImpact) {
+  if (final.businessImpact) {
     sectionLabel("Impact business estimé");
-    para(report.businessImpact);
-  }
-
-  // ── ANALYSE PAR VOLET ──
-  sectionLabel("Analyse par volet");
-  for (const s of ordered) {
-    check(22);
-    const tag = s.verdict === "bon" ? "[OK]" : s.verdict === "moyen" ? "[~]" : "[!]";
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(...C.text);
-    doc.text(`${tag} ${s.title}`, M, y);
-    doc.setFontSize(8);
-    doc.setTextColor(...verdictColor(s.verdict));
-    doc.text(s.verdict.toUpperCase(), W - M, y, { align: "right" });
-    y += 5;
-    subLabel("Constats");
-    para(s.findings);
-    subLabel("Recommandations");
-    para(s.recommendations);
-    y += 2;
+    para(final.businessImpact, 9.5);
   }
 
   // ── PRIORITÉS CROISÉES ──
   sectionLabel("Priorités croisées");
-  for (let i = 0; i < report.priorities.length; i++) {
-    const p = report.priorities[i];
+  for (let i = 0; i < final.priorities.length; i++) {
+    const p = final.priorities[i];
     check(20);
 
     doc.setFillColor(...C.accent);
@@ -186,27 +198,70 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
     doc.text(impactText, W - M - 4, y + 5, { align: "right" });
 
     y += 12;
-
-    const fields = [
-      { label: "Pourquoi", text: p.why },
-      { label: "Comment", text: p.how },
-    ];
-    for (const f of fields) {
-      check(10);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(8);
-      doc.setTextColor(...C.accent);
-      doc.text(f.label, M + 2, y);
-      y += 4;
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(...C.muted);
-      const fLines = doc.splitTextToSize(f.text, CW - 4);
-      for (const l of fLines) { check(4.5); doc.text(l, M + 2, y); y += 4; }
-      y += 3;
-    }
-    y += 4;
+    subLabel("Pourquoi");
+    para(p.why);
+    subLabel("Comment");
+    para(p.how);
+    y += 3;
   }
+
+  // ── CHAPITRES PAR VOLET ──
+  for (const s of sections) {
+    check(30);
+    y += 4;
+    doc.setDrawColor(...C.line);
+    doc.setLineWidth(0.3);
+    doc.line(M, y, W - M, y);
+    y += 8;
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.setTextColor(...C.text);
+    doc.text(s.title, M, y);
+    doc.setFontSize(9);
+    doc.setTextColor(...verdictColor(s.verdict));
+    doc.text(s.verdict.toUpperCase(), W - M, y, { align: "right" });
+    y += 8;
+
+    const result = results.find((r) => r.tool === s.toolId);
+    if (result) {
+      const lines = toolDataLines(result);
+      if (lines.length > 0) {
+        subLabel("Données mesurées");
+        for (const l of lines) kvRow(l.label, l.value, toneColor(l.tone));
+        y += 2;
+      }
+    }
+
+    subLabel("Constats clés");
+    for (const f of s.keyFindings) bullet(f);
+    y += 2;
+
+    subLabel("Analyse");
+    for (const p of s.narrative) para(p);
+
+    subLabel("Recommandations");
+    for (const rec of s.recommendations) {
+      check(12);
+      const ic = rec.impact === "Fort" ? C.red : rec.impact === "Moyen" ? C.orange : C.green;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(...C.text);
+      const head = `${rec.action}`;
+      const headLines = doc.splitTextToSize(head, CW - 35);
+      for (const l of headLines) { check(5); doc.text(l, M, y); y += 4.3; }
+      doc.setFontSize(7.5);
+      doc.setTextColor(...ic);
+      doc.text(`Impact ${rec.impact} · ${rec.effort}`, M, y);
+      y += 4.5;
+      para(rec.detail);
+      y += 1;
+    }
+  }
+
+  // ── CONCLUSION ──
+  sectionLabel("Conclusion");
+  para(final.conclusion, 9.5);
 
   // ── TOOLS EN ERREUR ──
   const failed = results.filter((r) => r.status === "error");
@@ -225,7 +280,8 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
     "performance Lighthouse (labo mobile et desktop, variance possible de 5 a 10 points entre deux mesures) et donnees terrain Chrome UX Report quand le trafic le permet, " +
     "scan technique de la page (donnees structurees, directives robots, llms.txt, headers de securite), verifications DNS publiques (SPF, DKIM, DMARC), " +
     "validation W3C, estimation carbone selon le modele Sustainable Web Design, autorite de domaine OpenPageRank et suggestions reelles Google Autocomplete pour les mots-cles. " +
-    "Les suggestions de mots-cles ne comportent pas de volumes de recherche. Les gains annonces sont des estimations : seule une nouvelle mesure apres correction les confirmera. " +
+    "Chaque volet a ete analyse individuellement puis synthetise. Les suggestions de mots-cles ne comportent pas de volumes de recherche. " +
+    "Les gains annonces sont des estimations : seule une nouvelle mesure apres correction les confirmera. " +
     "Les chiffrages en euros, quand ils figurent dans ce rapport, sont des ordres de grandeur fondes sur les donnees fournies par le client et des elasticites publiees, pas des garanties."
   );
 
@@ -257,12 +313,25 @@ export function exportUnifiedPDF(input: UnifiedPdfInput): void {
     if (i > 1) footer();
   }
 
+  return doc;
+}
+
+function fileName(input: UnifiedPdfInput): string {
   let domain = "site";
   try {
-    domain = new URL(url.startsWith("http") ? url : `https://${url}`).hostname.replace(/\./g, "-");
+    domain = new URL(input.url.startsWith("http") ? input.url : `https://${input.url}`).hostname.replace(/\./g, "-");
   } catch {
     // garde "site"
   }
-  const d = new Date(createdAt).toISOString().slice(0, 10);
-  doc.save(`analyse-${domain}-${d}.pdf`);
+  const d = new Date(input.createdAt).toISOString().slice(0, 10);
+  return `analyse-${domain}-${d}.pdf`;
+}
+
+export function exportUnifiedPDF(input: UnifiedPdfInput): void {
+  buildDoc(input).save(fileName(input));
+}
+
+export function unifiedPDFBase64(input: UnifiedPdfInput): string {
+  const uri = buildDoc(input).output("datauristring");
+  return uri.split(",")[1];
 }

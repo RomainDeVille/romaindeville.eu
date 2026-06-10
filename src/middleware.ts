@@ -2,22 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
 export async function middleware(request: NextRequest) {
-  const session = request.cookies.get("rdv_session")?.value;
+  const path = request.nextUrl.pathname;
+  const isApi = path.startsWith("/api/");
 
-  if (!session) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
+  /* La route de login reste publique */
+  if (path.startsWith("/api/v1/auth")) {
+    return NextResponse.next();
   }
+
+  const unauthorized = () =>
+    isApi
+      ? NextResponse.json({ error: "Non autorise" }, { status: 401 })
+      : (() => {
+          const loginUrl = new URL("/login", request.url);
+          loginUrl.searchParams.set("from", path);
+          return NextResponse.redirect(loginUrl);
+        })();
+
+  const session = request.cookies.get("rdv_session")?.value;
+  if (!session) return unauthorized();
 
   const secret = process.env.AUTH_SECRET;
-  if (!secret) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  if (!secret) return unauthorized();
 
   const { valid } = await verifyToken(session, secret);
-
   if (!valid) {
+    if (isApi) return NextResponse.json({ error: "Session expiree" }, { status: 401 });
     const res = NextResponse.redirect(new URL("/login", request.url));
     res.cookies.delete("rdv_session");
     return res;
@@ -27,5 +37,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/espace/:path*"],
+  matcher: ["/espace/:path*", "/api/v1/:path*"],
 };

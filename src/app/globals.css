@@ -14,8 +14,8 @@
   --accent2: #8B5CF6;
   --accent-glow: rgba(79, 70, 229, 0.15);
   --danger: #EF4444;
-  --sans: "Inter", system-ui, -apple-system, sans-serif;
-  --heading: "Space Grotesk", system-ui, sans-serif;
+  --sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --heading: var(--font-heading), system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }

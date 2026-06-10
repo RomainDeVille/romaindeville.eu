@@ -1,7 +1,21 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { profile } from "@/lib/data";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-heading",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -40,44 +54,71 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Romain De Ville",
-    jobTitle: "Consultant Senior SEO, GEO et Stratégie de Contenu",
-    url: "https://romaindeville.eu",
-    email: profile.email,
-    telephone: profile.phone,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bruxelles",
-      addressCountry: "BE",
-    },
-    sameAs: [profile.linkedin],
-    knowsAbout: [
-      "SEO",
-      "Generative Engine Optimization",
-      "Content Strategy",
-      "Technical SEO",
-      "GEO",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://romaindeville.eu/#person",
+        name: "Romain De Ville",
+        jobTitle: "Consultant Senior SEO, GEO et Stratégie de Contenu",
+        url: "https://romaindeville.eu",
+        email: profile.email,
+        telephone: profile.phone,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bruxelles",
+          addressCountry: "BE",
+        },
+        sameAs: [profile.linkedin],
+        knowsAbout: [
+          "SEO",
+          "Generative Engine Optimization",
+          "Content Strategy",
+          "Technical SEO",
+          "GEO",
+        ],
+        worksFor: { "@id": "https://romaindeville.eu/#organization" },
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://romaindeville.eu/#organization",
+        name: "Romain De Ville · RDIGITAL",
+        description:
+          "Conseil indépendant en SEO, GEO (visibilité dans les réponses des IA), acquisition et stratégie de contenu pour entreprises, médias et institutions.",
+        url: "https://romaindeville.eu",
+        email: profile.email,
+        telephone: profile.phone,
+        founder: { "@id": "https://romaindeville.eu/#person" },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bruxelles",
+          addressCountry: "BE",
+        },
+        areaServed: [
+          { "@type": "Country", name: "Belgique" },
+          { "@type": "City", name: "Bruxelles" },
+        ],
+        knowsLanguage: ["fr", "nl", "en"],
+        makesOffer: [
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Consultance SEO technique et éditoriale" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Consultance GEO (Generative Engine Optimization)" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Acquisition digitale et CRO" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Stratégie de contenu et formation des équipes" } },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://romaindeville.eu/#website",
+        name: "Romain De Ville",
+        url: "https://romaindeville.eu",
+        inLanguage: "fr-BE",
+        publisher: { "@id": "https://romaindeville.eu/#person" },
+      },
     ],
-    worksFor: {
-      "@type": "Organization",
-      name: "RDIGITAL",
-    },
   };
 
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -89,7 +130,7 @@ export default function RootLayout({
             Romain De Ville<span className="dot">.</span>
           </Link>
           <div className="right">
-            <Link className="btn btn-ghost" href="/geo">
+            <Link className="btn btn-ghost" href="/consultant-geo-belgique">
               GEO
             </Link>
             <Link className="btn btn-ghost" href="/parcours">
@@ -108,7 +149,7 @@ export default function RootLayout({
             </Link>
           </div>
         </nav>
-        {children}
+        <main>{children}</main>
         <footer className="foot">
           <div className="wrap">
             <div>
@@ -116,6 +157,10 @@ export default function RootLayout({
               de contenu · {profile.city}
             </div>
             <div className="foot-links">
+              <Link href="/consultant-geo-belgique">Consultant GEO Belgique</Link>
+              <span className="foot-sep">·</span>
+              <Link href="/parcours">Parcours</Link>
+              <span className="foot-sep">·</span>
               <a href={`mailto:${profile.email}`}>{profile.email}</a>
               <span className="foot-sep">·</span>
               <a

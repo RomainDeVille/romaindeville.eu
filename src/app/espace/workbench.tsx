@@ -1,9 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { PRESETS, TOOLS, type ToolDef, type ToolId, type ToolResult, type UnifiedReport } from "@/lib/tools";
+import {
+  PRESETS,
+  TOOLS,
+  type FinalReport,
+  type SectionReport,
+  type ToolDef,
+  type ToolId,
+  type ToolResult,
+} from "@/lib/tools";
 import type { BusinessInputs } from "@/lib/audit-types";
-import { exportUnifiedPDF } from "@/lib/pdf-export-unified";
+import { toolDataLines, type DataLine } from "@/lib/report-data";
+import { exportUnifiedPDF, unifiedPDFBase64, type UnifiedPdfInput } from "@/lib/pdf-export-unified";
 
 async function parseJsonSafe<T>(res: Response, fallback: string): Promise<T> {
   const raw = await res.text();
@@ -23,11 +32,12 @@ async function parseJsonSafe<T>(res: Response, fallback: string): Promise<T> {
   return data;
 }
 
-type ToolState = "idle" | "running" | "ok" | "empty" | "error";
+type ToolState = "idle" | "running" | "reporting" | "ok" | "empty" | "error";
 
 const STATE_LABEL: Record<ToolState, string> = {
   idle: "En attente",
-  running: "En cours...",
+  running: "Analyse...",
+  reporting: "Redaction du chapitre...",
   ok: "Termine",
   empty: "Pas de donnees",
   error: "Erreur",
@@ -36,9 +46,17 @@ const STATE_LABEL: Record<ToolState, string> = {
 const STATE_COLOR: Record<ToolState, string> = {
   idle: "var(--muted)",
   running: "var(--accent)",
+  reporting: "var(--accent2)",
   ok: "#22c55e",
   empty: "#f59e0b",
   error: "#ef4444",
+};
+
+const TONE_COLOR: Record<DataLine["tone"], string> = {
+  good: "#22c55e",
+  warn: "#f59e0b",
+  bad: "#ef4444",
+  muted: "var(--muted)",
 };
 
 function SectionTitle({ label }: { label: string }) {
@@ -57,6 +75,19 @@ const inputStyle: React.CSSProperties = {
 
 function vColor(v: string) { return v === "bon" ? "#22c55e" : v === "mauvais" ? "#ef4444" : "#f59e0b"; }
 
+function DataGrid({ lines }: { lines: DataLine[] }) {
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "0 28px", marginBottom: 16 }}>
+      {lines.map((l, i) => (
+        <div key={i} style={{ display: "flex", justifyContent: "space-between", gap: 12, padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
+          <span style={{ fontSize: 13, color: "var(--text)" }}>{l.label}</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: TONE_COLOR[l.tone], textAlign: "right" }}>{l.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Workbench() {
   const [url, setUrl] = useState("");
   const [seed, setSeed] = useState("");
@@ -68,17 +99,22 @@ export function Workbench() {
   const [activePreset, setActivePreset] = useState<string>("");
   const [states, setStates] = useState<Record<string, ToolState>>({});
   const [results, setResults] = useState<ToolResult[]>([]);
-  const [report, setReport] = useState<UnifiedReport | null>(null);
-  const [reportRunning, setReportRunning] = useState(false);
-  const [reportAt, setReportAt] = useState("");
+  const [sections, setSections] = useState<Record<string, SectionReport>>({});
+  const [finalReport, setFinalReport] = useState<FinalReport | null>(null);
+  const [finalRunning, setFinalRunning] = useState(false);
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
+  const [reportAt, setReportAt] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [sendStatus, setSendStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
+  const [sendMessage, setSendMessage] = useState("");
 
   const selectedTools = TOOLS.filter((t) => selected.has(t.id));
-  const doneCount = selectedTools.filter((t) => ["ok", "empty", "error"].includes(states[t.id] || "")).length;
-  const toolsPct = selectedTools.length > 0 ? (doneCount / selectedTools.length) * 70 : 0;
-  const reportPct = report ? 30 : reportRunning ? 15 : 0;
-  const progress = Math.round(toolsPct + reportPct);
+  const n = selectedTools.length || 1;
+  const dataDone = selectedTools.filter((t) => ["reporting", "ok", "empty", "error"].includes(states[t.id] || "")).length;
+  const sectionDone = selectedTools.filter((t) => ["ok", "empty", "error"].includes(states[t.id] || "")).length;
+  const progress = Math.round((dataDone / n) * 45 + (sectionDone / n) * 40 + (finalReport ? 15 : finalRunning ? 7 : 0));
 
   function applyPreset(presetId: string) {
     const p = PRESETS.find((x) => x.id === presetId);
@@ -104,8 +140,9 @@ export function Workbench() {
     return Object.keys(out).length > 0 ? out : null;
   })();
 
-  async function runOne(tool: ToolDef): Promise<ToolResult> {
+  async function runOne(tool: ToolDef): Promise<{ result: ToolResult; section: SectionReport | null }> {
     setStates((s) => ({ ...s, [tool.id]: "running" }));
+    let result: ToolResult;
     try {
       const payload: Record<string, unknown> = { url: url.trim() };
       if (tool.id === "keywords") payload.seed = seed.trim();
@@ -117,19 +154,36 @@ export function Workbench() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const result = await parseJsonSafe<ToolResult>(res, `Erreur ${tool.name}`);
-      setStates((s) => ({ ...s, [tool.id]: result.status === "ok" ? "ok" : result.status === "empty" ? "empty" : "error" }));
-      return result;
+      result = await parseJsonSafe<ToolResult>(res, `Erreur ${tool.name}`);
     } catch (err) {
       setStates((s) => ({ ...s, [tool.id]: "error" }));
       return {
-        tool: tool.id,
-        status: "error",
-        durationMs: 0,
-        data: null,
-        error: err instanceof Error ? err.message : "Erreur inconnue",
+        result: { tool: tool.id, status: "error", durationMs: 0, data: null, error: err instanceof Error ? err.message : "Erreur" },
+        section: null,
       };
     }
+
+    if (result.status === "error") {
+      setStates((s) => ({ ...s, [tool.id]: "error" }));
+      return { result, section: null };
+    }
+
+    /* Pipeline : le chapitre IA part des que les donnees de CE tool sont la */
+    setStates((s) => ({ ...s, [tool.id]: "reporting" }));
+    let section: SectionReport | null = null;
+    try {
+      const res = await fetch("/api/v1/report/section", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: url.trim(), result, business }),
+      });
+      section = await parseJsonSafe<SectionReport>(res, "Erreur chapitre");
+      setSections((s) => ({ ...s, [tool.id]: section as SectionReport }));
+    } catch {
+      section = null;
+    }
+    setStates((s) => ({ ...s, [tool.id]: result.status === "empty" ? "empty" : "ok" }));
+    return { result, section };
   }
 
   async function handleRun(e: React.FormEvent) {
@@ -142,41 +196,87 @@ export function Workbench() {
 
     setRunning(true);
     setError("");
-    setReport(null);
+    setFinalReport(null);
     setResults([]);
+    setSections({});
+    setSendStatus("idle");
+    setSendMessage("");
     setStates(Object.fromEntries(selectedTools.map((t) => [t.id, "idle" as ToolState])));
 
     try {
       const settled = await Promise.all(selectedTools.map((t) => runOne(t)));
-      setResults(settled);
+      setResults(settled.map((s) => s.result));
 
-      setReportRunning(true);
-      const res = await fetch("/api/v1/report", {
+      const okSections = settled.map((s) => s.section).filter((s): s is SectionReport => !!s);
+      const failed = settled
+        .filter((s) => s.result.status === "error")
+        .map((s) => TOOLS.find((t) => t.id === s.result.tool)?.name || s.result.tool);
+
+      if (okSections.length === 0) throw new Error("Aucun chapitre n'a pu etre redige.");
+
+      setFinalRunning(true);
+      const res = await fetch("/api/v1/report/final", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: url.trim(), results: settled, business }),
+        body: JSON.stringify({ url: url.trim(), sections: okSections, failed, business }),
       });
-      const rep = await parseJsonSafe<UnifiedReport>(res, "Erreur rapport");
-      setReport(rep);
+      const rep = await parseJsonSafe<FinalReport>(res, "Erreur synthese");
+      setFinalReport(rep);
       setReportAt(new Date().toISOString());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue");
     } finally {
-      setReportRunning(false);
+      setFinalRunning(false);
       setRunning(false);
     }
   }
 
-  /* Sections affichees dans l'ordre du registre : meme squelette de rapport a chaque fois */
-  const orderedSections = report
-    ? TOOLS.map((t) => report.sections.find((s) => s.toolId === t.id)).filter((s): s is NonNullable<typeof s> => !!s)
-    : [];
+  const orderedSections = TOOLS.map((t) => sections[t.id]).filter((s): s is SectionReport => !!s);
+
+  const pdfInput: UnifiedPdfInput | null = finalReport
+    ? { url: url.trim(), createdAt: reportAt || new Date().toISOString(), final: finalReport, sections: orderedSections, results }
+    : null;
+
+  async function handleSend() {
+    if (!pdfInput || sendStatus === "sending") return;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(clientEmail.trim())) {
+      setSendStatus("failed");
+      setSendMessage("Adresse email invalide.");
+      return;
+    }
+    setSendStatus("sending");
+    setSendMessage("");
+    try {
+      const pdfBase64 = unifiedPDFBase64(pdfInput);
+      const res = await fetch("/api/v1/send-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientEmail: clientEmail.trim(),
+          clientName: clientName.trim(),
+          siteUrl: url.trim(),
+          summary: finalReport?.summary || "",
+          pdfBase64,
+        }),
+      });
+      const out = await parseJsonSafe<{ ok: boolean }>(res, "Erreur d'envoi");
+      if (out.ok) {
+        setSendStatus("sent");
+        setSendMessage(`Rapport envoye a ${clientEmail.trim()}, copie dans votre boite.`);
+      } else {
+        throw new Error("Envoi refuse");
+      }
+    } catch (err) {
+      setSendStatus("failed");
+      setSendMessage(err instanceof Error ? err.message : "Erreur d'envoi");
+    }
+  }
 
   return (
     <div>
       <section className="psec">
-        <form onSubmit={handleRun} style={{ maxWidth: 720 }}>
-          <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+        <form onSubmit={handleRun}>
+          <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
             <input type="url" value={url} onChange={(ev) => setUrl(ev.target.value)} placeholder="https://exemple.com" required
               style={{ ...inputStyle, fontSize: 15, padding: "12px 16px" }} />
             <button type="submit" className="btn btn-primary" disabled={running} style={{ opacity: running ? 0.6 : 1 }}>
@@ -198,7 +298,7 @@ export function Workbench() {
             ))}
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 10, marginBottom: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 10, marginBottom: 14 }}>
             {TOOLS.map((t) => {
               const st = states[t.id];
               const checked = selected.has(t.id);
@@ -256,11 +356,11 @@ export function Workbench() {
           {error && <p style={{ color: "var(--danger)", fontSize: 14 }}>{error}</p>}
         </form>
 
-        {(running || report) && (
-          <div style={{ marginTop: 24, maxWidth: 720 }}>
+        {(running || finalReport) && (
+          <div style={{ marginTop: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8 }}>
               <span style={{ fontSize: 13, color: "var(--muted)" }}>
-                {report ? "Rapport termine" : reportRunning ? "Redaction du rapport unifie..." : `Tools : ${doneCount}/${selectedTools.length}`}
+                {finalReport ? "Rapport termine" : finalRunning ? "Redaction de la synthese transversale..." : `Donnees ${dataDone}/${n} · Chapitres ${sectionDone}/${n}`}
               </span>
               <span style={{ fontSize: 13, fontWeight: 700, fontFamily: "var(--heading)", color: "var(--accent)" }}>{progress}%</span>
             </div>
@@ -271,41 +371,23 @@ export function Workbench() {
         )}
       </section>
 
-      {!!report && (
+      {!!finalReport && (
         <>
           <section className="psec">
             <SectionTitle label="Resume executif" />
-            <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{report.summary}</p></Card>
+            <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.summary}</p></Card>
           </section>
 
-          {report.businessImpact && (
+          {finalReport.businessImpact && (
             <section className="psec">
               <SectionTitle label="Impact business estime" />
-              <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{report.businessImpact}</p></Card>
+              <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.businessImpact}</p></Card>
             </section>
           )}
 
           <section className="psec">
-            <SectionTitle label="Analyse par volet" />
-            {orderedSections.map((s) => (
-              <div key={s.toolId} style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: "20px 24px", marginBottom: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                  <h3 style={{ fontFamily: "var(--heading)", fontSize: 16, fontWeight: 600, margin: 0 }}>{s.title}</h3>
-                  <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", marginLeft: "auto", color: vColor(s.verdict), background: `${vColor(s.verdict)}12`, padding: "2px 10px", borderRadius: 6 }}>
-                    {s.verdict}
-                  </span>
-                </div>
-                <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: 4 }}>Constats</div>
-                <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--muted)", margin: "0 0 12px" }}>{s.findings}</p>
-                <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: 4 }}>Recommandations</div>
-                <p style={{ fontSize: 14, lineHeight: 1.7, color: "var(--muted)", margin: 0 }}>{s.recommendations}</p>
-              </div>
-            ))}
-          </section>
-
-          <section className="psec">
             <SectionTitle label="Priorites croisees" />
-            {report.priorities.map((p, i) => {
+            {finalReport.priorities.map((p, i) => {
               const ic = p.impact === "Fort" ? "#ef4444" : p.impact === "Moyen" ? "#f59e0b" : "#22c55e";
               return (
                 <div key={i} style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: "18px 22px", marginBottom: 14 }}>
@@ -322,6 +404,62 @@ export function Workbench() {
             })}
           </section>
 
+          <section className="psec">
+            <SectionTitle label="Analyse detaillee par volet" />
+            {orderedSections.map((s) => {
+              const result = results.find((r) => r.tool === s.toolId);
+              const lines = result ? toolDataLines(result) : [];
+              return (
+                <div key={s.toolId} style={{ background: "var(--panel)", border: "1px solid var(--line)", borderRadius: 14, padding: "22px 26px", marginBottom: 20 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                    <h3 style={{ fontFamily: "var(--heading)", fontSize: 17, fontWeight: 600, margin: 0 }}>{s.title}</h3>
+                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", marginLeft: "auto", color: vColor(s.verdict), background: `${vColor(s.verdict)}12`, padding: "3px 10px", borderRadius: 6 }}>
+                      {s.verdict}
+                    </span>
+                  </div>
+
+                  {lines.length > 0 && (
+                    <>
+                      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: 8 }}>Donnees mesurees</div>
+                      <DataGrid lines={lines} />
+                    </>
+                  )}
+
+                  <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: 8 }}>Constats cles</div>
+                  <ul style={{ margin: "0 0 16px", paddingLeft: 18 }}>
+                    {s.keyFindings.map((f, i) => (
+                      <li key={i} style={{ fontSize: 13, lineHeight: 1.7, color: "var(--muted)", marginBottom: 4 }}>{f}</li>
+                    ))}
+                  </ul>
+
+                  <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", marginBottom: 8 }}>Analyse</div>
+                  {s.narrative.map((para, i) => (
+                    <p key={i} style={{ fontSize: 14, lineHeight: 1.75, color: "var(--muted)", margin: "0 0 12px" }}>{para}</p>
+                  ))}
+
+                  <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--accent)", margin: "16px 0 8px" }}>Recommandations</div>
+                  {s.recommendations.map((rec, i) => {
+                    const ic = rec.impact === "Fort" ? "#ef4444" : rec.impact === "Moyen" ? "#f59e0b" : "#22c55e";
+                    return (
+                      <div key={i} style={{ borderLeft: `3px solid ${ic}`, paddingLeft: 14, marginBottom: 12 }}>
+                        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", marginBottom: 4 }}>
+                          <span style={{ fontSize: 14, fontWeight: 600 }}>{rec.action}</span>
+                          <span style={{ fontSize: 11, fontWeight: 600, color: ic }}>Impact {rec.impact} · {rec.effort}</span>
+                        </div>
+                        <p style={{ fontSize: 13, lineHeight: 1.65, color: "var(--muted)", margin: 0 }}>{rec.detail}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </section>
+
+          <section className="psec">
+            <SectionTitle label="Conclusion" />
+            <Card><p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--muted)", margin: 0 }}>{finalReport.conclusion}</p></Card>
+          </section>
+
           {results.some((r) => r.status === "error") && (
             <section className="psec">
               <SectionTitle label="Tools en erreur" />
@@ -335,15 +473,35 @@ export function Workbench() {
             </section>
           )}
 
-          <section style={{ textAlign: "center", padding: "48px 0", borderTop: "1px solid var(--line)", marginTop: 32 }}>
-            <button
-              onClick={() => exportUnifiedPDF({ url: url.trim(), createdAt: reportAt || new Date().toISOString(), report, results, business })}
-              className="btn btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1v9m0 0L5 7m3 3l3-3M2 11v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Exporter en PDF
-            </button>
+          <section className="psec" style={{ borderTop: "1px solid var(--line)", paddingTop: 32 }}>
+            <SectionTitle label="Livrer le rapport" />
+            <Card>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+                <button
+                  onClick={() => pdfInput && exportUnifiedPDF(pdfInput)}
+                  className="btn btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1v9m0 0L5 7m3 3l3-3M2 11v2a2 2 0 002 2h8a2 2 0 002-2v-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Telecharger le PDF
+                </button>
+              </div>
+              <div style={{ borderTop: "1px solid var(--line)", margin: "18px 0" }} />
+              <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 10 }}>
+                Envoyer le rapport par email au client (PDF en piece jointe, copie dans votre boite) :
+              </div>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <input value={clientName} onChange={(ev) => setClientName(ev.target.value)} placeholder="Prenom du client (optionnel)" style={inputStyle} />
+                <input type="email" value={clientEmail} onChange={(ev) => setClientEmail(ev.target.value)} placeholder="email@client.be" style={inputStyle} />
+                <button onClick={handleSend} className="btn btn-primary" disabled={sendStatus === "sending"}
+                  style={{ opacity: sendStatus === "sending" ? 0.6 : 1 }}>
+                  {sendStatus === "sending" ? "Envoi..." : "Envoyer au client"}
+                </button>
+              </div>
+              {sendMessage && (
+                <p style={{ fontSize: 13, marginTop: 10, color: sendStatus === "sent" ? "#22c55e" : "#ef4444" }}>{sendMessage}</p>
+              )}
+            </Card>
           </section>
         </>
       )}
