@@ -167,6 +167,11 @@ function buildDoc(input: UnifiedPdfInput): jsPDF {
   });
   y += 30;
 
+  /* La couverture est une page autonome : la TOC s'inserera entre elle et le contenu */
+  footer();
+  doc.addPage();
+  y = 20;
+
   // ── RÉSUMÉ EXÉCUTIF ──
   tocMark("Résumé exécutif");
   sectionLabel("Résumé exécutif");
