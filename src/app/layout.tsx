@@ -23,6 +23,11 @@ export const metadata: Metadata = {
   description:
     "Consultant indépendant en SEO, GEO (visibilité dans les réponses IA) et stratégie de contenu. +10 ans d'expérience. Bruxelles.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://romaindeville.eu"),
+  authors: [{ name: "Romain De Ville", url: "https://romaindeville.eu" }],
+  creator: "Romain De Ville",
+  publisher: "Romain De Ville",
+  applicationName: "Romain De Ville",
+  keywords: ["consultant SEO Bruxelles", "consultant GEO Belgique", "Google Ads Belgique", "stratégie de contenu", "SEO technique"],
   openGraph: {
     type: "website",
     locale: "fr_BE",
@@ -30,8 +35,10 @@ export const metadata: Metadata = {
     siteName: "Romain De Ville",
     title: "Romain De Ville · Consultant Senior SEO, GEO et Stratégie de Contenu",
     description: "Consultant indépendant en SEO, GEO et stratégie de contenu. Bruxelles.",
+    url: "https://romaindeville.eu",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Romain De Ville — Consultant SEO, GEO et stratégie de contenu, Bruxelles" }],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", title: "Romain De Ville · Consultant SEO, GEO et Stratégie de Contenu", description: "Consultant indépendant en SEO, GEO et stratégie de contenu. Bruxelles.", images: ["/og.png"] },
   robots: { index: true, follow: true },
 };
 

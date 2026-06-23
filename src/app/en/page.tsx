@@ -11,6 +11,10 @@ export const metadata: Metadata = {
     "Independent consultant in SEO, GEO (visibility in AI answers) and content strategy. 10+ years of experience. Brussels, Belgium. FR/NL/EN.",
   alternates: altMeta("/", "/en", "en"),
   openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+
     locale: "en_GB",
     title: "Romain De Ville · Senior SEO, GEO and Content Strategy Consultant",
     description:

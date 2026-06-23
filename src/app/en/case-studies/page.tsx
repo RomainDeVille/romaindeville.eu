@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description:
     "Proximus, European Parliament, Forbes BeLux: case studies in SEO, GEO and content strategy. Problem, deployed solution, results.",
   alternates: altMeta("/etudes-de-cas", "/en/case-studies", "en"),
-  openGraph: { locale: "en_GB" },
+  openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+ locale: "en_GB" },
 };
 
 export default function CaseStudiesEn() {

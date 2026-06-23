@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description:
     "All pages of romaindeville.eu: SEO, GEO and content strategy services, case studies and background.",
   alternates: altMeta("/plan-du-site", "/en/site-map", "en"),
-  openGraph: { locale: "en_GB" },
+  openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+ locale: "en_GB" },
 };
 
 const groups = [

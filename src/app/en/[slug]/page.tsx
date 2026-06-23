@@ -20,7 +20,11 @@ export async function generateMetadata({
     title: e.title,
     description: e.description,
     alternates: altMeta(`/${e.frSlug}`, `/en/${e.slug}`, "en"),
-    openGraph: { locale: "en_GB", title: e.title, description: e.description },
+    openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+ locale: "en_GB", title: e.title, description: e.description },
   };
 }
 

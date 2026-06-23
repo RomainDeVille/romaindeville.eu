@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${cs.client}: ${cs.title}`,
     description: cs.intro.slice(0, 155),
     alternates: altMeta(`/etudes-de-cas/${cs.slug}`, `/en/case-studies/${cs.slug}`, "en"),
-    openGraph: { locale: "en_GB" },
+    openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+ locale: "en_GB" },
   };
 }
 

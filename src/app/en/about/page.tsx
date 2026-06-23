@@ -16,7 +16,11 @@ export const metadata: Metadata = {
   description:
     "Professional background, skills and education of Romain De Ville, senior SEO, GEO and content strategy consultant in Brussels.",
   alternates: altMeta("/parcours", "/en/about", "en"),
-  openGraph: { locale: "en_GB" },
+  openGraph: {
+    type: "website",
+    siteName: "Romain De Ville",
+    images: [{ url: "/og-en.png", width: 1200, height: 630, alt: "Romain De Ville — SEO, GEO & Content Strategy, Brussels" }],
+ locale: "en_GB" },
 };
 
 export default function About() {
