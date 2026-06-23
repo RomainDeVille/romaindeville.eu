@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { altMeta } from "@/lib/i18n";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
 import Link from "next/link";
 import { caseStudies } from "@/lib/case-studies";
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Études de cas SEO et GEO",
   description:
     "Proximus, Parlement européen, Forbes BeLux : trois études de cas SEO, GEO et stratégie de contenu. Problème, solution déployée, résultats.",
-  alternates: { canonical: "/etudes-de-cas" },
+  alternates: altMeta("/etudes-de-cas", "/en/case-studies", "fr"),
 };
 
 export default function EtudesDeCas() {

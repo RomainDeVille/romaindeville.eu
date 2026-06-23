@@ -2,22 +2,30 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
 import { profile } from "@/lib/data";
 import { EXPERTISES, type Expertise } from "@/lib/expertises";
+import { EXPERTISES_EN } from "@/lib/expertises-en";
+import { ui, type Locale } from "@/lib/i18n";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://romaindeville.eu";
 
-export function ExpertisePage({ e }: { e: Expertise }) {
+export function ExpertisePage({ e, locale = "fr" }: { e: Expertise; locale?: Locale }) {
+  const t = ui[locale];
+  const pool = locale === "en" ? EXPERTISES_EN : EXPERTISES;
+  const prefix = locale === "en" ? "/en" : "";
+
   const related = e.related
-    .map((slug) => EXPERTISES.find((x) => x.slug === slug))
+    .map((slug) => pool.find((x) => x.slug === slug))
     .filter((x): x is Expertise => !!x);
+
+  const pageUrl = `${BASE}${prefix}/${e.slug}`;
 
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "@id": `${BASE}/${e.slug}#service`,
+    "@id": `${pageUrl}#service`,
     name: e.name,
     serviceType: e.serviceType,
     description: e.description,
-    url: `${BASE}/${e.slug}`,
+    url: pageUrl,
     provider: { "@id": `${BASE}/#organization` },
     areaServed: [
       { "@type": "Country", name: "Belgique" },
@@ -29,6 +37,7 @@ export function ExpertisePage({ e }: { e: Expertise }) {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    inLanguage: locale === "en" ? "en" : "fr-BE",
     mainEntity: e.faq.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -40,9 +49,8 @@ export function ExpertisePage({ e }: { e: Expertise }) {
     <div className="wrap">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <Breadcrumbs items={[{ label: e.name, href: `/${e.slug}` }]} />
+      <Breadcrumbs locale={locale} items={[{ label: e.name, href: `${prefix}/${e.slug}` }]} />
 
-      {/* ===== HERO ===== */}
       <header className="phead">
         <div className="eyebrow">{e.eyebrow}</div>
         <h1 className="title">
@@ -53,35 +61,33 @@ export function ExpertisePage({ e }: { e: Expertise }) {
         <p>{e.intro}</p>
         <div className="cta-row" style={{ marginTop: 24 }}>
           <a className="btn btn-primary" href={profile.calendly} target="_blank" rel="noopener noreferrer">
-            Réserver un appel de 20 min
+            {t.tplBook20}
           </a>
         </div>
       </header>
 
-      {/* ===== MOCK IA (GEO uniquement) ===== */}
       {e.showAiMock && (
         <section className="psec" aria-hidden="true">
           <div className="mock" style={{ maxWidth: 560 }}>
             <div className="mhead">
-              <span className="spark" /> Réponse générée par une IA
+              <span className="spark" /> {t.tplAiHead}
             </div>
             <div className="q">
-              <b>Un client demande :</b> «&nbsp;Quelle est la meilleure solution pour [votre marché]&nbsp;?&nbsp;»
+              <b>{t.tplAiAsks}</b> {t.tplAiQuestion}
             </div>
             <div className="a">
-              Pour ce besoin, les options les plus souvent recommandées sont{" "}
-              <span className="cite">Concurrent&nbsp;A</span>, reconnu pour sa fiabilité, ainsi que{" "}
-              <span className="cite">Concurrent&nbsp;B</span> et <span className="cite">Concurrent&nbsp;C</span>,
-              fréquemment cités pour leur rapport qualité-prix.
+              {t.tplAiAnswerPre}
+              <span className="cite">Concurrent&nbsp;A</span>{t.tplAiAnswerMid}
+              <span className="cite">Concurrent&nbsp;B</span> & <span className="cite">Concurrent&nbsp;C</span>
+              {t.tplAiAnswerEnd}
             </div>
             <div className="tag">
-              <span className="x">✕</span> Votre marque : non citée
+              <span className="x">&#10005;</span> {t.tplAiTag}
             </div>
           </div>
         </section>
       )}
 
-      {/* ===== PÉRIMÈTRE ===== */}
       <section className="block">
         <h2>{e.scopeTitle}</h2>
         <div className="cards">
@@ -95,7 +101,6 @@ export function ExpertisePage({ e }: { e: Expertise }) {
         </div>
       </section>
 
-      {/* ===== PREUVE ===== */}
       <section className="block">
         <h2>{e.proofTitle}</h2>
         <p className="lead">{e.proofText}</p>
@@ -106,7 +111,6 @@ export function ExpertisePage({ e }: { e: Expertise }) {
         </div>
       </section>
 
-      {/* ===== FAQ ===== */}
       <section className="block" id="faq">
         <h2>{e.faqTitle}</h2>
         {e.faq.map((f) => (
@@ -119,12 +123,11 @@ export function ExpertisePage({ e }: { e: Expertise }) {
         ))}
       </section>
 
-      {/* ===== AUTRES EXPERTISES ===== */}
       <section className="block">
-        <h2>Autres expertises</h2>
+        <h2>{t.tplOther}</h2>
         <div className="cards">
           {related.map((r) => (
-            <Link key={r.slug} href={`/${r.slug}`} className="card" style={{ textDecoration: "none" }}>
+            <Link key={r.slug} href={`${prefix}/${r.slug}`} className="card" style={{ textDecoration: "none" }}>
               <div className="n">&rarr;</div>
               <h3>{r.name}</h3>
               <p>{r.cardText}</p>
@@ -133,15 +136,11 @@ export function ExpertisePage({ e }: { e: Expertise }) {
         </div>
       </section>
 
-      {/* ===== CTA ===== */}
       <section className="closer">
-        <h2>Parlons-en, concrètement.</h2>
-        <p>
-          En 20 minutes, on regarde votre situation sur ce sujet précis : où vous en êtes, ce qui
-          bloque, ce que ça vaudrait de le corriger. Sans préparation de votre côté, sans engagement.
-        </p>
+        <h2>{t.tplCloserTitle}</h2>
+        <p>{t.tplCloserText}</p>
         <a className="btn btn-primary" href={profile.calendly} target="_blank" rel="noopener noreferrer">
-          Réserver un appel
+          {t.tplCloserBtn}
         </a>
       </section>
     </div>

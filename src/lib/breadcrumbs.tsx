@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ui, type Locale } from "@/lib/i18n";
 
 export interface Crumb {
   label: string;
@@ -7,8 +8,9 @@ export interface Crumb {
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://romaindeville.eu";
 
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
-  const all: Crumb[] = [{ label: "Accueil", href: "/" }, ...items];
+export function Breadcrumbs({ items, locale = "fr" }: { items: Crumb[]; locale?: Locale }) {
+  const home: Crumb = { label: ui[locale].crumbHome, href: locale === "en" ? "/en" : "/" };
+  const all: Crumb[] = [home, ...items];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -22,7 +24,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
   };
 
   return (
-    <nav className="crumbs" aria-label="Fil d'Ariane">
+    <nav className="crumbs" aria-label={locale === "en" ? "Breadcrumb" : "Fil d'Ariane"}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {all.map((c, i) => (
         <span key={i} style={{ display: "inline-flex", gap: 6, alignItems: "center" }}>

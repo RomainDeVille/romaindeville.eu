@@ -1,38 +1,40 @@
 import type { Metadata } from "next";
-import { altMeta } from "@/lib/i18n";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
+import { profile } from "@/lib/data";
 import {
-  profile,
-  experiences,
-  skillCategories,
-  languages,
-  education,
-  sideProjects,
-} from "@/lib/data";
+  profileEn,
+  experiencesEn,
+  skillCategoriesEn,
+  languagesEn,
+  educationEn,
+  sideProjectsEn,
+} from "@/lib/data-en";
+import { altMeta } from "@/lib/i18n";
 
 export const metadata: Metadata = {
-  title: "Parcours",
+  title: "About",
   description:
-    "Parcours professionnel, compétences et formation de Romain De Ville, consultant senior SEO, GEO et stratégie de contenu à Bruxelles.",
-  alternates: altMeta("/parcours", "/en/about", "fr"),
+    "Professional background, skills and education of Romain De Ville, senior SEO, GEO and content strategy consultant in Brussels.",
+  alternates: altMeta("/parcours", "/en/about", "en"),
+  openGraph: { locale: "en_GB" },
 };
 
-export default function Parcours() {
+export default function About() {
   return (
     <div className="wrap">
-      <Breadcrumbs items={[{ label: "Parcours", href: "/parcours" }]} />
+      <Breadcrumbs locale="en" items={[{ label: "About", href: "/en/about" }]} />
 
       {/* ===== HEADER ===== */}
       <header className="phead">
-        <div className="eyebrow">Parcours · {profile.city}</div>
-        <h1 className="title">{profile.headline}</h1>
-        <p>{profile.summary}</p>
+        <div className="eyebrow">About · {profile.city}</div>
+        <h1 className="title">{profileEn.headline}</h1>
+        <p>{profileEn.summary}</p>
       </header>
 
-      {/* ===== EXPÉRIENCES ===== */}
+      {/* ===== EXPERIENCE ===== */}
       <section className="psec">
-        <h2>Expérience professionnelle</h2>
-        {experiences.map((e) => (
+        <h2>Professional experience</h2>
+        {experiencesEn.map((e) => (
           <div className="exp" key={e.company + e.period}>
             <div className="top">
               <div className="co">{e.company}</div>
@@ -41,12 +43,8 @@ export default function Parcours() {
             <div className="ro">
               {e.role} <span className="tagf">· {e.tag}</span>
             </div>
-            {e.highlight && (
-              <div className="highlight">{e.highlight}</div>
-            )}
-            {e.location && (
-              <div className="highlight">{e.location}</div>
-            )}
+            {e.highlight && <div className="highlight">{e.highlight}</div>}
+            {e.location && <div className="highlight">{e.location}</div>}
             {e.points.length > 0 && (
               <ul>
                 {e.points.map((p, i) => (
@@ -58,10 +56,10 @@ export default function Parcours() {
         ))}
       </section>
 
-      {/* ===== COMPÉTENCES ===== */}
+      {/* ===== SKILLS ===== */}
       <section className="psec">
-        <h2>Compétences</h2>
-        {skillCategories.map((cat) => (
+        <h2>Skills</h2>
+        {skillCategoriesEn.map((cat) => (
           <div className="skill-group" key={cat.name}>
             <div className="skill-group-name">{cat.name}</div>
             <div className="chips">
@@ -75,10 +73,10 @@ export default function Parcours() {
         ))}
       </section>
 
-      {/* ===== FORMATION ===== */}
+      {/* ===== EDUCATION ===== */}
       <section className="psec">
-        <h2>Formation</h2>
-        {education.map((ed) => (
+        <h2>Education</h2>
+        {educationEn.map((ed) => (
           <div className="edu" key={ed.diploma}>
             <div className="ed">{ed.diploma}</div>
             <div className="es">{ed.school}</div>
@@ -87,11 +85,11 @@ export default function Parcours() {
         ))}
       </section>
 
-      {/* ===== LANGUES ===== */}
+      {/* ===== LANGUAGES ===== */}
       <section className="psec">
-        <h2>Langues</h2>
+        <h2>Languages</h2>
         <div className="langs">
-          {languages.map((l) => (
+          {languagesEn.map((l) => (
             <div className="lang" key={l.name}>
               <div className="ln">{l.name}</div>
               <div className="ll">{l.level}</div>
@@ -100,11 +98,11 @@ export default function Parcours() {
         </div>
       </section>
 
-      {/* ===== PROJETS ===== */}
+      {/* ===== PROJECTS ===== */}
       <section className="psec">
-        <h2>Projets</h2>
+        <h2>Projects</h2>
         <div className="proj">
-          {sideProjects.map((p) => (
+          {sideProjectsEn.map((p) => (
             <div className="p" key={p.name}>
               <div className="pn">{p.name}</div>
               <div className="pd">{p.desc}</div>
@@ -121,7 +119,7 @@ export default function Parcours() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Réserver un appel
+          Book a call
         </a>
       </section>
     </div>

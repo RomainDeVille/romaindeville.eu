@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { altMeta } from "@/lib/i18n";
 import Link from "next/link";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
 import { caseStudies } from "@/lib/case-studies";
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Plan du site",
   description:
     "Toutes les pages de romaindeville.eu : expertises SEO, GEO et stratégie de contenu, études de cas et parcours.",
-  alternates: { canonical: "/plan-du-site" },
+  alternates: altMeta("/plan-du-site", "/en/site-map", "fr"),
 };
 
 const groups = [

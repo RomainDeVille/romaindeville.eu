@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { profile, clients } from "@/lib/data";
 import { CORE_EXPERTISES } from "@/lib/expertises";
+import { altMeta } from "@/lib/i18n";
+
+export const metadata: Metadata = {
+  alternates: altMeta("/", "/en", "fr"),
+};
 
 export default function Home() {
   return (

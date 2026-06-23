@@ -41,3 +41,23 @@
 - Localisation : Bruxelles, Belgique
 - Zone d'intervention : Belgique et remote (Europe)
 - Langues : français (natif), anglais (C1), néerlandais (B1)
+
+## English version
+
+Le site est bilingue (FR / EN). La version anglaise est disponible sous /en/ avec des URL traduites et des balises hreflang réciproques. The site is bilingual: a full English version lives under /en/.
+
+- [Home (EN)](https://romaindeville.eu/en) : Senior SEO, GEO and content strategy consultant in Brussels, Belgium.
+- [SEO Consultant Brussels](https://romaindeville.eu/en/seo-consultant-brussels) : technical, editorial, multilingual and data SEO.
+- [GEO Consultant Belgium](https://romaindeville.eu/en/geo-consultant-belgium) : visibility in AI answers (ChatGPT, Perplexity, Gemini, AI Overviews).
+- [B2B Content Strategy](https://romaindeville.eu/en/b2b-content-strategy) : editorial pillars, workflows, writing for AI engines.
+- [Web Design Belgium](https://romaindeville.eu/en/web-design-belgium) : fast, lean, SEO-ready websites.
+- [Google Ads & CRO](https://romaindeville.eu/en/google-ads-consultant-belgium) : Search and Meta Ads managed on cost per lead.
+- [SEO & AI-Visibility Audit](https://romaindeville.eu/en/seo-audit) : nine-area diagnosis with a prioritised roadmap.
+- [Web Performance](https://romaindeville.eu/en/web-performance) : Core Web Vitals measured in lab and field.
+- [SEO & GEO Training](https://romaindeville.eu/en/seo-training-belgium) : tailored workshops for newsrooms and marketing teams.
+- [Monthly SEO Monitoring](https://romaindeville.eu/en/monthly-seo-monitoring) : monthly multi-area report and a 45-minute expert call.
+- [Google Ads Pricing Belgium](https://romaindeville.eu/en/google-ads-pricing-belgium) : how a campaign's cost is built, no hidden percentage on spend.
+- [CRO Consultant Belgium](https://romaindeville.eu/en/cro-consultant-belgium) : conversion rate optimisation through A/B testing.
+- [Google Ads Brussels](https://romaindeville.eu/en/google-ads-brussels) : geo-targeted campaigns on Brussels, Walloon Brabant and Wallonia.
+- [Google Ads by Industry](https://romaindeville.eu/en/google-ads-by-industry-belgium) : real estate, hospitality, SMEs, e-commerce.
+- [Case studies (EN)](https://romaindeville.eu/en/case-studies) · [About (EN)](https://romaindeville.eu/en/about)
