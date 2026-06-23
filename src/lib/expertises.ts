@@ -29,6 +29,9 @@ export interface Expertise {
   related: string[];
   serviceType: string;
   showAiMock?: boolean;
+  /** Landing page SEO/locale : rendue avec le template complet (schema, sitemap, maillage)
+   *  mais exclue de la grille d'expertises cœur (home, nav, footer). */
+  landing?: boolean;
 }
 
 export const EXPERTISES: Expertise[] = [
@@ -374,7 +377,7 @@ export const EXPERTISES: Expertise[] = [
         a: "Oui, le pilotage de campagnes se fait à distance, avec des points réguliers en visio ou sur site à Bruxelles et alentours quand c'est utile.",
       },
     ],
-    related: ["creation-site-web-belgique", "consultant-seo-bruxelles", "suivi-seo-mensuel"],
+    related: ["tarifs-google-ads-belgique", "google-ads-bruxelles", "google-ads-secteurs-belgique"],
     serviceType: "Pay Per Click Advertising",
   },
   {
@@ -649,7 +652,290 @@ export const EXPERTISES: Expertise[] = [
     related: ["audit-seo", "consultant-seo-bruxelles", "consultant-geo-belgique"],
     serviceType: "SEO Consulting",
   },
+  {
+    slug: "tarifs-google-ads-belgique",
+    landing: true,
+    name: "Prix Google Ads Belgique",
+    cardText:
+      "Comment se construit le coût d'une campagne Google Ads en Belgique : budget média, honoraires de gestion, ce qui est inclus. Sans pourcentage caché sur la dépense.",
+    title: "Prix Google Ads en Belgique : combien coûte une campagne en 2026",
+    description:
+      "Prix et coût d'une campagne Google Ads en Belgique : budget média, honoraires de gestion au forfait, CPC par secteur, seuil d'apprentissage. Devis clair, sans commission cachée sur la dépense. Bruxelles, FR/NL/EN.",
+    eyebrow: "Tarifs · Google Ads · Belgique",
+    h1Pre: "Combien coûte une campagne Google Ads en Belgique : ",
+    h1Mark: "le vrai détail, sans pourcentage caché",
+    intro:
+      "Le prix d'une campagne Google Ads se décompose en deux postes distincts : le budget média versé à Google et les honoraires de gestion. Je facture la gestion au forfait, jamais en pourcentage de votre dépense : ça aligne mon intérêt sur votre coût par lead, pas sur votre budget. Voici comment le chiffrage se construit, secteur par secteur.",
+    scopeTitle: "Budget média, honoraires, seuil d'apprentissage : la décomposition",
+    scopeCards: [
+      {
+        title: "Budget média",
+        text: "L'argent versé directement à Google, fonction du coût par clic de votre secteur en Belgique et du volume de recherches visé. Il vous appartient et reste sur votre compte : vous en gardez l'historique si la collaboration s'arrête.",
+      },
+      {
+        title: "Honoraires de gestion",
+        text: "Un forfait mensuel fixe pour la structure du compte, l'optimisation continue, le tracking et le reporting. Pas de commission en pourcentage de la dépense : un modèle qui pousserait à dépenser plus plutôt qu'à convertir mieux.",
+      },
+      {
+        title: "Seuil d'apprentissage",
+        text: "En dessous d'un certain volume de données, l'algorithme de Google ne peut pas apprendre et l'optimisation devient impossible. Si votre budget ne permet pas d'atteindre ce seuil, je vous le dis avant de commencer, et on regarde si le SEO n'est pas un meilleur premier levier.",
+      },
+      {
+        title: "Coût par lead, pas par clic",
+        text: "Le seul chiffre qui compte est ce que vous coûte un contact qualifié, pas le nombre de clics. Le tracking est configuré avant le premier euro pour que ce coût soit mesuré, pas estimé.",
+      },
+    ],
+    proofTitle: "Des budgets pilotés au résultat, pas au volume",
+    proofText:
+      "Pilotage de campagnes Google Ads et Meta Ads pour un e-commerce multi-marques (Equine Care Group) au ROAS, et génération de leads B2B au coût par lead pour Groupe Audit Belgium. Deux modèles économiques différents, la même règle : chaque euro est jugé sur ce qu'il rapporte.",
+    proofLinks: [
+      { label: "Consultant Google Ads Belgique", href: "/consultant-google-ads-belgique" },
+      { label: "Étude de cas Groupe Audit Belgium", href: "/etudes-de-cas/groupe-audit-belgium" },
+    ],
+    faqTitle: "Questions fréquentes sur le prix de Google Ads",
+    faq: [
+      {
+        q: "Quel budget minimum pour Google Ads en Belgique ?",
+        a: "Cela dépend du coût par clic de votre secteur : un mot-clé concurrentiel en B2B ou en immobilier coûte bien plus cher qu'une requête de niche. Le vrai minimum n'est pas un montant fixe, c'est le seuil sous lequel l'algorithme manque de données pour s'optimiser. Je calcule ce seuil pour votre cas au cadrage, et je vous le dis franchement si Google Ads n'est pas le bon premier levier pour votre budget.",
+      },
+      {
+        q: "Facturez-vous un pourcentage de mon budget publicitaire ?",
+        a: "Non. Les honoraires de gestion sont un forfait mensuel fixe, indépendant de votre dépense média. Le modèle au pourcentage crée un conflit d'intérêt : il récompense l'augmentation du budget, pas l'amélioration du coût par lead. Le forfait aligne mon travail sur votre rentabilité.",
+      },
+      {
+        q: "Le budget versé à Google est-il inclus dans vos honoraires ?",
+        a: "Non, ce sont deux choses séparées. Le budget média est versé directement à Google depuis votre compte publicitaire, que vous possédez. Mes honoraires couvrent uniquement la gestion. Vous voyez donc exactement où va chaque euro.",
+      },
+      {
+        q: "Combien coûte un clic en Belgique dans mon secteur ?",
+        a: "Les coûts par clic varient fortement : quelques dizaines de centimes sur des requêtes locales peu concurrentielles, plusieurs euros sur des mots-clés B2B, juridiques, immobiliers ou financiers. L'estimation précise pour vos mots-clés se fait au cadrage à partir des données réelles de votre marché, pas d'une moyenne trompeuse.",
+      },
+      {
+        q: "Y a-t-il un engagement de durée ?",
+        a: "Non. Le pilotage est mensuel et résiliable. Les campagnes ont besoin de quelques semaines d'apprentissage pour donner leur mesure, je le précise au cadrage, mais rien ne vous enferme contractuellement.",
+      },
+      {
+        q: "Comment obtenir un devis précis ?",
+        a: "Par un appel de cadrage de 20 minutes, gratuit et sans engagement : on regarde votre secteur, vos objectifs et votre situation actuelle, et je vous remets un chiffrage clair distinguant budget média et honoraires, sans coût caché.",
+      },
+    ],
+    related: ["consultant-google-ads-belgique", "consultant-cro-belgique", "suivi-seo-mensuel"],
+    serviceType: "Pay Per Click Advertising",
+  },
+  {
+    slug: "consultant-cro-belgique",
+    landing: true,
+    name: "Optimisation du taux de conversion (CRO)",
+    cardText:
+      "A/B testing, pages de destination et parcours de conversion. Augmenter le taux de conversion rend chaque visite — payante ou organique — plus rentable.",
+    title: "Consultant CRO en Belgique : optimisation du taux de conversion",
+    description:
+      "Consultant en optimisation du taux de conversion (CRO) en Belgique : A/B testing, pages de destination, parcours de conversion et tracking. Plus de leads et de ventes à trafic constant. Bruxelles, FR/NL/EN.",
+    eyebrow: "CRO · Taux de conversion · Belgique",
+    h1Pre: "Plus de leads et de ventes ",
+    h1Mark: "sans augmenter votre trafic",
+    intro:
+      "L'optimisation du taux de conversion (CRO) consiste à transformer une plus grande part de vos visiteurs actuels en contacts ou en clients. C'est souvent le levier le plus rentable : agir sur la conversion démultiplie la valeur de chaque euro investi en SEO et en Google Ads, durablement. J'avance par tests mesurés, jamais par opinions.",
+    scopeTitle: "Analyse, tests, parcours : la conversion par la mesure",
+    scopeCards: [
+      {
+        title: "Analyse des points de friction",
+        text: "Où vos visiteurs décrochent, et pourquoi : analyse des parcours, des formulaires, des pages de destination. On corrige ce qui est observé dans les données, pas ce qui est supposé en réunion.",
+      },
+      {
+        title: "A/B testing",
+        text: "Tests comparatifs rigoureux sur les éléments qui pèsent vraiment : titres, appels à l'action, structure des pages, formulaires. Une décision par test, un test par hypothèse, des résultats statistiquement lisibles.",
+      },
+      {
+        title: "Pages de destination",
+        text: "Des landing pages conçues pour une intention unique et un seul objectif de conversion. C'est le complément indispensable de Google Ads : un clic payé qui atterrit sur une page faible est une dépense, pas un résultat.",
+      },
+      {
+        title: "Tracking fiable",
+        text: "Conversions configurées proprement, GA4, événements mesurés. Sans mesure fiable, l'optimisation est de la divination : le tracking propre est le prérequis de tout le reste.",
+      },
+    ],
+    proofTitle: "Test-and-learn sur e-commerce et B2B",
+    proofText:
+      "Stratégie CRO sur un écosystème e-commerce multi-marques (Equine Care Group) par démarche test-and-learn, A/B testing et optimisation du funnel ; structuration des parcours de captation de leads lors de la refonte de Groupe Audit Belgium. Deux logiques de conversion, la même discipline de mesure.",
+    proofLinks: [
+      { label: "Étude de cas Equine Care Group", href: "/etudes-de-cas/equine-care-group" },
+      { label: "Consultant Google Ads Belgique", href: "/consultant-google-ads-belgique" },
+    ],
+    faqTitle: "Questions fréquentes sur le CRO",
+    faq: [
+      {
+        q: "Qu'est-ce que le CRO, concrètement ?",
+        a: "Le CRO (Conversion Rate Optimization) est l'ensemble des méthodes qui augmentent la part de visiteurs qui réalisent l'action voulue : demander un devis, acheter, s'inscrire. Au lieu de chercher plus de trafic, on tire davantage de valeur du trafic existant, par l'analyse, les tests et l'amélioration des parcours.",
+      },
+      {
+        q: "Pourquoi le CRO est-il si rentable ?",
+        a: "Parce qu'il agit sur un multiplicateur. Doubler le taux de conversion double, à trafic constant, le nombre de leads issus de votre SEO comme de vos campagnes payantes. C'est souvent moins coûteux que d'acheter le double de clics, et l'effet est durable.",
+      },
+      {
+        q: "Le CRO va-t-il avec Google Ads ?",
+        a: "Les deux se renforcent directement. Améliorer la page de destination réduit votre coût par lead à budget égal, et un meilleur taux de conversion améliore aussi le Quality Score, donc le coût par clic. Je pilote souvent les deux ensemble pour cette raison.",
+      },
+      {
+        q: "Combien de trafic faut-il pour faire de l'A/B testing ?",
+        a: "Un test a besoin d'un volume suffisant pour atteindre une signification statistique. Sur un trafic faible, on privilégie d'abord les améliorations à fort impact évident et l'analyse qualitative des parcours, puis on passe aux tests comparatifs quand le volume le permet. Je vous dis ce qui est testable dans votre cas.",
+      },
+      {
+        q: "Intervenez-vous partout en Belgique ?",
+        a: "Oui, je suis basé à Bruxelles et j'interviens dans toute la Belgique, sur site ou à distance, en français, néerlandais et anglais. J'accompagne aussi des clients en France et ailleurs en Europe en remote.",
+      },
+      {
+        q: "Quels sont vos tarifs ?",
+        a: "Au périmètre, après un appel de cadrage de 20 minutes gratuit. Le CRO peut être une mission ponctuelle sur un parcours précis ou un chantier continu couplé à l'acquisition. Le devis décrit ce qui est fait et ce que vous recevez.",
+      },
+    ],
+    related: ["consultant-google-ads-belgique", "performance-web", "creation-site-web-belgique"],
+    serviceType: "Conversion Rate Optimization",
+  },
+  {
+    slug: "google-ads-bruxelles",
+    landing: true,
+    name: "Google Ads Bruxelles",
+    cardText:
+      "Campagnes Google Ads ciblées sur Bruxelles, le Brabant wallon et la Wallonie : ciblage géographique précis, annonces FR/NL, pilotage au coût par lead.",
+    title: "Google Ads à Bruxelles : campagnes ciblées sur votre zone",
+    description:
+      "Campagnes Google Ads ciblées sur Bruxelles, le Brabant wallon et la Wallonie : ciblage géographique précis, annonces en français et néerlandais, pilotage au coût par lead. Pour commerces, PME et indépendants locaux.",
+    eyebrow: "Google Ads · Bruxelles · Brabant wallon",
+    h1Pre: "Des campagnes Google Ads qui ciblent ",
+    h1Mark: "vos clients à Bruxelles et en Wallonie",
+    intro:
+      "Pour une activité locale, payer pour des clics hors de votre zone de chalandise est une fuite pure. Je conçois des campagnes Google Ads géolocalisées sur Bruxelles, le Brabant wallon et la Wallonie : ciblage précis, annonces adaptées à la langue de la zone, budget concentré là où vos clients cherchent vraiment.",
+    scopeTitle: "Ciblage, langue, zones : le local piloté finement",
+    scopeCards: [
+      {
+        title: "Ciblage géographique",
+        text: "Campagnes restreintes à vos vraies zones d'intervention : communes de Bruxelles, Brabant wallon, axe Waterloo–Wavre, Wallonie. Ajustements d'enchères par zone selon la valeur réelle de chaque secteur pour votre activité.",
+      },
+      {
+        title: "Langue et message",
+        text: "Annonces en français et en néerlandais selon la commune visée. À Bruxelles, la langue de recherche n'est pas uniforme : la coller au territoire améliore le taux de clic et le coût par lead.",
+      },
+      {
+        title: "Intention locale",
+        text: "Mots-clés à intention géographique et de proximité, extensions de lieu, horaires : capter la recherche « près de moi » au moment où elle se transforme en appel ou en visite.",
+      },
+      {
+        title: "Mesure au coût par lead",
+        text: "Appels, formulaires, itinéraires : les conversions locales sont configurées avant le premier euro. On juge la campagne sur les contacts générés dans votre zone, pas sur le volume de clics.",
+      },
+    ],
+    proofTitle: "Le local, sans gaspillage de budget",
+    proofText:
+      "Basé à Bruxelles, je pilote des campagnes d'acquisition pour des structures belges en concentrant le budget sur les zones et les langues qui convertissent. La même discipline de mesure que sur mes missions e-commerce et B2B, appliquée à l'échelle d'un bassin local.",
+    proofLinks: [
+      { label: "Consultant Google Ads Belgique", href: "/consultant-google-ads-belgique" },
+      { label: "Prix Google Ads Belgique", href: "/tarifs-google-ads-belgique" },
+    ],
+    faqTitle: "Questions fréquentes sur Google Ads à Bruxelles",
+    faq: [
+      {
+        q: "Pouvez-vous cibler uniquement Bruxelles ou ma commune ?",
+        a: "Oui. Le ciblage géographique de Google Ads descend au niveau de la commune et du rayon autour d'une adresse. On concentre le budget sur vos vraies zones d'intervention — Bruxelles, Brabant wallon, axe Waterloo, ou la commune précise de votre activité — pour ne pas payer des clics hors de portée.",
+      },
+      {
+        q: "Faut-il des annonces en français et en néerlandais à Bruxelles ?",
+        a: "Souvent, oui. Bruxelles est bilingue et la langue de recherche varie selon les communes et les publics. Adapter la langue de l'annonce à la zone ciblée améliore le taux de clic et la pertinence, donc le coût par lead. On décide selon votre clientèle réelle.",
+      },
+      {
+        q: "Couvrez-vous le Brabant wallon et la Wallonie ?",
+        a: "Oui : Brabant wallon, axe Waterloo–Wavre, et plus largement la Wallonie. Le ciblage et les enchères s'ajustent zone par zone selon la valeur de chaque secteur pour votre activité.",
+      },
+      {
+        q: "Google Ads est-il adapté à un petit commerce local ?",
+        a: "Cela dépend de la concurrence sur vos mots-clés et de votre marge par client. Pour beaucoup d'activités locales, un budget concentré et bien ciblé est rentable ; pour d'autres, le SEO local et la fiche d'établissement sont un meilleur premier levier. Je vous le dis honnêtement au cadrage.",
+      },
+      {
+        q: "Travaillez-vous sur place à Bruxelles ?",
+        a: "Le pilotage des campagnes se fait à distance avec des points réguliers, et je me déplace à Bruxelles et alentours quand une rencontre est utile. Je suis basé à Bruxelles.",
+      },
+      {
+        q: "Combien coûte une campagne Google Ads locale ?",
+        a: "Le coût dépend du budget média et des honoraires de gestion au forfait. Le détail complet est expliqué sur la page Prix Google Ads Belgique, et chiffré pour votre cas lors de l'appel de cadrage.",
+      },
+    ],
+    related: ["consultant-google-ads-belgique", "tarifs-google-ads-belgique", "consultant-cro-belgique"],
+    serviceType: "Pay Per Click Advertising",
+  },
+  {
+    slug: "google-ads-secteurs-belgique",
+    landing: true,
+    name: "Google Ads par secteur",
+    cardText:
+      "Google Ads pour l'immobilier, l'horeca, les PME et l'e-commerce en Belgique : structure de compte, mots-clés et conversions adaptés à la réalité de chaque secteur.",
+    title: "Google Ads par secteur en Belgique : immobilier, horeca, PME, e-commerce",
+    description:
+      "Google Ads adapté à votre secteur en Belgique : immobilier, horeca, PME B2B et e-commerce. Structure de compte, mots-clés, conversions et budget pensés pour la réalité économique de chaque activité. Bruxelles, FR/NL.",
+    eyebrow: "Google Ads · Par secteur · Belgique",
+    h1Pre: "Google Ads pensé pour ",
+    h1Mark: "la réalité économique de votre secteur",
+    intro:
+      "Un compte Google Ads efficace ne se duplique pas d'un secteur à l'autre : le cycle d'achat, la valeur d'un client et la concurrence n'ont rien de commun entre une agence immobilière, un restaurant, une PME B2B et un e-commerce. Voici comment j'adapte la structure, les mots-clés et la mesure à chacun.",
+    scopeTitle: "Immobilier, horeca, PME, e-commerce : quatre logiques distinctes",
+    scopeCards: [
+      {
+        title: "Immobilier",
+        text: "Cycle long, valeur élevée par lead, concurrence forte sur les mots-clés transactionnels. On cible les intentions hautes (estimation, mandat, type de bien et commune) et on soigne la qualification : mieux vaut moins de leads, mais des leads sérieux.",
+      },
+      {
+        title: "Horeca",
+        text: "Intention locale et immédiate, marge serrée par couvert. Campagnes géolocalisées et conversions concrètes — réservations, appels, itinéraires — avec un budget concentré sur les créneaux et les zones qui remplissent vraiment la salle.",
+      },
+      {
+        title: "PME B2B",
+        text: "Volumes de recherche plus faibles mais valeur de contrat élevée. Compte resserré sur les requêtes décisionnelles, formulaires et appels mesurés, coordination avec le SEO pour ne pas payer ce que vous gagnez déjà en organique.",
+      },
+      {
+        title: "E-commerce",
+        text: "Pilotage au ROAS, campagnes Shopping et Search, couplage avec Meta Ads selon le cycle d'achat. La conversion sur le site (CRO) fait partie de l'équation : un flux produit propre et des pages qui convertissent valent plus que des enchères agressives.",
+      },
+    ],
+    proofTitle: "Plusieurs secteurs, une méthode de mesure",
+    proofText:
+      "E-commerce multi-marques piloté au ROAS (Equine Care Group), génération de leads B2B au coût par lead (Groupe Audit Belgium), acquisition pour l'enseignement supérieur (ESTACA). Des secteurs et des cycles d'achat différents, jugés chacun sur l'indicateur qui compte pour lui.",
+    proofLinks: [
+      { label: "Consultant Google Ads Belgique", href: "/consultant-google-ads-belgique" },
+      { label: "Toutes les études de cas", href: "/etudes-de-cas" },
+    ],
+    faqTitle: "Questions fréquentes sur Google Ads par secteur",
+    faq: [
+      {
+        q: "Google Ads fonctionne-t-il pour l'immobilier en Belgique ?",
+        a: "Oui, à condition de viser les bonnes intentions. L'immobilier a une forte concurrence sur les mots-clés transactionnels et une valeur élevée par mandat : on cible les requêtes à intention haute (estimation, vente, type de bien et commune) et on qualifie les leads pour ne pas brûler le budget sur des contacts non sérieux.",
+      },
+      {
+        q: "Google Ads est-il rentable pour un horeca ?",
+        a: "Cela dépend de votre marge et de votre zone. L'horeca a une intention locale et immédiate : des campagnes géolocalisées avec des conversions concrètes (réservations, appels, itinéraires) peuvent être rentables, mais sur des marges serrées, le SEO local et la fiche d'établissement sont parfois un meilleur premier levier. Je le dis honnêtement au cadrage.",
+      },
+      {
+        q: "Mon secteur de PME B2B a peu de volume de recherche, est-ce un problème ?",
+        a: "Pas nécessairement. Un faible volume couplé à une forte valeur de contrat justifie souvent un compte resserré sur les requêtes les plus décisionnelles. L'enjeu n'est pas le nombre de clics mais la qualité des leads ; on mesure le coût par lead, pas le volume.",
+      },
+      {
+        q: "Gérez-vous l'e-commerce et les campagnes Shopping ?",
+        a: "Oui : campagnes Shopping et Search pilotées au ROAS, avec couplage Meta Ads selon le cycle d'achat. J'intègre aussi la conversion sur le site (CRO) et la qualité du flux produit, parce que des pages qui convertissent valent plus que des enchères agressives.",
+      },
+      {
+        q: "Et si mon secteur n'est pas dans cette liste ?",
+        a: "La méthode s'adapte : juridique, santé, formation, services… On part toujours de votre cycle d'achat, de la valeur d'un client et de la concurrence sur vos mots-clés pour bâtir la structure de compte adaptée. Ces quatre secteurs sont des exemples, pas une limite.",
+      },
+      {
+        q: "Combien coûte une campagne dans mon secteur ?",
+        a: "Le coût par clic varie fortement d'un secteur à l'autre, et le budget se compose du média et des honoraires de gestion au forfait. Le détail figure sur la page Prix Google Ads Belgique, et le chiffrage précis se fait au cadrage.",
+      },
+    ],
+    related: ["consultant-google-ads-belgique", "tarifs-google-ads-belgique", "consultant-cro-belgique"],
+    serviceType: "Pay Per Click Advertising",
+  },
 ];
+
+/** Expertises cœur affichées dans la nav, le footer et la grille d'accueil. */
+export const CORE_EXPERTISES: Expertise[] = EXPERTISES.filter((e) => !e.landing);
 
 export function getExpertise(slug: string): Expertise | undefined {
   return EXPERTISES.find((e) => e.slug === slug);

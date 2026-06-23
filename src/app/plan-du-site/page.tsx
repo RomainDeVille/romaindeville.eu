@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
 import { caseStudies } from "@/lib/case-studies";
-import { EXPERTISES } from "@/lib/expertises";
+import { CORE_EXPERTISES, EXPERTISES } from "@/lib/expertises";
 
 export const metadata: Metadata = {
   title: "Plan du site",
@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 const groups = [
   {
     name: "Expertises",
-    links: EXPERTISES.map((e) => ({ label: e.name, href: `/${e.slug}` })),
+    links: CORE_EXPERTISES.map((e) => ({ label: e.name, href: `/${e.slug}` })),
+  },
+  {
+    name: "Google Ads par secteur et par ville",
+    links: EXPERTISES.filter((e) => e.landing).map((e) => ({ label: e.name, href: `/${e.slug}` })),
   },
   {
     name: "Études de cas",

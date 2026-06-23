@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { profile } from "@/lib/data";
-import { EXPERTISES } from "@/lib/expertises";
+import { CORE_EXPERTISES } from "@/lib/expertises";
 import { caseStudies } from "@/lib/case-studies";
 
 const inter = Inter({
@@ -136,7 +136,7 @@ export default function RootLayout({
             <details className="nav-dd">
               <summary><span className="btn btn-ghost">Expertises</span></summary>
               <div className="nav-dd-menu">
-                {EXPERTISES.map((e) => (
+                {CORE_EXPERTISES.map((e) => (
                   <Link key={e.slug} href={`/${e.slug}`}>{e.name}</Link>
                 ))}
               </div>
@@ -173,7 +173,7 @@ export default function RootLayout({
               </div>
               <div className="foot-col">
                 <div className="foot-title">Expertises</div>
-                {EXPERTISES.map((e) => (
+                {CORE_EXPERTISES.map((e) => (
                   <Link key={e.slug} href={`/${e.slug}`}>{e.name}</Link>
                 ))}
               </div>

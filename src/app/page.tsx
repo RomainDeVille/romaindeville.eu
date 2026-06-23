@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { profile, clients } from "@/lib/data";
-import { EXPERTISES } from "@/lib/expertises";
+import { CORE_EXPERTISES } from "@/lib/expertises";
 
 export default function Home() {
   return (
@@ -67,7 +67,7 @@ export default function Home() {
           des IA perd la décision. Chaque levier sert les autres.
         </p>
         <div className="cards">
-          {EXPERTISES.map((e, i) => (
+          {CORE_EXPERTISES.map((e, i) => (
             <Link key={e.slug} href={`/${e.slug}`} className="card" style={{ textDecoration: "none" }}>
               <div className="n">{String(i + 1).padStart(2, "0")}</div>
               <h3>{e.name}</h3>
