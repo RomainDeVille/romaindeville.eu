@@ -1,28 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 
-/** Ajoute l'en-tete x-locale (lu par le layout pour <html lang> et la traduction de la nav). */
-function withLocale(request: NextRequest) {
-  const path = request.nextUrl.pathname;
-  const locale = path === "/en" || path.startsWith("/en/") ? "en" : "fr";
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-locale", locale);
-  return NextResponse.next({ request: { headers: requestHeaders } });
-}
-
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const isApi = path.startsWith("/api/");
-  const isProtected = path.startsWith("/espace") || path.startsWith("/api/v1/");
 
-  /* La route de login reste publique */
   if (path.startsWith("/api/v1/auth")) {
-    return withLocale(request);
-  }
-
-  /* Routes publiques : on pose seulement la locale */
-  if (!isProtected) {
-    return withLocale(request);
+    return NextResponse.next();
   }
 
   const unauthorized = () => {
@@ -46,11 +30,9 @@ export async function middleware(request: NextRequest) {
     return res;
   }
 
-  return withLocale(request);
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|portrait.jpg|llms.txt|robots.txt|sitemap.xml|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|pdf|txt|xml)).*)",
-  ],
+  matcher: ["/espace/:path*", "/api/v1/:path*"],
 };
