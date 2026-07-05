@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { caseStudies } from "@/lib/case-studies";
 import { EXPERTISES } from "@/lib/expertises";
 import { EXPERTISE_SLUG_FR_EN } from "@/lib/i18n";
+import { articles } from "@/lib/articles";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://romaindeville.eu";
 const abs = (p: string) => `${BASE}${p === "/" ? "" : p}`;
@@ -22,6 +23,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     e("/etudes-de-cas", "monthly", 0.8),
     e("/parcours", "monthly", 0.6),
     e("/plan-du-site", "monthly", 0.3),
+    e("/blog", "weekly", 0.6),
+    ...articles.map((x) => e(`/blog/${x.slug}`, "monthly", 0.7)),
     ...EXPERTISES.map((x) => e(`/${x.slug}`, "monthly", 0.9)),
     ...caseStudies.map((c) => e(`/etudes-de-cas/${c.slug}`, "monthly", 0.7)),
   ];

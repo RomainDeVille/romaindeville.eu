@@ -3,6 +3,7 @@ import { altMeta } from "@/lib/i18n";
 import Link from "next/link";
 import { Breadcrumbs } from "@/lib/breadcrumbs";
 import { caseStudies } from "@/lib/case-studies";
+import { articles } from "@/lib/articles";
 import { CORE_EXPERTISES, EXPERTISES } from "@/lib/expertises";
 
 export const metadata: Metadata = {
@@ -20,6 +21,13 @@ const groups = [
   {
     name: "Google Ads par secteur et par ville",
     links: EXPERTISES.filter((e) => e.landing).map((e) => ({ label: e.name, href: `/${e.slug}` })),
+  },
+  {
+    name: "Blog",
+    links: [
+      { label: "Tous les articles", href: "/blog" },
+      ...articles.map((a) => ({ label: a.h1, href: `/blog/${a.slug}` })),
+    ],
   },
   {
     name: "Études de cas",

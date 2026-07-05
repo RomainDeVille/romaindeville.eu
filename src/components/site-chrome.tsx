@@ -51,6 +51,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             </div>
           </details>
           <Link className="btn btn-ghost" href={casesHref}>{t.navCases}</Link>
+          {!isEn && <Link className="btn btn-ghost" href="/blog">{t.navBlog}</Link>}
           <Link className="btn btn-ghost" href={aboutHref}>{t.navAbout}</Link>
           <a className="btn btn-primary" href={profile.calendly} target="_blank" rel="noopener noreferrer">{t.navBook}</a>
           <LanguageSwitcher locale={locale} />
@@ -89,7 +90,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="foot-copy">
-            © {new Date().getFullYear()} Romain De Ville. {t.footRights} · <Link href={isEn ? "/en/site-map" : "/plan-du-site"}>{t.footSitemap}</Link>
+            © {new Date().getFullYear()} Romain De Ville. {t.footRights} · <Link href={isEn ? "/en/site-map" : "/plan-du-site"}>{t.footSitemap}</Link>{!isEn && (<> · <Link href="/blog">Blog</Link></>)}
           </div>
         </div>
       </footer>
