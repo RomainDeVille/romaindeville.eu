@@ -159,6 +159,132 @@ export const articles: Article[] = [
       { label: "Suivi SEO mensuel", href: "/suivi-seo-mensuel" },
     ],
   },
+  {
+    slug: "recherche-agentique-preparer-site-agents-google",
+    title: "Recherche agentique : préparer votre site aux agents Google",
+    h1: "Recherche agentique : quand l'agent de Google visite votre site à la place du client",
+    description:
+      "Agents d'information, réservation agentique, appels automatisés : Google déploie la recherche agentique. Ce que ça change et comment préparer votre site.",
+    excerpt:
+      "Depuis I/O 2026, Google déploie des agents qui cherchent, comparent et agissent à la place de l'utilisateur. Analyse d'expert : ce qui est réellement lancé, ce qui reste incertain, et les chantiers concrets pour rester dans la sélection.",
+    datePublished: "2026-07-05",
+    dateModified: "2026-07-05",
+    readingMinutes: 10,
+    tags: ["Recherche agentique", "Agents IA", "AI Mode", "SEO", "GEO"],
+    body: [
+      {
+        t: "p",
+        html: "Le 19 mai 2026, à la conférence I/O, Google a officialisé un basculement que le secteur voyait venir : l'entrée dans « l'ère des agents de recherche ». AI Mode, devenu l'expérience par défaut, a dépassé le <strong>milliard d'utilisateurs mensuels</strong> un an après son lancement, avec des requêtes qui, selon Google, font plus que doubler chaque trimestre. Et sur cette base, Google déploie désormais des <strong>agents</strong> : des IA qui cherchent, surveillent, comparent — et commencent à agir — à la place de l'utilisateur.",
+      },
+      {
+        t: "p",
+        html: "Pour une PME, un média ou une institution en Belgique, la question n'est plus « comment plaire à un lecteur qui parcourt des résultats », mais aussi : <em>que voit un agent quand il visite mon site pour le compte de mon client ?</em> Cet article fait le tri entre ce qui est réellement déployé, ce qui reste une promesse, et les chantiers concrets à lancer dès maintenant.",
+      },
+      { t: "h2", text: "Ce que Google déploie concrètement depuis I/O 2026" },
+      {
+        t: "p",
+        html: "Premier étage de la fusée : les <strong>agents d'information</strong>. Ils tournent en arrière-plan, en continu, et surveillent le web — blogs, sites d'actualité, réseaux sociaux — ainsi que les données fraîches de Google (finance, shopping, sport) pour répondre à une mission précise : « préviens-moi quand un bien correspond à mes critères », « alerte-moi si ce prix change ». L'agent envoie ensuite une synthèse, avec la possibilité d'agir. Le déploiement a commencé en juin 2026 dans AI Mode, d'abord réservé aux abonnés Google AI Pro et Ultra.",
+      },
+      {
+        t: "p",
+        html: "Deuxième étage : la <strong>réservation agentique</strong>. Google l'étend à un large éventail de services et d'expériences locales : l'utilisateur décrit ses critères, Search assemble prix et disponibilités à jour, puis renvoie des liens directs pour finaliser la réservation chez le prestataire. Pour certaines catégories — réparation à domicile, beauté, soins pour animaux — Google peut même <strong>appeler les commerces</strong> à la place de l'utilisateur. Ces capacités transactionnelles sont annoncées pour « tout le monde », mais aux États-Unis d'abord, cet été.",
+      },
+      {
+        t: "p",
+        html: "S'y ajoutent une interface générative (des tableaux de bord et mini-applications que Search code à la volée pour des tâches récurrentes) et l'extension de Personal Intelligence — la connexion du contexte personnel de l'utilisateur (Gmail, Photos) à AI Mode — à près de 200 pays et 98 langues, sans abonnement. La direction est limpide : Google ne veut plus seulement répondre, il veut <strong>exécuter</strong>.",
+      },
+      { t: "h2", text: "Pourquoi c'est un changement de nature, pas de degré" },
+      {
+        t: "p",
+        html: "Depuis vingt ans, le SEO consiste à convaincre un humain à deux moments : dans la page de résultats (le clic), puis sur le site (la conversion). La recherche agentique insère un troisième acteur entre les deux. L'agent lit, filtre et présélectionne <em>avant</em> que votre client ne voie quoi que ce soit. Il ne se laisse pas séduire par un slogan ; il compare des données : prix, disponibilité, délais, avis, conditions.",
+      },
+      {
+        t: "quote",
+        html: "Avec la recherche agentique, votre premier visiteur n'est plus toujours un humain : c'est un agent mandaté par votre client. S'il ne trouve pas l'information, il ne rappelle pas — il passe au concurrent suivant.",
+      },
+      {
+        t: "p",
+        html: "Concrètement, deux conséquences. D'abord, <strong>l'exactitude des données devient un facteur de sélection de fait</strong> : un horaire obsolète, un prix caché derrière un formulaire, un stock non renseigné suffisent à sortir d'une présélection automatisée. Ensuite, la persuasion se déplace : l'argumentaire de marque compte toujours, mais plus tard dans le parcours, une fois la présélection passée. Le milieu de l'entonnoir se joue désormais en partie de machine à machine.",
+      },
+      { t: "h2", text: "Être « actionnable » : les chantiers qui comptent" },
+      { t: "h3", text: "Des données exactes, fraîches et structurées" },
+      {
+        t: "p",
+        html: "Les agents s'appuient sur l'index de Google et sur ses données fraîches. Votre travail : rendre l'information de votre offre lisible par une machine. Données structurées Schema.org complètes (LocalBusiness, Product, Offer, Event, horaires), cohérence stricte entre votre site, votre fiche Google Business Profile et vos éventuels flux produits. Google a d'ailleurs rappelé en juin 2026 que le <strong>HTML propre reste le standard</strong> pour Search — pas des fichiers annexes ni des formats parallèles.",
+      },
+      { t: "h3", text: "Une offre lisible : prix, disponibilités, conditions" },
+      {
+        t: "p",
+        html: "La réservation agentique assemble « les derniers prix et disponibilités ». Un site vitrine qui masque ses tarifs derrière « contactez-nous » était déjà un frein pour l'utilisateur ; face à un agent, c'est une exclusion pure et simple de la sélection. Publier prix, créneaux, délais et conditions n'est plus seulement une question de transparence commerciale : c'est une condition d'existence dans les réponses agentiques. C'est un arbitrage réel — certains secteurs B2B vivent du devis sur mesure — mais il doit désormais être fait en connaissance de cause.",
+      },
+      { t: "h3", text: "Le socle technique : indexabilité, vitesse, fiabilité" },
+      {
+        t: "p",
+        html: "Un agent qui rencontre un site lent, des pages en erreur ou un rendu dépendant d'interactions complexes travaillera avec ce qu'il a — c'est-à-dire vos concurrents. Les fondamentaux restent les mêmes qu'en SEO classique, mais leur coût d'échec augmente : l'humain patient recharge une page, l'agent non. Un socle sain se vérifie par un <a href=\"/audit-seo\">audit technique</a> et se maintient via la <a href=\"/performance-web\">performance web</a> ; si le site doit être refondu, autant le <a href=\"/creation-site-web-belgique\">concevoir d'emblée pour les humains et les machines</a>.",
+      },
+      { t: "h3", text: "L'autorité éditoriale reste le filtre final" },
+      {
+        t: "p",
+        html: "Les agents d'information synthétisent des sources ; ils héritent donc des critères de qualité de Google — renforcés encore par la mise à jour spam de juin 2026. Un contenu signé par un auteur identifiable, appuyé sur des preuves et une expérience réelle, garde toutes ses chances d'être repris dans une synthèse d'agent. C'est le prolongement direct du <a href=\"/consultant-geo-belgique\">travail GEO</a> et d'une <a href=\"/strategie-contenu-b2b\">stratégie de contenu</a> pensée pour être citée, pas seulement lue.",
+      },
+      { t: "h2", text: "Belgique : calendrier réel et zones d'incertitude" },
+      {
+        t: "p",
+        html: "Soyons précis sur ce qui vous concerne aujourd'hui. AI Mode par défaut, la nouvelle barre de recherche et Personal Intelligence sont <strong>mondiaux</strong>, donc actifs pour vos clients belges. En revanche, la réservation agentique et les appels automatisés démarrent <strong>aux États-Unis</strong>, sans calendrier annoncé pour l'Europe — où les contraintes réglementaires (DMA, RGPD) rendent toute date incertaine. Les agents d'information, eux, sont disponibles mais payants (abonnés Pro et Ultra), ce qui limite leur adoption à court terme.",
+      },
+      {
+        t: "p",
+        html: "Deux réserves d'honnêteté intellectuelle. Un : Google a un intérêt commercial évident à présenter cette bascule comme inévitable ; les chiffres d'usage réels des agents ne sont pas publics, et l'histoire récente compte des fonctionnalités annoncées en fanfare puis discrètement revues. Deux : rien n'indique que tous les secteurs seront touchés au même rythme — l'hôtellerie, la restauration et les services locaux sont en première ligne, l'industrie B2B complexe bien plus tard. La bonne posture n'est ni la panique ni le déni : c'est de faire maintenant les chantiers qui sont utiles <em>dans tous les scénarios</em> — données exactes, offre lisible, socle technique sain, autorité éditoriale.",
+      },
+      { t: "h2", text: "Plan d'action concret" },
+      {
+        t: "ul",
+        items: [
+          "Auditez la « lisibilité machine » de votre offre : prix, disponibilités, horaires et conditions sont-ils publiés, exacts et balisés en Schema.org ?",
+          "Alignez site, Google Business Profile et flux produits : toute incohérence entre ces sources est un signal de non-fiabilité pour un agent.",
+          "Vérifiez le socle technique (indexation, vitesse, erreurs) : ce qui gênait un humain élimine un agent.",
+          "Renforcez les contenus qui font autorité sur vos requêtes commerciales : ce sont eux que les agents d'information reprennent dans leurs synthèses.",
+          "Mettez en place une veille trimestrielle sur l'arrivée des capacités agentiques en Europe, plutôt qu'une réaction dans l'urgence le jour J.",
+        ],
+      },
+      {
+        t: "p",
+        html: "La recherche agentique ne supprime pas le SEO : elle en durcit les exigences et en déplace le point de contact. Les sites qui gagneront sont ceux qui seront à la fois convaincants pour un humain et exploitables par une machine. Si vous voulez savoir où se situe votre site sur ces deux axes, c'est exactement le type de diagnostic qu'un <a href=\"/consultant-seo-bruxelles\">accompagnement SEO</a> doublé d'un <a href=\"/suivi-seo-mensuel\">suivi mensuel</a> permet d'objectiver, chiffres à l'appui.",
+      },
+      {
+        t: "p",
+        html: "<strong>Sources</strong> : <a href=\"https://blog.google/products-and-platforms/products/search/search-io-2026/\" rel=\"noopener\">Google — A new era for AI Search (I/O 2026, Liz Reid)</a> ; <a href=\"https://www.seroundtable.com/july-2026-google-webmaster-report-41591.html\" rel=\"noopener\">Search Engine Roundtable — July 2026 Google Webmaster Report</a> ; <a href=\"https://www.seroundtable.com/google-search-information-agents-41502.html\" rel=\"noopener\">Search Engine Roundtable — Google Search Rolls Out Information Agents In AI Mode</a>.",
+      },
+    ],
+    faq: [
+      {
+        q: "Qu'est-ce que la recherche agentique ?",
+        a: "C'est une recherche où une IA n'affiche plus seulement des résultats, mais exécute des tâches pour l'utilisateur : surveiller un sujet en continu, comparer des offres, assembler prix et disponibilités, réserver, voire appeler un commerce. Google a officialisé cette « ère des agents de recherche » à I/O 2026 et déploie les premières briques dans AI Mode depuis juin 2026.",
+      },
+      {
+        q: "Les agents de Google sont-ils déjà actifs en Belgique ?",
+        a: "Partiellement. AI Mode par défaut, la nouvelle barre de recherche et Personal Intelligence sont déployés mondialement, donc en Belgique. Les agents d'information sont disponibles mais réservés aux abonnés Google AI Pro et Ultra. La réservation agentique et les appels automatisés démarrent aux États-Unis, sans calendrier annoncé pour l'Europe.",
+      },
+      {
+        q: "Comment préparer mon site pour les agents IA ?",
+        a: "Quatre chantiers : publier une offre lisible par une machine (prix, disponibilités, horaires, conditions, balisage Schema.org) ; garantir la cohérence entre site, fiche Google Business Profile et flux produits ; assainir le socle technique (indexation, vitesse, erreurs) ; et renforcer les contenus qui font autorité, car ce sont eux que les agents citent dans leurs synthèses.",
+      },
+      {
+        q: "La recherche agentique remplace-t-elle le SEO classique ?",
+        a: "Non. Les agents s'appuient sur l'index et les critères de qualité de Google : un site mal indexé, lent ou sans autorité n'existe ni pour les résultats classiques, ni pour les agents. La recherche agentique ajoute une exigence — être exploitable par une machine — sans retirer les fondamentaux du SEO et du GEO.",
+      },
+      {
+        q: "Faut-il publier ses prix pour apparaître dans les réponses agentiques ?",
+        a: "Pour les secteurs transactionnels (services locaux, réservation, e-commerce), oui : les agents assemblent prix et disponibilités, et une offre opaque sort de la présélection. Pour le B2B complexe au devis sur mesure, l'arbitrage reste possible, mais il faut alors soigner d'autant plus les signaux publics : périmètre, fourchettes, conditions, preuves.",
+      },
+    ],
+    related: [
+      { label: "Consultant GEO Belgique", href: "/consultant-geo-belgique" },
+      { label: "Consultant SEO à Bruxelles", href: "/consultant-seo-bruxelles" },
+      { label: "Création de site web en Belgique", href: "/creation-site-web-belgique" },
+      { label: "Performance web", href: "/performance-web" },
+    ],
+  },
 ];
 
 export function getArticle(slug: string): Article | undefined {
